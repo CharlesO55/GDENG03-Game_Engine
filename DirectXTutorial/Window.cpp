@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window* window = nullptr;
+// Window* window = nullptr;
 
 Window::Window()
 {
@@ -10,12 +10,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
     switch (msg) {
     case WM_CREATE:
     {
+        Window* window = (Window*)((LPCREATESTRUCT)lparam)->lpCreateParams;
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
+        
         window->onCreate();
         break;
     }
 
     case WM_DESTROY:
     {
+        Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+
         window->onDestroy();
         ::PostQuitMessage(0);
         break;
@@ -52,14 +57,19 @@ bool Window::init()
     if (!::RegisterClassEx(&wc))
         return false;
 
-    if (!window)
-        window = this;
+    //if (!window)
+    //    window = this;
 
 
     // Window creation
-    m_hwnd=::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Application", 
+    /*m_hwnd=::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Application", 
         WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
-        NULL, NULL, NULL, NULL);
+        NULL, NULL, NULL, NULL);*/
+    m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Application",
+        WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
+        NULL, NULL, NULL, this);
+
+
 
     if (!m_hwnd)
         return false;
@@ -81,7 +91,8 @@ bool Window::broadcast()
         DispatchMessage(&msg);
     }
 
-    window->onUpdate();
+    //window->onUpdate();
+    this->onUpdate();
 
     Sleep(0);
 
