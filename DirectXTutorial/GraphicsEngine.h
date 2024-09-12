@@ -1,7 +1,10 @@
 #pragma once
 #include <d3d11.h>
+#include <d3dcompiler.h>
+
 class SwapChain;
 class DeviceContext;
+class VertexBuffer;
 
 class GraphicsEngine
 {
@@ -14,6 +17,11 @@ public:
 public:
 	SwapChain* createSwapChain();
 	DeviceContext* getImmediateDeviceContext();
+	VertexBuffer* createVertexBuffer();
+	
+	bool createShaders();
+	bool setShaders();
+	void getShaderBufferAndSize(void** bytecode, UINT* size);
 
 public:
 	static GraphicsEngine* get();
@@ -32,4 +40,7 @@ private:
 	
 private:
 	DeviceContext* m_imm_device_context;
+
+private:
+	friend class VertexBuffer;
 };
