@@ -43,4 +43,13 @@ private:
 
 private:
 	friend class VertexBuffer;
+
+
+
+private:
+	ID3D11VertexShader* m_vs;
+	ID3D11PixelShader* m_ps;
+
+	ID3DBlob* m_vsblob;
+	ID3DBlob* m_psblob;
 };
