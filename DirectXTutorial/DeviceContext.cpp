@@ -25,7 +25,7 @@ void DeviceContext::setVertexBuffer(VertexBuffer* vertex_buffer)
 	UINT offset = 0;
 	m_device_context->IASetVertexBuffers(0, 1, &vertex_buffer->m_buffer, &stride, &offset);
 	
-	m_device_context->IAGetInputLayout(&vertex_buffer->m_layout);
+	m_device_context->IASetInputLayout(vertex_buffer->m_layout);
 }
 
 void DeviceContext::clearRenderTargetColor(SwapChain* swap_chain, float red, float green, float blue, float alpha)

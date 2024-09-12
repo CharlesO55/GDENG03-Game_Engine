@@ -94,9 +94,8 @@ bool Window::broadcast()
         DispatchMessage(&msg);
     }
 
-    //window->onUpdate();
 
-    Sleep(1);
+    Sleep(0);
 
     return true;
 }
