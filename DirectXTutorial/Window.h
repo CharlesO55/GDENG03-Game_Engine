@@ -11,6 +11,8 @@ public:
 	bool isRun();
 	~Window();
 
+	RECT getClientWindowRect();
+	void setHWND(HWND hwnd);
 
 	virtual void onCreate()=0;
 	virtual void onUpdate()=0;
