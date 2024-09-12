@@ -1,7 +1,7 @@
 #pragma once
 #include <d3d11.h>
 class SwapChain;
-
+class DeviceContext;
 
 class GraphicsEngine
 {
@@ -13,7 +13,7 @@ public:
 	bool release();
 public:
 	SwapChain* createSwapChain();
-
+	DeviceContext* getImmediateDeviceContext();
 
 public:
 	static GraphicsEngine* get();
@@ -29,4 +29,7 @@ private:
 	IDXGIFactory* m_dxgi_factory;
 
 	friend class SwapChain;
+	
+private:
+	DeviceContext* m_imm_device_context;
 };
