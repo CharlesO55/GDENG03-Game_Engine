@@ -1,2 +1,7 @@
 ﻿  AppWindow.cpp
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(62,69): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+  DeviceContext.cpp
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\DeviceContext.cpp(57,13): warning C4244: '=': conversion from 'UINT' to 'FLOAT', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\DeviceContext.cpp(58,14): warning C4244: '=': conversion from 'UINT' to 'FLOAT', possible loss of data
+  Generating Code...
   DirectXTutorial.vcxproj -> C:\Users\cmath\source\repos\DirectXTutorial\x64\Debug\DirectXTutorial.exe
