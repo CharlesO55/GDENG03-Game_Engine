@@ -11,7 +11,7 @@ VertexShader::~VertexShader()
 
 void VertexShader::release()
 {
-	m_vs->Release();
+	//m_vs->Release();
 	delete this;
 }
 
