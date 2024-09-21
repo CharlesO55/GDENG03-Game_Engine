@@ -1,3 +1,2 @@
-﻿  AppWindow.cpp
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(63,69): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+﻿  Primitive.cpp
   DirectXTutorial.vcxproj -> C:\Users\cmath\source\repos\DirectXTutorial\x64\Debug\DirectXTutorial.exe

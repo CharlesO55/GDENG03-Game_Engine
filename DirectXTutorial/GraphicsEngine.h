@@ -8,6 +8,9 @@ class VertexBuffer;
 class VertexShader;
 class PixelShader;
 
+
+class Primitive;
+
 class GraphicsEngine
 {
 public:
@@ -64,5 +67,4 @@ private:
 	friend class VertexShader;
 	friend class PixelShader;
 	ID3DBlob* m_blob = nullptr;
-
 };

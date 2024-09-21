@@ -28,6 +28,12 @@
     <Filter Include="GameEngine\GraphicsEngine\PixelShader">
       <UniqueIdentifier>{1c49da89-f971-40e8-9f68-e1bbe4664128}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\Data">
+      <UniqueIdentifier>{eb432961-a058-4aa7-a3f2-46a809a76a25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObjects">
+      <UniqueIdentifier>{13621631-4ec3-4b2d-a8dd-6adb5135d7f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,6 +63,9 @@
     <ClCompile Include="PixelShader.cpp">
       <Filter>GameEngine\GraphicsEngine\PixelShader</Filter>
     </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -82,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="PixelShader.h">
       <Filter>GameEngine\GraphicsEngine\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexData.h">
+      <Filter>GameEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

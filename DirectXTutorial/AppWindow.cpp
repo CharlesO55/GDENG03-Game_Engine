@@ -1,16 +1,9 @@
 #include "AppWindow.h"
 
-struct vec3 {
-	float x, y, z;
-};
-struct vertex {
-	vec3 position;
-	vec3 color;
-};
-
+#include "VertexData.h"
 
 AppWindow::AppWindow()
-{
+{ 
 }
 
 AppWindow::~AppWindow()
@@ -28,11 +21,11 @@ void AppWindow::onCreate()
 
 
 
-	/*vertex triangle_list[] = {
-		{-0.5f, -0.5f, 0.0f},
-		{0.0f, 0.5f, 0.0f},
-		{0.5f, -0.5f, 0.0f}
-	};*/
+	vertex triangle_list[] = {
+		{-1.f, -1.f, 0.0f,	1,0,0},
+		{-0.5f, 0.f, 0.0f,	0,1,0},
+		{0.f, -1.f, 0.0f,	0,0,1}
+	};
 
 	vertex quad_list[] = {
 		// QUAD CAN BE MADE OF 2 TRIANGLES
@@ -42,12 +35,15 @@ void AppWindow::onCreate()
 		{0.5f, 0.5f, 0.0f,		1,1,0}
 	};
 
-	m_vb = GraphicsEngine::get()->createVertexBuffer();
-	
-	
-	//UINT size_list = ARRAYSIZE(triangle_list);
-	UINT size_list = ARRAYSIZE(quad_list);
+	vertex quad_list1[] = {
+		// QUAD CAN BE MADE OF 2 TRIANGLES
+		{0.6f, 0.75f, 0.0f,	0,1,0},
+		{0.6f, 0.9f, 0.0f,		0,1,0},
+		{1.f, 0.75f, 0.0f,		0,1,0},
+		{1.f, 0.9f, 0.0f,		0,1,0}
+	};
 
+	
 	//GraphicsEngine::get()->createShaders();
 
 
@@ -57,10 +53,11 @@ void AppWindow::onCreate()
 
 	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
 	
-	//GraphicsEngine::get()->getShaderBufferAndSize(&shader_byte_code, &size_shader);
-
-	//m_vb->load(triangle_list, sizeof(vertex), size_list, shader_byte_code, size_shader);
-	m_vb->load(quad_list, sizeof(vertex), size_list, shader_byte_code, size_shader);
+	
+	rb_Rect = (new Primitive(quad_list))->WithShader(shader_byte_code, size_shader, 4);
+	gr_Rect = (new Primitive(quad_list1))->WithShader(shader_byte_code, size_shader, 4);
+	rb_Tri = (new Primitive(triangle_list))->WithShader(shader_byte_code, size_shader, 3);
+	
 
 	GraphicsEngine::get()->releaseCompiledShader();
 
@@ -79,16 +76,23 @@ void AppWindow::onUpdate()
 
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right-rc.left, rc.bottom-rc.top);
-	//GraphicsEngine::get()->setShaders();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(m_vs);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
 
 
-
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
-
+	
+	//GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
 	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleList(m_vb->getSizeVertexList(), 0);
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(m_vb->getSizeVertexList(), 0);
+	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(m_vb->getSizeVertexList(), 0);
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(rb_Rect->getVertexBuffer());
+	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(rb_Rect->getVertexBuffer()->getSizeVertexList(), 0);
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(gr_Rect->getVertexBuffer());
+	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(gr_Rect->getVertexBuffer()->getSizeVertexList(), 0);
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(rb_Tri->getVertexBuffer());
+	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(rb_Tri->getVertexBuffer()->getSizeVertexList(), 0);
 
 	m_swap_chain->present(false);
 }
@@ -97,7 +101,9 @@ void AppWindow::onDestroy()
 {
 	Window::onDestroy();
 
-	m_vb->release();
+	//m_vb->release();
+	delete rb_Rect, rb_Tri, gr_Rect;
+	
 	m_swap_chain->release();
 	m_vs->release();
 	m_ps->release();

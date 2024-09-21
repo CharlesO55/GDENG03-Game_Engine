@@ -6,6 +6,9 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "Primitive.h"
+
+#include <vector>
 
 class AppWindow : public Window
 {
@@ -22,5 +25,13 @@ private:
 	VertexBuffer* m_vb;
 	VertexShader* m_vs;
 	PixelShader* m_ps;
-};
 
+
+	VertexBuffer* m_vb1;
+	VertexBuffer* m_vb2;
+
+
+	Primitive* rb_Rect;
+	Primitive* rb_Tri;
+	Primitive* gr_Rect;
+};
