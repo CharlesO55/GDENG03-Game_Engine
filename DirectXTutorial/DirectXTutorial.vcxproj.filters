@@ -34,6 +34,9 @@
     <Filter Include="GameEngine\GameObjects">
       <UniqueIdentifier>{13621631-4ec3-4b2d-a8dd-6adb5135d7f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GraphicsEngine\ConstantBuffer">
+      <UniqueIdentifier>{b908c088-8881-4232-a30d-75b3af9a74d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +69,9 @@
     <ClCompile Include="Primitive.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>GameEngine\GraphicsEngine\ConstantBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -97,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="Primitive.h">
       <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>GameEngine\GraphicsEngine\ConstantBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Primitive.h"
+#include "ConstantBuffer.h"
 
 #include <vector>
 
@@ -30,8 +31,12 @@ private:
 	VertexBuffer* m_vb1;
 	VertexBuffer* m_vb2;
 
+	ConstantBuffer* m_cb;
+
 
 	Primitive* rb_Rect;
 	Primitive* rb_Tri;
 	Primitive* gr_Rect;
+
+	constant cb_value;
 };
