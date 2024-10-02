@@ -1,24 +1,29 @@
 #pragma once
 #include "VertexData.h"
 #include "VertexBuffer.h"
+#include "ConstantBuffer.h"
 
+class VertexShader;
+class PixelShader;
 
 class Primitive
 {
-private:
+protected:
+	vertex* m_vertexList;
 	VertexBuffer* m_vb = nullptr;
-	vertex* m_vertexList = nullptr;
+
+	constant m_cc;
+	ConstantBuffer* m_cb = nullptr;
 
 public:
-	// BUILDER
+	Primitive();
 	Primitive(vertex* vertices);
-	Primitive* WithShader(void* shader_byte_code, UINT size_byte_shader, UINT vertex_count);
-
+	void createVertexBuffer(void* shader_byte_code, UINT size_byte_shader, UINT vertex_count);
+	void createConstantBuffer(RECT rc);
 	~Primitive();
 
-	// GETTERS
-	VertexBuffer* getVertexBuffer() const;
+	void transform(Vector3D translate, Vector3D scale, Vector3D rotate);
 
 public:
-	void draw();
+	void draw(VertexShader* vs, PixelShader* ps);
 };

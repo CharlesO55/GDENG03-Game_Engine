@@ -24,29 +24,20 @@ public:
 	virtual void onDestroy() override;
 
 private:
+	void createObjects(void* shader_byte_code, size_t size_shader, RECT rc);
 	void updateQuadPosition();
+	
 
 private:
 	SwapChain* m_swap_chain;
-	VertexBuffer* m_vb;
 	VertexShader* m_vs;
 	PixelShader* m_ps;
 
-
-	VertexBuffer* m_vb1;
-	VertexBuffer* m_vb2;
-
+	std::vector<Primitive*> m_objects;
+	
 	ConstantBuffer* m_cb;
 
 
-	Primitive* rb_Rect;
-	Primitive* rb_Tri;
-
-	Quad* m_quad;
-
-	float ticks = 0;
-
-	constant cb_value;
 
 	long m_old_delta;
 	long m_new_delta;
