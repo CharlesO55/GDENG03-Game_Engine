@@ -16,8 +16,9 @@ public:
 
 	~Primitive();
 
-
-
 	// GETTERS
 	VertexBuffer* getVertexBuffer() const;
+
+public:
+	void draw();
 };

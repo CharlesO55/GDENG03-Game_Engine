@@ -2,8 +2,6 @@
 
 #include "VertexData.h"
 
-#include <Windows.h>
-
 AppWindow::AppWindow()
 { 
 }
@@ -22,30 +20,19 @@ void AppWindow::onCreate()
 	m_swap_chain->init(this->m_hwnd, rc.right-rc.left, rc.bottom-rc.top);
 
 
-
+	// ALTER THE VERTEX struct and VERTEXBUFFER AS WELL IF CONTENTS CHANGE
 	vertex triangle_list[] = {
-		{Vector3D(- 1.f, -1.f, 0.0f),	Vector3D(-.8f,-.8f,0.5f),		Vector3D(1,0,0),	Vector3D(1,0,0)},
-		{Vector3D(-0.5f, 0.f, 0.0f),	Vector3D(-.2f,-.2f,0.5f),		Vector3D(0,1,0),	Vector3D(0,1,0)},
-		{Vector3D(0.f, -1.f, 0.0f),	Vector3D(0.5f,-.8f,0.5f),		Vector3D(0,0,1),	Vector3D(0,0,1)}
+		{Vector3D(- 1.f, -1.f, 0.0f),	Vector3D(1,0,0),	Vector3D(1,0,0)},
+		{Vector3D(-0.5f, 0.f, 0.0f),	Vector3D(0,1,0),	Vector3D(0,1,0)},
+		{Vector3D(0.f, -1.f, 0.0f),		Vector3D(0,0,1),	Vector3D(0,0,1)}
 	};
 
 	vertex quad_list[] = {
-		{Vector3D(-0.5f,-0.5f,0.0f),    Vector3D(-0.32f,-0.11f,0.0f),   Vector3D(0,0,0), Vector3D(0,1,0) }, // POS1
-		{Vector3D(-0.5f,0.5f,0.0f),     Vector3D(-0.11f,0.78f,0.0f),   Vector3D(1,1,0), Vector3D(0,1,1) }, // POS2
-		{ Vector3D(0.5f,-0.5f,0.0f),     Vector3D(0.75f,-0.73f,0.0f), Vector3D(0,0,1),  Vector3D(1,0,0) },// POS2
-		{ Vector3D(0.5f,0.5f,0.0f),     Vector3D(0.88f,0.77f,0.0f),    Vector3D(1,1,1), Vector3D(0,0,1) }
+		{Vector3D(-0.5f,-0.5f,0.0f),    Vector3D(0,0,0), Vector3D(0,1,0) }, // POS1
+		{Vector3D(-0.5f,0.5f,0.0f),     Vector3D(1,1,0), Vector3D(0,1,1) }, // POS2
+		{ Vector3D(0.5f,-0.5f,0.0f),    Vector3D(0,0,1),  Vector3D(1,0,0) },// POS2
+		{ Vector3D(0.5f,0.5f,0.0f),     Vector3D(1,1,1), Vector3D(0,0,1) }
 	};
-
-	//vertex quad_list1[] = {
-	//	// QUAD CAN BE MADE OF 2 TRIANGLES
-	//	{0.6f, 0.75f, 0.0f,		-0.5f, -0.5f, 0.0f,		0,1,0,	1,0,0},
-	//	{0.6f, 0.9f, 0.0f,		-0.5f, 0.5f, 0.0f,		0,1,0,	1,0,0},
-	//	{1.f, 0.75f, 0.0f,		0.5f, -0.5f, 0.0f,		0,1,0,	1,0,0},
-	//	{1.f, 0.9f, 0.0f,		0.5f, 0.5f, 0.0f,		0,1,0,	1,0,0}
-	//};
-
-	
-	//GraphicsEngine::get()->createShaders();
 
 
 	void* shader_byte_code = nullptr;
@@ -56,7 +43,6 @@ void AppWindow::onCreate()
 	
 	
 	rb_Rect = (new Primitive(quad_list))->WithShader(shader_byte_code, size_shader, 4);
-	//gr_Rect = (new Primitive(quad_list1))->WithShader(shader_byte_code, size_shader, 4);
 	rb_Tri = (new Primitive(triangle_list))->WithShader(shader_byte_code, size_shader, 3);
 	
 
@@ -68,13 +54,7 @@ void AppWindow::onCreate()
 	GraphicsEngine::get()->releaseCompiledShader();
 
 
-	/*this->cb_value.m_time = 0;
-
-
-	m_cb = GraphicsEngine::get()->createConstantBuffer();
-	m_cb->load(&cb_value, sizeof(constant));*/
-
-
+	// CONSTANT BUFFER
 	constant cc;
 	cc.m_time = 0;
 
@@ -84,8 +64,6 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
-	//virtual func //Window::onUpdate();
-
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(
 		m_swap_chain, 0.5,0.5f,0.5f,1);
 
@@ -100,23 +78,12 @@ void AppWindow::onUpdate()
 	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
 
-	
-	//GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
-	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleList(m_vb->getSizeVertexList(), 0);
-	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(m_vb->getSizeVertexList(), 0);
+	rb_Rect->draw();
+	rb_Tri->draw();
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(rb_Rect->getVertexBuffer());
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(rb_Rect->getVertexBuffer()->getSizeVertexList(), 0);
-	
-	/*GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(gr_Rect->getVertexBuffer());
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(gr_Rect->getVertexBuffer()->getSizeVertexList(), 0);
-	*/
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(rb_Tri->getVertexBuffer());
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(rb_Tri->getVertexBuffer()->getSizeVertexList(), 0);
-	
 	m_swap_chain->present(false);
 
-
+	// UPDATE TIME
 	m_old_delta = m_new_delta;
 	m_new_delta = ::GetTickCount64();
 	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0;
@@ -127,7 +94,7 @@ void AppWindow::onDestroy()
 	Window::onDestroy();
 
 	//m_vb->release();
-	delete rb_Rect, rb_Tri, gr_Rect;
+	delete rb_Rect, rb_Tri;
 	
 	m_swap_chain->release();
 	m_vs->release();

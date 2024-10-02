@@ -41,7 +41,6 @@ private:
 
 	Primitive* rb_Rect;
 	Primitive* rb_Tri;
-	Primitive* gr_Rect;
 
 	Quad* m_quad;
 

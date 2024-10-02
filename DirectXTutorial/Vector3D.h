@@ -15,10 +15,5 @@ public:
 		return v;
 	}
 
-	static Vector3D ONE() { return Vector3D(1, 1, 1); }
-	static Vector3D RIGHT() { return Vector3D(1, 0, 0); }
-	static Vector3D UP() { return Vector3D(0, 1, 0); }
-	static Vector3D FORWARD() { return Vector3D(0, 0, 1); }
-
 	float x, y, z;
 };

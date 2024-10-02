@@ -15,7 +15,7 @@ struct vec3 {
 
 struct vertex {
 	Vector3D position;
-	Vector3D position1;
+	//Vector3D position1;
 	Vector3D color;
 	Vector3D color1;
 
