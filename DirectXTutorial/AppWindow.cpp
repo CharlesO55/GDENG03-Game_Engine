@@ -27,13 +27,21 @@ void AppWindow::onCreate()
 		{Vector3D(0.f, -1.f, 0.0f),		Vector3D(0,0,1),	Vector3D(0,0,1)}
 	};
 
+	/*Matrix4 transform;
+	transform.setIdentity();
+	transform.setScale(Vector3D(1, 1, 1));*/
+	
+
 	vertex quad_list[] = {
-		{Vector3D(-0.5f,-0.5f,0.0f),    Vector3D(0,0,0), Vector3D(0,1,0) }, // POS1
-		{Vector3D(-0.5f,0.5f,0.0f),     Vector3D(1,1,0), Vector3D(0,1,1) }, // POS2
-		{ Vector3D(0.5f,-0.5f,0.0f),    Vector3D(0,0,1),  Vector3D(1,0,0) },// POS2
-		{ Vector3D(0.5f,0.5f,0.0f),     Vector3D(1,1,1), Vector3D(0,0,1) }
+		{ Vector3D(-0.5f,-0.5f,0.0f),    Vector3D(0,0,0), Vector3D(0,1,0)}, // POS1
+		{ Vector3D(-0.5f,0.5f,0.0f),     Vector3D(1,1,0), Vector3D(0,1,1)}, // POS2
+		{ Vector3D(0.5f,-0.5f,0.0f),    Vector3D(0,0,1),  Vector3D(1,0,0)},// POS2
+		{ Vector3D(0.5f,0.5f,0.0f),     Vector3D(1,1,1), Vector3D(0,0,1)}
 	};
 
+	std::cout << "Vector3D: " << sizeof(Vector3D) << std::endl;
+	std::cout << "Vertex: " << sizeof(vertex) << std::endl;
+	std::cout << "Matrix: " << sizeof(Matrix4) << std::endl;
 
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;

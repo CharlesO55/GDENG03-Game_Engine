@@ -28,8 +28,8 @@ VertexBuffer* Primitive::getVertexBuffer() const
 
 void Primitive::draw()
 {
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(this->getVertexBuffer());
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
 	
 	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleList(m_vb->getSizeVertexList(), 0);
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(this->getVertexBuffer()->getSizeVertexList(), 0);
+	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(m_vb->getSizeVertexList(), 0);
 }

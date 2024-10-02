@@ -59,6 +59,10 @@ public:
 		m_mat[3][2] = -(near_plane / (far_plane - near_plane));
 	}
 
+	Vector4D getRow(unsigned int row) {
+		return Vector4D(m_mat[row][0], m_mat[row][1], m_mat[row][2], m_mat[row][3]);
+	}
+
 public:
 	float m_mat[4][4] = {};
 };

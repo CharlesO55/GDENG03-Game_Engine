@@ -19,6 +19,11 @@ struct vertex {
 	Vector3D color;
 	Vector3D color1;
 
+	/*Vector4D T_Row0;
+	Vector4D T_Row1;
+	Vector4D T_Row2;
+	Vector4D T_Row3;*/
+
 	/*void print() const {
 		position.print();
 		color.print(); 
