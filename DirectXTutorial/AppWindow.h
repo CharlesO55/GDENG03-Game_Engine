@@ -9,6 +9,8 @@
 #include "Primitive.h"
 #include "ConstantBuffer.h"
 
+#include "Quad.h"
+
 #include <vector>
 
 class AppWindow : public Window
@@ -20,6 +22,9 @@ public:
 	virtual void onCreate() override;
 	virtual void onUpdate() override;
 	virtual void onDestroy() override;
+
+private:
+	void updateQuadPosition();
 
 private:
 	SwapChain* m_swap_chain;
@@ -38,5 +43,17 @@ private:
 	Primitive* rb_Tri;
 	Primitive* gr_Rect;
 
+	Quad* m_quad;
+
+	float ticks = 0;
+
 	constant cb_value;
+
+	long m_old_delta;
+	long m_new_delta;
+	float m_delta_time;
+
+	float m_delta_pos;
+	float m_delta_scale;
+	float m_delta_rot;
 };
