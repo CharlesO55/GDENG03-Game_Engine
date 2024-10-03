@@ -1,10 +1,8 @@
 ﻿  AppWindow.cpp
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(58,47): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(64,47): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(72,56): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(72,51): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(77,38): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(77,33): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(103,32): warning C4244: '=': conversion from 'ULONGLONG' to 'long', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(124,30): warning C4244: '=': conversion from 'ULONGLONG' to 'float', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(87,68): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(87,63): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(94,47): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(99,46): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(141,32): warning C4244: '=': conversion from 'ULONGLONG' to 'long', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(171,30): warning C4244: '=': conversion from 'ULONGLONG' to 'float', possible loss of data
   DirectXTutorial.vcxproj -> C:\Users\cmath\source\repos\DirectXTutorial\x64\Debug\DirectXTutorial.exe

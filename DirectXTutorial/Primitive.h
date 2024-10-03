@@ -15,6 +15,12 @@ protected:
 	constant m_cc;
 	ConstantBuffer* m_cb = nullptr;
 
+	Matrix4 m_transform;
+
+	Primitive* m_child = nullptr;
+	bool m_keepTransform = false;
+
+
 public:
 	Primitive();
 	Primitive(vertex* vertices);
@@ -22,8 +28,12 @@ public:
 	void createConstantBuffer(RECT rc);
 	~Primitive();
 
+	void addChild(Primitive* child, bool keepTransform);
 	void transform(Vector3D translate, Vector3D scale, Vector3D rotate);
 
+	Primitive* getChild();
+
 public:
-	void draw(VertexShader* vs, PixelShader* ps);
+	void draw(VertexShader* vs, PixelShader* ps, constant* global_cc = nullptr);
+	void drawChildren(VertexShader* vs, PixelShader* ps);
 };

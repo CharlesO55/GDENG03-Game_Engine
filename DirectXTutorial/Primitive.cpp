@@ -3,10 +3,13 @@
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
 
-Primitive::Primitive() {}
+Primitive::Primitive() {
+	m_transform.setIdentity();
+}
 
 Primitive::Primitive(vertex* vertices) : m_vertexList(vertices)
 {
+	m_transform.setIdentity();
 }
 
 
@@ -41,39 +44,61 @@ void Primitive::createConstantBuffer(RECT rc)
 	m_cb->load(&m_cc, sizeof(constant));
 }
 
+void Primitive::addChild(Primitive* child, bool keepTransform)
+{
+	this->m_child = child;
+	this->m_keepTransform = keepTransform;
+}
+
 void Primitive::transform(Vector3D translate, Vector3D scale, Vector3D rotate)
 {
 	// SCALE
-	m_cc.m_world.setIdentity();
-	m_cc.m_world.setScale(scale);
+	m_transform.setIdentity();
+	m_transform.setScale(scale);
 
+	
 	// ROTATE
 	Matrix4 transformations;
 	transformations.setIdentity();
 	transformations.setRotationZ(rotate.z);
-	m_cc.m_world *= transformations;
+	m_transform *= transformations;
 
 	transformations.setIdentity();
 	transformations.setRotationY(rotate.y);
-	m_cc.m_world *= transformations;
+	m_transform *= transformations;
+
 
 	transformations.setIdentity();
 	transformations.setRotationX(rotate.x);
-	m_cc.m_world *= transformations;
+	m_transform *= transformations;
 
 	// TRANSLATE
 	transformations.setIdentity();
 	transformations.setTranslation(translate);
-	m_cc.m_world *= transformations;
+	m_transform *= transformations;
 
-	
+	m_cc.m_world = m_transform;
 
 	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
 }
 
-
-void Primitive::draw(VertexShader* vs, PixelShader* ps)
+Primitive* Primitive::getChild()
 {
+	return this->m_child;
+}
+
+
+void Primitive::draw(VertexShader* vs, PixelShader* ps, constant* global_cc)
+{
+	if (global_cc != nullptr && !m_keepTransform) {
+		m_cc.m_world = m_transform;
+		m_cc.m_world *= global_cc->m_world;
+
+		
+		m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
+	}
+
+
 	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vs, m_cb);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(ps, m_cb);
 
@@ -82,4 +107,26 @@ void Primitive::draw(VertexShader* vs, PixelShader* ps)
 	
 	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleList(m_vb->getSizeVertexList(), 0);
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(this->m_vb->getSizeVertexList(), 0);
+}
+
+void Primitive::drawChildren(VertexShader* vs, PixelShader* ps)
+{
+	if (m_child == nullptr) {
+		return;
+	}
+
+	m_child->draw(vs, ps, &m_cc);
+
+	if (m_child->m_child != nullptr)
+		m_child->drawChildren(vs, ps);
+	/*constant cc = m_cc;
+
+	Primitive* child = m_child;
+	child->draw(vs, ps, &cc);*/
+
+	/*while (child != nullptr) {
+		cc.m_world = child->m_cc.m_world;
+		child->draw(vs, ps, &cc);
+		child = child->m_child;
+	}*/
 }

@@ -26,7 +26,7 @@ public:
 private:
 	void createObjects(void* shader_byte_code, size_t size_shader, RECT rc);
 	void updateQuadPosition();
-	
+	Quad* createNewSquare(Quad* original);
 
 private:
 	SwapChain* m_swap_chain;
@@ -37,6 +37,10 @@ private:
 	
 	ConstantBuffer* m_cb;
 
+	Quad* createParentAndChild(void* shader_byte_code, size_t size_shader, RECT rc);
+
+	void* v_shader_byte_code = nullptr;
+	size_t v_size_shader = 0;
 
 
 	long m_old_delta;
@@ -46,4 +50,6 @@ private:
 	float m_delta_pos;
 	float m_delta_scale;
 	float m_delta_rot;
+
+	float ticks = 0;
 };

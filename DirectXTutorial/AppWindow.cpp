@@ -45,38 +45,65 @@ void AppWindow::onCreate()
 	m_cb->load(&cc, sizeof(constant));
 }
 
+
+
+
 void AppWindow::createObjects(void* shader_byte_code, size_t size_shader, RECT rc) {
 	// ALTER THE VERTEX struct and VERTEXBUFFER AS WELL IF CONTENTS CHANGE
 	vertex triangle_list[] = {
-		{Vector3D(-1.f, -1.f, 0.0f),	Vector3D(1,0,0),	Vector3D(1,0,0)},
+		{Vector3D(-1.f, -1.f, 0.0f),	Vector3D(0,1,0),	Vector3D(0,1,0)},
 		{Vector3D(-0.5f, 0.f, 0.0f),	Vector3D(0,1,0),	Vector3D(0,1,0)},
-		{Vector3D(0.f, -1.f, 0.0f),		Vector3D(0,0,1),	Vector3D(0,0,1)}
+		{Vector3D(0.f, -1.f, 0.0f),		Vector3D(0,1,0),	Vector3D(0,1,0)}
 	};
 	
-
+	/*
 	Primitive* rb_Tri = new Primitive(triangle_list);
 	rb_Tri->createVertexBuffer(shader_byte_code, size_shader, 3);
 	rb_Tri->createConstantBuffer(rc);
-	m_objects.push_back(rb_Tri);
+	m_objects.push_back(rb_Tri);*/
 
-	// [1] SQUARE
-	Quad* square = new Quad();
-	square->createVertexBuffer(shader_byte_code, size_shader);
-	square->createConstantBuffer(rc);
-	square->transform(Vector3D(0, 0, 0), Vector3D(0.5, 0.5, 1), Vector3D(0, 0, 0));
-	m_objects.push_back(square);
-	
-	// [2] TALL RECT AT RIGHT
-	// COPIES ONLY THE VERTEX BUFFER. NEW CONSTANT BUFFER IS CREATED
-	Quad* tall_rect = new Quad(*square, rc);
-	tall_rect->transform(Vector3D(1, 0, 0), Vector3D(0.1, 1.3, 1), Vector3D(0, 0, 0));
-	m_objects.push_back(tall_rect);
 
-	// [3] TILTED RECT AT UPPER LEFT
-	Quad* tilt_rect = new Quad(*square, rc);
-	tilt_rect->transform(Vector3D(-0.8, 0.4, 0), Vector3D(0.5, 1, 1), Vector3D(0, 0, 40));
-	m_objects.push_back(tilt_rect);
+	/* 
+	* [1] Creates a parent and child.
+	* [2] Attaches child to parent.
+	* [3] Function returns the parent.
+	* [Optional] We can transform the parent and the child will follow.
+	* [Optional] We can transform the child and the parent will not be affected.
+	* [4] Add ONLY the parent to the objects list.
+	*/
+	Quad* tilted = createParentAndChild(shader_byte_code, size_shader, rc);
+	tilted->transform(Vector3D(-0.5, 0.5, 0), Vector3D(0.5, 0.5, 1), Vector3D(0, 0, 45));
+	m_objects.push_back(tilted);
+
+	Quad* normal = createParentAndChild(shader_byte_code, size_shader, rc);
+	normal->transform(Vector3D(0.5, 0.5, 0), Vector3D(0.5, 0.5, 1), Vector3D(0, 0, 0));
+	m_objects.push_back(normal);
+
+	Quad* strecthed = createParentAndChild(shader_byte_code, size_shader, rc);
+	strecthed->transform(Vector3D(0, -0.5, 0), Vector3D(2, 0.5, 1), Vector3D(0, 0, 0));
+	m_objects.push_back(strecthed);
+
+	// OVERRIDE CHILD TRANSFORMS SAMPLE
+	strecthed->getChild()->transform(Vector3D(0, 0, 0), Vector3D(0.1, 0.1, 1), Vector3D(0, 0, 0));
 }
+
+
+Quad* AppWindow::createParentAndChild(void* shader_byte_code, size_t size_shader, RECT rc)
+{
+	Quad* parent = new Quad();
+	parent->createVertexBuffer(shader_byte_code, size_shader);
+	parent->createConstantBuffer(rc);
+	parent->transform(Vector3D(0, -0.5f, 0), Vector3D(2, 0.5, 1), Vector3D(0, 0, 0));
+
+	Quad* child = new Quad(Vector3D(1, 0, 0));
+	child->createVertexBuffer(shader_byte_code, size_shader);
+	child->createConstantBuffer(rc);
+	child->transform(Vector3D(0, 0, 0), Vector3D(1, 1, 1), Vector3D(0, 0, 45));
+	parent->addChild(child, true);
+
+	return parent;
+}
+
 
 void AppWindow::onUpdate()
 {
@@ -91,9 +118,20 @@ void AppWindow::onUpdate()
 
 	//updateQuadPosition();
 
+	//ticks++;
+	//if (ticks > 10) {
+	//	ticks = 0;
+
+	//	Quad* newSquare = createNewSquare(createNewSquare((Quad*)m_objects[1]));
+	//	m_objects[1]->addChild(newSquare, true);
+
+	//	//m_objects[1]->addChild(createNewSquare((Quad*)m_objects[1]), true);
+	//}
+
 
 	for (int i = 0; i < m_objects.size(); i++) {
 		this->m_objects[i]->draw(m_vs, m_ps);
+		this->m_objects[i]->drawChildren(m_vs, m_ps);
 	}
 
 	m_swap_chain->present(false);
@@ -103,6 +141,15 @@ void AppWindow::onUpdate()
 	m_new_delta = ::GetTickCount64();
 	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0;
 }
+
+Quad* AppWindow::createNewSquare(Quad *original) {
+	RECT rc = this->getClientWindowRect();
+	Quad* newQuad = new Quad(*original, rc);
+
+	return newQuad;
+}
+
+
 
 void AppWindow::onDestroy()
 {
