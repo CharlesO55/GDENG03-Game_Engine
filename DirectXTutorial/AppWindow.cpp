@@ -52,18 +52,43 @@ void AppWindow::onCreate()
 
 void AppWindow::createObjects(void* shader_byte_code, size_t size_shader, RECT rc) {
 	// ALTER THE VERTEX struct and VERTEXBUFFER AS WELL IF CONTENTS CHANGE
-	vertex triangle_list[] = {
+	/*vertex triangle_list[] = {
 		{Vector3D(-1.f, -1.f, 0.0f),	Vector3D(0,1,0),	Vector3D(0,1,0)},
 		{Vector3D(-0.5f, 0.f, 0.0f),	Vector3D(0,1,0),	Vector3D(0,1,0)},
 		{Vector3D(0.f, -1.f, 0.0f),		Vector3D(0,1,0),	Vector3D(0,1,0)}
-	};
+	};*/
 	
-	
-	Primitive* rb_Tri = new Primitive(triangle_list);
-	rb_Tri->createVertexBuffer(shader_byte_code, size_shader, 3);
-	rb_Tri->createConstantBuffer(rc);
-	m_objects.push_back(rb_Tri);
 
+
+	vertex quad_list[] = {
+		//	POS0	,	POS1	,	COLOR0	,	COLOR1
+		{ Vector3D(-0.1f, -0.1f, 0.0f)	, Vector3D(-0.5f, -0.5f, 0.0f)	,	Vector3D(0,1,0), Vector3D(0, 0, 0) }, // BL
+		{ Vector3D(0.3f,0.5f,0.0f)		, Vector3D(-0.9f,0.f,0.0f)		,   Vector3D(1,1,0), Vector3D(1,1,0) },		// TL
+		{ Vector3D(0.8f,-.5f,0.0f)		, Vector3D(0.5f,-0.5f,0.0f)		,   Vector3D(1,0,0),  Vector3D(0,0,1) },	// BR
+		{ Vector3D(0.99f,0.4f,0.0f)		, Vector3D(0.2f,0.1f,0.0f)		,   Vector3D(0,0,1), Vector3D(1,1,1) }		// TR
+	};
+
+	// Create a new Primitive since the current Quad removed animations
+	Primitive* animateRect = new Primitive(quad_list);
+	animateRect->createVertexBuffer(shader_byte_code, size_shader, 4);
+	animateRect->createConstantBuffer(rc);
+	animateRect->transform(Vector3D(0.5f,.5f, 0), Vector3D(0.5f,.5f,.5f), Vector3D(0,0,0));
+	m_objects.push_back(animateRect);
+
+	
+	vertex folding_rect[] = {
+		//	POS0	,	POS1	,	COLOR0	,	COLOR1
+		{ Vector3D(-0.1f, -0.1f, 0.0f)	, Vector3D(-0.5f, -0.5f, 0.0f)	,	Vector3D(1,1,0), Vector3D(0, 1, 1) }, // BL
+		{ Vector3D(0.3f,0.5f,0.0f)		, Vector3D(-0.9f,0.f,0.0f)		,   Vector3D(1,1,1), Vector3D(1,0,0) },		// TL
+		{ Vector3D(0.8f,-.5f,0.0f)		, Vector3D(0.5f,-0.5f,0.0f)		,   Vector3D(1,0,0),  Vector3D(0,0,1) },	// BR
+		{ Vector3D(0.99f,0.4f,0.0f)		, Vector3D(-0.5f, -0.5f,0.0f)		,   Vector3D(0,0,0), Vector3D(1,0,1) }		// TR
+	};
+
+	Primitive* foldingRect = new Primitive(folding_rect);
+	foldingRect->createVertexBuffer(shader_byte_code, size_shader, 4);
+	foldingRect->createConstantBuffer(rc);
+	foldingRect->transform(Vector3D(-0.5f, -.5f, 0), Vector3D(0.5f, .5f, .5f), Vector3D(0, 0, 0));
+	m_objects.push_back(foldingRect);
 
 	/*
 	* [1] Creates a parent and child.
@@ -160,7 +185,7 @@ void AppWindow::onDestroy()
 }
 
 /* [DEPRECATED]
-*	Our constant buffers have been moved inside Primitive classes for transform passing.
+*	Our constant buffers have been moved inside Primitive classes for passing transform updates.
 *	Use this buffer only for passing global cc data.
 */
 void AppWindow::updateQuadPosition()

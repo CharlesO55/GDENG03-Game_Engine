@@ -21,6 +21,10 @@ protected:
 	bool m_keepTransform = false;
 
 
+	float updateSpeed = 1;
+	float updateDir = 1;
+	float totalTime = 0;
+
 public:
 	Primitive();
 	Primitive(vertex* vertices);

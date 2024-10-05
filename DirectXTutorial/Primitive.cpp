@@ -90,9 +90,18 @@ Primitive* Primitive::getChild()
 
 void Primitive::update(double deltaTime)
 {
-	//std::cout << deltaTime;
+	if (updateDir == 1 && updateSpeed > 10) {
+		updateDir = -1;
+	}
+	else if (updateDir == -1 && updateSpeed < 0) {
+		updateDir = 1;
+	}
+	updateSpeed += updateDir * deltaTime;
 
+	totalTime += deltaTime * updateSpeed * updateDir;
 
+	m_cc.m_time = (sin(totalTime) + 1) / 2;
+	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
 }
 
 void Primitive::draw(VertexShader* vs, PixelShader* ps, constant* global_cc)
