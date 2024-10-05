@@ -88,6 +88,13 @@ Primitive* Primitive::getChild()
 }
 
 
+void Primitive::update(double deltaTime)
+{
+	//std::cout << deltaTime;
+
+
+}
+
 void Primitive::draw(VertexShader* vs, PixelShader* ps, constant* global_cc)
 {
 	if (global_cc != nullptr && !m_keepTransform) {
@@ -119,14 +126,4 @@ void Primitive::drawChildren(VertexShader* vs, PixelShader* ps)
 
 	if (m_child->m_child != nullptr)
 		m_child->drawChildren(vs, ps);
-	/*constant cc = m_cc;
-
-	Primitive* child = m_child;
-	child->draw(vs, ps, &cc);*/
-
-	/*while (child != nullptr) {
-		cc.m_world = child->m_cc.m_world;
-		child->draw(vs, ps, &cc);
-		child = child->m_child;
-	}*/
 }

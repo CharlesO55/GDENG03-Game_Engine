@@ -34,6 +34,7 @@ public:
 	Primitive* getChild();
 
 public:
+	void update(double deltaTime);
 	void draw(VertexShader* vs, PixelShader* ps, constant* global_cc = nullptr);
 	void drawChildren(VertexShader* vs, PixelShader* ps);
 };

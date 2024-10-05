@@ -1,8 +1,2 @@
-﻿  AppWindow.cpp
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(87,68): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(87,63): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(94,47): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(99,46): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(141,32): warning C4244: '=': conversion from 'ULONGLONG' to 'long', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(171,30): warning C4244: '=': conversion from 'ULONGLONG' to 'float', possible loss of data
+﻿  Primitive.cpp
   DirectXTutorial.vcxproj -> C:\Users\cmath\source\repos\DirectXTutorial\x64\Debug\DirectXTutorial.exe

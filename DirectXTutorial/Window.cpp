@@ -1,6 +1,9 @@
 #include "Window.h"
 
+#include "EngineTime.h"
 // Window* window = nullptr;
+
+
 
 Window::Window()
 {
@@ -85,6 +88,7 @@ bool Window::init()
 
 bool Window::broadcast()
 {
+    EngineTime::LogFrameStart();
     MSG msg;
 
     this->onUpdate();
@@ -95,7 +99,8 @@ bool Window::broadcast()
     }
 
 
-    Sleep(0);
+    Sleep(1);
+    EngineTime::LogFrameEnd();
 
     return true;
 }
@@ -126,6 +131,11 @@ RECT Window::getClientWindowRect()
 void Window::setHWND(HWND hwnd)
 {
     this->m_hwnd = hwnd;
+}
+
+void Window::onCreate()
+{
+    EngineTime::initialize();
 }
 
 void Window::onDestroy()

@@ -14,8 +14,8 @@ public:
 	RECT getClientWindowRect();
 	void setHWND(HWND hwnd);
 
-	virtual void onCreate()=0;
-	virtual void onUpdate()=0;
+	virtual void onCreate();
+	virtual void onUpdate() = 0;
 	virtual void onDestroy();
 
 protected:

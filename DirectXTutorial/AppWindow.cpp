@@ -1,6 +1,7 @@
 #include "AppWindow.h"
 
 #include "VertexData.h"
+#include "EngineTime.h"
 
 AppWindow::AppWindow()
 { 
@@ -12,7 +13,8 @@ AppWindow::~AppWindow()
 
 void AppWindow::onCreate()
 {
-	//virtual func //Window::onCreate();
+	Window::onCreate();
+	
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 	
@@ -56,21 +58,21 @@ void AppWindow::createObjects(void* shader_byte_code, size_t size_shader, RECT r
 		{Vector3D(0.f, -1.f, 0.0f),		Vector3D(0,1,0),	Vector3D(0,1,0)}
 	};
 	
-	/*
+	
 	Primitive* rb_Tri = new Primitive(triangle_list);
 	rb_Tri->createVertexBuffer(shader_byte_code, size_shader, 3);
 	rb_Tri->createConstantBuffer(rc);
-	m_objects.push_back(rb_Tri);*/
+	m_objects.push_back(rb_Tri);
 
 
-	/* 
+	/*
 	* [1] Creates a parent and child.
 	* [2] Attaches child to parent.
 	* [3] Function returns the parent.
 	* [Optional] We can transform the parent and the child will follow.
 	* [Optional] We can transform the child and the parent will not be affected.
 	* [4] Add ONLY the parent to the objects list.
-	*/
+	*
 	Quad* tilted = createParentAndChild(shader_byte_code, size_shader, rc);
 	tilted->transform(Vector3D(-0.5, 0.5, 0), Vector3D(0.5, 0.5, 1), Vector3D(0, 0, 45));
 	m_objects.push_back(tilted);
@@ -84,7 +86,7 @@ void AppWindow::createObjects(void* shader_byte_code, size_t size_shader, RECT r
 	m_objects.push_back(strecthed);
 
 	// OVERRIDE CHILD TRANSFORMS SAMPLE
-	strecthed->getChild()->transform(Vector3D(0, 0, 0), Vector3D(0.1, 0.1, 1), Vector3D(0, 0, 0));
+	strecthed->getChild()->transform(Vector3D(0, 0, 0), Vector3D(0.1, 0.1, 1), Vector3D(0, 0, 0));*/
 }
 
 
@@ -93,12 +95,12 @@ Quad* AppWindow::createParentAndChild(void* shader_byte_code, size_t size_shader
 	Quad* parent = new Quad();
 	parent->createVertexBuffer(shader_byte_code, size_shader);
 	parent->createConstantBuffer(rc);
-	parent->transform(Vector3D(0, -0.5f, 0), Vector3D(2, 0.5, 1), Vector3D(0, 0, 0));
+	parent->transform(Vector3D(0, -0.5f, 0), Vector3D(2, 0.5, 1), Vector3D(0, 0, 0)); 
 
-	Quad* child = new Quad(Vector3D(1, 0, 0));
+	Quad* child = new Quad(Vector3D(1, 0, 0));	//color red child
 	child->createVertexBuffer(shader_byte_code, size_shader);
 	child->createConstantBuffer(rc);
-	child->transform(Vector3D(0, 0, 0), Vector3D(1, 1, 1), Vector3D(0, 0, 45));
+	child->transform(Vector3D(0, 0, 0), Vector3D(1, 1, 1), Vector3D(0, 0, 45)); //tilt child transform to be distinguishable
 	parent->addChild(child, true);
 
 	return parent;
@@ -118,18 +120,10 @@ void AppWindow::onUpdate()
 
 	//updateQuadPosition();
 
-	//ticks++;
-	//if (ticks > 10) {
-	//	ticks = 0;
-
-	//	Quad* newSquare = createNewSquare(createNewSquare((Quad*)m_objects[1]));
-	//	m_objects[1]->addChild(newSquare, true);
-
-	//	//m_objects[1]->addChild(createNewSquare((Quad*)m_objects[1]), true);
-	//}
-
-
+	double deltaTime = EngineTime::getDeltaTime();
 	for (int i = 0; i < m_objects.size(); i++) {
+		this->m_objects[i]->update(deltaTime);
+		//Ignore updating children for now...
 		this->m_objects[i]->draw(m_vs, m_ps);
 		this->m_objects[i]->drawChildren(m_vs, m_ps);
 	}
@@ -165,6 +159,10 @@ void AppWindow::onDestroy()
 	GraphicsEngine::get()->release();
 }
 
+/* [DEPRECATED]
+*	Our constant buffers have been moved inside Primitive classes for transform passing.
+*	Use this buffer only for passing global cc data.
+*/
 void AppWindow::updateQuadPosition()
 {
 	constant cc;
