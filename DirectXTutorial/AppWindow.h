@@ -9,11 +9,13 @@
 #include "Primitive.h"
 #include "ConstantBuffer.h"
 
+#include "InputListener.h"
+
 #include "Quad.h"
 
 #include <vector>
 
-class AppWindow : public Window
+class AppWindow : public Window, public InputListener
 {
 public:
 	AppWindow();
@@ -59,4 +61,11 @@ private:
 
 	Primitive* testTriangle;
 	Quad* testQuad;
+
+	// Inherited via InputListener
+	void onKeyDown(int key) override;
+	void onKeyUp(int key) override;
+
+	float rotX = 0;
+	float rotY = 0;
 };

@@ -4,12 +4,11 @@
 #include "Matrix4.h"
 #include "EngineTime.h"
 #include "VertexData.h"
+#include "InputSystem.h"
 
 
-
-AppWindow::AppWindow()
-{
-}
+AppWindow::AppWindow() {}
+AppWindow::~AppWindow() {}
 
 void AppWindow::createObjects()
 {
@@ -108,15 +107,15 @@ void AppWindow::updateQuadPosition()
 	cc.m_world.setScale(Vector3D(1, 1, 1));
 
 	temp.setIdentity();
-	temp.setRotationZ(m_delta_scale);
+	temp.setRotationZ(0);
 	cc.m_world *= temp;
 
 	temp.setIdentity();
-	temp.setRotationY(m_delta_scale);
+	temp.setRotationY(rotY);
 	cc.m_world *= temp;
 
 	temp.setIdentity();
-	temp.setRotationX(m_delta_scale);
+	temp.setRotationX(rotX);
 	cc.m_world *= temp;
 
 
@@ -138,14 +137,38 @@ Quad* AppWindow::createParentAndChild(void* shader_byte_code, size_t size_shader
 	return nullptr;
 }
 
-
-AppWindow::~AppWindow()
+void AppWindow::onKeyDown(int key)
 {
+	switch (key) {
+		case 'W':
+			rotX -= EngineTime::getDeltaTime();
+			break;
+		case 'S':
+			rotX += EngineTime::getDeltaTime();
+			break;
+		case 'A':
+			rotY -= EngineTime::getDeltaTime();
+			break;
+		case 'D':
+			rotY += EngineTime::getDeltaTime();
+			break;
+	}
 }
+
+void AppWindow::onKeyUp(int key)
+{
+	std::cout << "Released: " << char(key) << std::endl;
+}
+
+
 
 void AppWindow::onCreate()
 {
 	Window::onCreate();
+
+
+	InputSystem::get()->addListener(this);
+
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 
@@ -172,6 +195,10 @@ void AppWindow::onCreate()
 void AppWindow::onUpdate()
 {
 	Window::onUpdate();
+
+	InputSystem::get()->update();
+
+
 	//CLEAR THE RENDER TARGET 
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
 		0, 0.3f, 0.4f, 1);
