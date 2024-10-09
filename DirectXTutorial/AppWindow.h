@@ -63,9 +63,19 @@ private:
 	Quad* testQuad;
 
 	// Inherited via InputListener
-	void onKeyDown(int key) override;
-	void onKeyUp(int key) override;
+	virtual void onKeyDown(int key) override;
+	virtual void onKeyUp(int key) override;
 
+	virtual void onMouseMove(const Point& delta_mouse_pos) override;
+	virtual void onLeftMouseDown(const Point& mouse_pos) override;
+	virtual void onLeftMouseUp(const Point& mouse_pos) override;
+	virtual void onRightMouseDown(const Point& mouse_pos) override;
+	virtual void onRightMouseUp(const Point& mouse_pos) override;
+
+	virtual void onFocus() override;
+	virtual void onKillFocus() override;
+
+	float scaleCube = 1;
 	float rotX = 0;
 	float rotY = 0;
 };
