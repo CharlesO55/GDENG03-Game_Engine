@@ -138,6 +138,10 @@ void Window::onCreate()
     EngineTime::initialize();
 }
 
+void Window::onUpdate()
+{
+}
+
 void Window::onDestroy()
 {
     m_is_run = false;

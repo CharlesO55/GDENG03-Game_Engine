@@ -1,8 +1,5 @@
 ﻿  AppWindow.cpp
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(73,52): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(88,52): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(121,47): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(126,46): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(160,32): warning C4244: '=': conversion from 'ULONGLONG' to 'long', possible loss of data
-C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(194,30): warning C4244: '=': conversion from 'ULONGLONG' to 'float', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(76,49): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(87,41): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\cmath\source\repos\DirectXTutorial\DirectXTutorial\AppWindow.cpp(90,38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   DirectXTutorial.vcxproj -> C:\Users\cmath\source\repos\DirectXTutorial\x64\Debug\DirectXTutorial.exe

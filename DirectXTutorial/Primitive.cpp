@@ -16,6 +16,7 @@ Primitive::Primitive(vertex* vertices) : m_vertexList(vertices)
 Primitive::~Primitive()
 {
 	m_vb->release();
+	m_ib->release();
 	m_cb->release();
 	delete[] m_vertexList;
 	std::cout << "\nPrimitive destroyed";
@@ -25,6 +26,11 @@ void Primitive::createVertexBuffer(void* shader_byte_code, UINT size_byte_shader
 {
 	m_vb = GraphicsEngine::get()->createVertexBuffer();
 	m_vb->load(this->m_vertexList, sizeof(vertex), vertex_count, shader_byte_code, size_byte_shader);
+}
+
+void Primitive::createIndexBuffer()
+{
+	m_ib = GraphicsEngine::get()->createIndexBuffer();
 }
 
 void Primitive::createConstantBuffer(RECT rc)
@@ -106,23 +112,24 @@ void Primitive::update(double deltaTime)
 
 void Primitive::draw(VertexShader* vs, PixelShader* ps, constant* global_cc)
 {
-	if (global_cc != nullptr && !m_keepTransform) {
-		m_cc.m_world = m_transform;
-		m_cc.m_world *= global_cc->m_world;
-
-		
-		m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
-	}
-
-
 	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vs, m_cb);
 	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(ps, m_cb);
-
 
 	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(this->m_vb);
 	
 	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleList(m_vb->getSizeVertexList(), 0);
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(this->m_vb->getSizeVertexList(), 0);
+}
+
+void Primitive::startDraw(VertexShader* vs, PixelShader* ps, constant* global_cc)
+{
+	if (global_cc != nullptr && !m_keepTransform) {
+		m_cc.m_world = m_transform;
+		m_cc.m_world *= global_cc->m_world;
+
+		m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
+	}
+	draw(vs, ps, global_cc);
 }
 
 void Primitive::drawChildren(VertexShader* vs, PixelShader* ps)

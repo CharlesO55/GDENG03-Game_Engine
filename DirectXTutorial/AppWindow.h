@@ -24,25 +24,21 @@ public:
 	virtual void onDestroy() override;
 
 private:
-	void createObjects(void* shader_byte_code, size_t size_shader, RECT rc);
+	void createObjects();
 	void updateQuadPosition();
-	Quad* createNewSquare(Quad* original);
 
 private:
 	SwapChain* m_swap_chain;
-	VertexShader* m_vs;
-	PixelShader* m_ps;
-
+	
 	std::vector<Primitive*> m_objects;
 	
-	ConstantBuffer* m_cb;
 
 	Quad* createParentAndChild(void* shader_byte_code, size_t size_shader, RECT rc);
 
 	void* v_shader_byte_code = nullptr;
 	size_t v_size_shader = 0;
 
-
+private:
 	long m_old_delta;
 	long m_new_delta;
 	float m_delta_time;
@@ -52,4 +48,15 @@ private:
 	float m_delta_rot;
 
 	float ticks = 0;
+
+private:
+	// TESTING
+	VertexBuffer* m_vb;
+	IndexBuffer* m_ib;
+	ConstantBuffer* m_cb;
+	VertexShader* m_vs;
+	PixelShader* m_ps;
+
+	Primitive* testTriangle;
+	Quad* testQuad;
 };

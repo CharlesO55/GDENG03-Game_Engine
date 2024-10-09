@@ -10,6 +10,7 @@ class EngineTime
 public:
 	static void initialize();
 	static double getDeltaTime();
+	static double getTotalTime();
 
 private:
 	EngineTime();
@@ -23,6 +24,7 @@ private:
 	std::chrono::system_clock::time_point end;
 
 	double deltaTime = 0.f;
+	double totalTime = 0.f;
 
 	static void LogFrameStart();
 	static void LogFrameEnd();

@@ -3,6 +3,7 @@
 class Vector3D {
 public:
 	Vector3D() : x(0), y(0), z(0) {};
+	Vector3D(float identicalValue) : x(identicalValue), y(identicalValue), z(identicalValue) {};
 	Vector3D(float x, float y, float z) : x(x), y(y), z(z) {};
 	Vector3D(const Vector3D& vector) : x(vector.x), y(vector.y), z(vector.z) {};
 	

@@ -13,6 +13,11 @@ double EngineTime::getDeltaTime()
 	return sharedInstance->deltaTime;
 }
 
+double EngineTime::getTotalTime()
+{
+	return sharedInstance->totalTime;
+}
+
 EngineTime::EngineTime()
 {
 }
@@ -32,4 +37,7 @@ void EngineTime::LogFrameEnd()
 	std::chrono::duration<double> elpased_seconds = sharedInstance->end - sharedInstance->start;
 
 	sharedInstance->deltaTime = elpased_seconds.count();
+
+	sharedInstance->totalTime += sharedInstance->deltaTime;
+	//std::cout << sharedInstance->totalTime << std::endl;
 }
