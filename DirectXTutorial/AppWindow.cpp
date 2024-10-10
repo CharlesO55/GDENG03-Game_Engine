@@ -95,17 +95,21 @@ void AppWindow::onCreate()
 {
 	Window::onCreate();
 
+	// INPUT SYSTEM
 	InputSystem::get()->addListener(this);
 	InputSystem::get()->showCursor(false);
 
-	m_Camera = new Camera(&m_windowWidth, &m_windowHeight);
-
+	// GRAPHICS ENGINE
 	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->createSwapChain();
 
 	m_swap_chain->init(this->m_hwnd, m_windowWidth, m_windowHeight);
 
 	
+	// SCENE CAMERA
+	m_Camera = new Camera(&m_windowWidth, &m_windowHeight);
+
+
 	vertex vertex_list[] =
 	{
 		//X - Y - Z
@@ -177,6 +181,13 @@ void AppWindow::onCreate()
 	m_cb = GraphicsEngine::get()->createConstantBuffer();
 	m_cb->load(&cc, sizeof(constant));
 
+
+
+
+	m_testCube = new Cube();
+	m_testCube->initialize();
+	m_testCube->move(Vector3D(-2, 0, 0));
+	m_testCube->rotate(Vector3D(150, 0, 0));
 }
 
 void AppWindow::updateQuadPosition()
@@ -187,14 +198,14 @@ void AppWindow::updateQuadPosition()
 	cc.m_time = EngineTime::getDeltaTime();//::GetTickCount();
 
 
-	m_delta_pos += m_delta_time / 10.0f;
+	/*m_delta_pos += m_delta_time / 10.0f;
 	if (m_delta_pos > 1.0f)
-		m_delta_pos = 0;
+		m_delta_pos = 0;*/
 
 
 	Matrix4 temp;
 
-	m_delta_scale += m_delta_time / 0.55f;
+	//m_delta_scale += m_delta_time / 0.55f;
 
 	//cc.m_world.setScale(Vector3D::lerp(Vector3D(0.5, 0.5, 0), Vector3D(1.0f, 1.0f, 0), (sin(m_delta_scale) + 1.0f) / 2.0f));
 
@@ -216,14 +227,17 @@ void AppWindow::updateQuadPosition()
 	temp.setRotationX(rotX);
 	cc.m_world *= temp;
 
-	cc.m_view.setIdentity();
+	/*cc.m_view.setIdentity();
 	cc.m_proj.setOrthoLH
 	(
 		(this->getClientWindowRect().right - this->getClientWindowRect().left) / 300.0f,
 		(this->getClientWindowRect().bottom - this->getClientWindowRect().top) / 300.0f,
 		-4.0f,
 		4.0f
-	);
+	);*/
+
+	cc.m_view = m_Camera->getView();
+	cc.m_proj = m_Camera->getProj();
 
 	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &cc);
 }
@@ -239,14 +253,13 @@ void AppWindow::onUpdate()
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
 		0, 0.3f, 0.4f, 1);
 	//SET VIEWPORT OF RENDER TARGET IN WHICH WE HAVE TO DRAW
-	RECT rc = this->getClientWindowRect();
-	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
 
 
 
 	m_Camera->update();
 	update();
-	//updateQuadPosition();
+	updateQuadPosition();
 
 
 
@@ -266,6 +279,10 @@ void AppWindow::onUpdate()
 
 	// FINALLY DRAW THE TRIANGLE
 	GraphicsEngine::get()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
+
+	m_testCube->updateMatrix(m_Camera->getView(), m_Camera->getProj());
+	m_testCube->draw();
+
 	m_swap_chain->present(true);
 
 
@@ -278,6 +295,8 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
+	delete m_testCube;
+
 	m_vb->release();
 	m_ib->release();
 	m_cb->release();
@@ -301,19 +320,19 @@ void AppWindow::onKeyDown(int key)
 {
 	if (key == 'W')
 	{
-		//m_rot_x += 3.14f*m_delta_time;
+		rotX += 3.14f*m_delta_time;
 	}
 	else if (key == 'S')
 	{
-		//m_rot_x -= 3.14f*m_delta_time;
+		rotX -= 3.14f*m_delta_time;
 	}
 	else if (key == 'A')
 	{
-		//m_rot_y += 3.14f*m_delta_time;
+		rotY += 3.14f*m_delta_time;
 	}
 	else if (key == 'D')
 	{
-		//m_rot_y -= 3.14f*m_delta_time;
+		rotY -= 3.14f*m_delta_time;
 	}
 }
 

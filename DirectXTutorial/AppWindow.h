@@ -12,7 +12,7 @@
 #include "InputListener.h"
 
 #include "Camera.h"
-#include "Quad.h"
+#include "Cube.h"
 
 #include <vector>
 
@@ -37,7 +37,7 @@ private:
 	std::vector<Primitive*> m_objects;
 	
 
-	Quad* createParentAndChild(void* shader_byte_code, size_t size_shader, RECT rc);
+	//Quad* createParentAndChild(void* shader_byte_code, size_t size_shader, RECT rc);
 
 	void* v_shader_byte_code = nullptr;
 	size_t v_size_shader = 0;
@@ -62,9 +62,11 @@ private:
 	PixelShader* m_ps;
 
 	Primitive* testTriangle;
-	Quad* testQuad;
+	//Quad* testQuad;
 
 	Camera* m_Camera;
+
+	Cube* m_testCube;
 
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
