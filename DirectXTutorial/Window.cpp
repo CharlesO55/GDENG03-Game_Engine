@@ -150,10 +150,13 @@ void Window::setHWND(HWND hwnd)
 void Window::onCreate()
 {
     EngineTime::initialize();
+
+    CalcWindowRect();
 }
 
 void Window::onUpdate()
 {
+    CalcWindowRect();
 }
 
 void Window::onDestroy()
@@ -169,4 +172,8 @@ void Window::onKillFocus()
 {
 }
 
-
+void Window::CalcWindowRect()
+{
+    m_windowWidth = (this->getClientWindowRect().right - this->getClientWindowRect().left);
+    m_windowHeight = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
+}

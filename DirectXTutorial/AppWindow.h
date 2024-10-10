@@ -11,6 +11,7 @@
 
 #include "InputListener.h"
 
+#include "Camera.h"
 #include "Quad.h"
 
 #include <vector>
@@ -27,6 +28,7 @@ public:
 
 private:
 	void createObjects();
+	void update();
 	void updateQuadPosition();
 
 private:
@@ -62,11 +64,13 @@ private:
 	Primitive* testTriangle;
 	Quad* testQuad;
 
+	Camera* m_Camera;
+
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
 	virtual void onKeyUp(int key) override;
 
-	virtual void onMouseMove(const Point& delta_mouse_pos) override;
+	virtual void onMouseMove(const Point& mouse_pos) override;
 	virtual void onLeftMouseDown(const Point& mouse_pos) override;
 	virtual void onLeftMouseUp(const Point& mouse_pos) override;
 	virtual void onRightMouseDown(const Point& mouse_pos) override;

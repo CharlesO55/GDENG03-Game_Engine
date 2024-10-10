@@ -21,8 +21,13 @@ public:
 	virtual void onFocus();
 	virtual void onKillFocus();
 
+	void CalcWindowRect();
+
 protected:
 	HWND m_hwnd;
+
+	int m_windowWidth, m_windowHeight;
+
 	bool m_is_run;
 };
 
