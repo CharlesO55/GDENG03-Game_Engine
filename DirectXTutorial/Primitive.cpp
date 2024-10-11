@@ -2,144 +2,127 @@
 
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
-
-Primitive::Primitive() {
-	m_transform.setIdentity();
-}
-
-Primitive::Primitive(vertex* vertices) : m_vertexList(vertices)
-{
-	m_transform.setIdentity();
-}
-
+Primitive::Primitive(){}
 
 Primitive::~Primitive()
 {
-	m_vb->release();
-	m_ib->release();
-	m_cb->release();
-	delete[] m_vertexList;
-	std::cout << "\nPrimitive destroyed";
+	release();
+	std::cout << "\nDestroyed Shape";
 }
 
-void Primitive::createVertexBuffer(void* shader_byte_code, UINT size_byte_shader, UINT vertex_count)
+void Primitive::initialize()
 {
 	m_vb = GraphicsEngine::get()->createVertexBuffer();
-	m_vb->load(this->m_vertexList, sizeof(vertex), vertex_count, shader_byte_code, size_byte_shader);
-}
 
-void Primitive::createIndexBuffer()
-{
+	// INDEX BUFFER
 	m_ib = GraphicsEngine::get()->createIndexBuffer();
-}
+	m_ib->load(std::data(m_indices), m_indices.size());
 
-void Primitive::createConstantBuffer(RECT rc)
-{
+
+	void* shader_byte_code = nullptr;
+	size_t size_shader = 0;
+
+
+	// VERTEX SHADER & BUFFER
+	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
+	m_vb->load(std::data(m_verts), sizeof(vertex), m_verts.size(), shader_byte_code, size_shader);
+	GraphicsEngine::get()->releaseCompiledShader();
+
+	// PIXEL SHADER
+	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
+	GraphicsEngine::get()->releaseCompiledShader();
+
+	// CONSTANT & CONSTANT BUFFER
 	m_cc.m_time = 0;
-	m_cc.m_world.setIdentity();
-	m_cc.m_view.setIdentity();
-	m_cc.m_proj.setOrthoLH
-	(
-		(rc.right - rc.left) / 400.0f,
-		(rc.bottom - rc.top) / 400.0f,
-		-4.0f,
-		4.0f
-	);
 
 	m_cb = GraphicsEngine::get()->createConstantBuffer();
 	m_cb->load(&m_cc, sizeof(constant));
 }
 
-void Primitive::addChild(Primitive* child, bool keepTransform)
+void Primitive::updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* worldOverride)
 {
-	this->m_child = child;
-	this->m_keepTransform = keepTransform;
-}
+	Matrix4 temp;
 
-void Primitive::transform(Vector3D translate, Vector3D scale, Vector3D rotate)
-{
-	// SCALE
-	m_transform.setIdentity();
-	m_transform.setScale(scale);
+	m_cc.m_world.setIdentity();
+	m_cc.m_world.setScale(m_scale);
 
-	
-	// ROTATE
-	Matrix4 transformations;
-	transformations.setIdentity();
-	transformations.setRotationZ(rotate.z);
-	m_transform *= transformations;
+	temp.setIdentity();
+	temp.setRotationZ(m_rot.z);
+	m_cc.m_world *= temp;
 
-	transformations.setIdentity();
-	transformations.setRotationY(rotate.y);
-	m_transform *= transformations;
+	temp.setIdentity();
+	temp.setRotationY(m_rot.y);
+	m_cc.m_world *= temp;
 
+	temp.setIdentity();
+	temp.setRotationX(m_rot.x);
+	m_cc.m_world *= temp;
 
-	transformations.setIdentity();
-	transformations.setRotationX(rotate.x);
-	m_transform *= transformations;
+	temp.setIdentity();
+	temp.setTranslation(m_pos);
+	m_cc.m_world *= temp;
+	// Calc local transforms... ^
 
-	// TRANSLATE
-	transformations.setIdentity();
-	transformations.setTranslation(translate);
-	m_transform *= transformations;
+	// Apply parent transform
+	if (worldOverride != nullptr) {
+		m_cc.m_world *= *worldOverride;
+	}
 
-	m_cc.m_world = m_transform;
+	// UPDATES FROM CAMERA MATRICES
+	m_cc.m_view = cameraView;
+	m_cc.m_proj = cameraProj;
 
 	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
+
+	// Recursive call for child to apply my transform as its parent.
+	if (this->m_child != nullptr)
+		((Primitive*)m_child)->updateMatrix(cameraView, cameraProj, &m_cc.m_world);
 }
 
-Primitive* Primitive::getChild()
+void Primitive::draw()
 {
-	return this->m_child;
-}
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
 
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(m_vs);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
 
-void Primitive::update(double deltaTime)
-{
-	if (updateDir == 1 && updateSpeed > 10) {
-		updateDir = -1;
+	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
+	GraphicsEngine::get()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
+
+	GraphicsEngine::get()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
+
+	// Recursive call to draw children
+	if (m_child != nullptr) {
+		((Primitive*)m_child)->draw();
 	}
-	else if (updateDir == -1 && updateSpeed < 0) {
-		updateDir = 1;
-	}
-	updateSpeed += updateDir * deltaTime;
-
-	totalTime += deltaTime * updateSpeed * updateDir;
-
-	m_cc.m_time = (sin(totalTime) + 1) / 2;
-	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
 }
 
-void Primitive::draw(VertexShader* vs, PixelShader* ps, constant* global_cc)
-{
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(vs, m_cb);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(ps, m_cb);
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(this->m_vb);
-	
-	//GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleList(m_vb->getSizeVertexList(), 0);
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawTriangleStrip(this->m_vb->getSizeVertexList(), 0);
+void Primitive::release()
+{
+	m_vb->release();
+	m_ib->release();
+	m_cb->release();
+	m_vs->release();
+	m_ps->release();
+
+	m_verts.clear();
 }
 
-void Primitive::startDraw(VertexShader* vs, PixelShader* ps, constant* global_cc)
+void Primitive::scale(Vector3D deltaScale)
 {
-	if (global_cc != nullptr && !m_keepTransform) {
-		m_cc.m_world = m_transform;
-		m_cc.m_world *= global_cc->m_world;
-
-		m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
-	}
-	draw(vs, ps, global_cc);
+	m_scale = m_scale + deltaScale;
 }
 
-void Primitive::drawChildren(VertexShader* vs, PixelShader* ps)
+void Primitive::rotate(Vector3D deltaRot)
 {
-	if (m_child == nullptr) {
-		return;
-	}
+	m_rot = m_rot + deltaRot;
+}
 
-	m_child->draw(vs, ps, &m_cc);
-
-	if (m_child->m_child != nullptr)
-		m_child->drawChildren(vs, ps);
+void Primitive::move(Vector3D deltaPos)
+{
+	m_pos = m_pos + deltaPos;
 }

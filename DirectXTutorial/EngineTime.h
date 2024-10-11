@@ -2,6 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
+#include <Windows.h>
 
 class Window;
 
@@ -29,6 +30,14 @@ private:
 	static void LogFrameStart();
 	static void LogFrameEnd();
 
+	static void ResetDeltaTime();
+
+
+	LARGE_INTEGER frequency;
+	LARGE_INTEGER lastTime;
+	LARGE_INTEGER currentTime;
+
+	static void tick();
 private:
 	friend class Window;
 };

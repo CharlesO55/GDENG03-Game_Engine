@@ -100,26 +100,38 @@ bool Window::init()
     return true;
 }
 
+
+
+
 bool Window::broadcast()
 {
-    EngineTime::LogFrameStart();
     MSG msg;
+    EngineTime::tick();
 
-    this->onUpdate();
+    // Update only occurs when the time matches the expecred ms per frame
+    if (EngineTime::getDeltaTime() >= timePerFrame) {
+        this->onUpdate();
 
-    while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) > 0) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        while (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) > 0) {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+        std::cout << "d: " << EngineTime::getDeltaTime() << "\tTotal " << EngineTime::getTotalTime() << std::endl;
+
+        // Updates the lastFrame to now        
+        EngineTime::LogFrameStart();
+        // Refreshes the deltaTime
+        EngineTime::ResetDeltaTime();
     }
-
-
     Sleep(1);
-    EngineTime::LogFrameEnd();
+    //EngineTime::LogFrameEnd();
 
     return true;
 }
 
 bool Window::release() {
+    std::cout << "\nReleased window";
     if (!::DestroyWindow(m_hwnd))
         return false;
     
@@ -161,6 +173,7 @@ void Window::onUpdate()
 
 void Window::onDestroy()
 {
+    std::cout << "\nDestroyed window";
     m_is_run = false;
 }
 

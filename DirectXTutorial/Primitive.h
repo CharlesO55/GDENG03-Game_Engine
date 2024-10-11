@@ -1,53 +1,49 @@
 #pragma once
-#include "VertexData.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "ConstantBuffer.h"
+#include "VertexData.h"
 
-class VertexShader;
-class PixelShader;
+#include "VertexShader.h"
+#include "PixelShader.h"
 
+#include <vector>
 
-class Primitive
+#include "SceneObject.h"
+
+class Primitive : public SceneObject
 {
-protected:
-	vertex* m_vertexList;
-	VertexBuffer* m_vb = nullptr;
-	IndexBuffer* m_ib = nullptr;
-
-	constant m_cc;
-	ConstantBuffer* m_cb = nullptr;
-
-	Matrix4 m_transform;
-
-	Primitive* m_child = nullptr;
-	bool m_keepTransform = false;
-
-
-	float updateSpeed = 1;
-	float updateDir = 1;
-	float totalTime = 0;
-
 public:
 	Primitive();
-	Primitive(vertex* vertices);
-	void createVertexBuffer(void* shader_byte_code, UINT size_byte_shader, UINT vertex_count);
-	void createIndexBuffer();
-	void createConstantBuffer(RECT rc);
 	~Primitive();
 
-	void addChild(Primitive* child, bool keepTransform);
-	void transform(Vector3D translate, Vector3D scale, Vector3D rotate);
+	void initialize();
+	virtual void update() {};
 
-	Primitive* getChild();
+	void updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* worldOverride = nullptr);
+	void draw();
+	void release();
 
-public:
-	void update(double deltaTime);
 
-	void startDraw(VertexShader* vs, PixelShader* ps, constant* global_cc = nullptr);
-	void drawChildren(VertexShader* vs, PixelShader* ps);
-
+	void scale(Vector3D deltaScale);
+	void rotate(Vector3D deltaRot);
+	void move(Vector3D deltaPos);
 
 protected:
-	virtual void draw(VertexShader* vs, PixelShader* ps, constant* global_cc);
+	PixelShader* m_ps = nullptr;
+	VertexShader* m_vs = nullptr;
+
+	VertexBuffer* m_vb = nullptr;
+	IndexBuffer* m_ib = nullptr;
+	ConstantBuffer* m_cb = nullptr;
+
+	std::vector<vertex> m_verts = {};
+	std::vector<unsigned int> m_indices = {};
+
+	constant m_cc;
+
+	// Transformations
+	Vector3D m_pos = Vector3D(0);
+	Vector3D m_rot = Vector3D(0);
+	Vector3D m_scale = Vector3D(1);
 };

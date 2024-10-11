@@ -22,5 +22,5 @@ struct constant
 	Matrix4 m_world;
 	Matrix4 m_view;
 	Matrix4 m_proj;
-	float m_time;
+	double m_time;
 };

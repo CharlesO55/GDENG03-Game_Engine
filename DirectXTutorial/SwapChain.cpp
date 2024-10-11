@@ -29,6 +29,7 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height)
 	desc.Windowed = TRUE;
 
 
+	
 	HRESULT hres = GraphicsEngine::get()->m_dxgi_factory->CreateSwapChain(device, &desc, &m_swap_chain);
 	if (FAILED(hres)) {
 		return false;

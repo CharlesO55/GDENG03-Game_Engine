@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
 
+#include "DeltaTime.h"
+
 class Window
 {
 public:
@@ -29,5 +31,6 @@ protected:
 	int m_windowWidth, m_windowHeight;
 
 	bool m_is_run;
-};
 
+	const double timePerFrame = 1 / 60.f;
+};

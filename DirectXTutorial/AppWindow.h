@@ -12,7 +12,8 @@
 #include "InputListener.h"
 
 #include "Camera.h"
-#include "Cube.h"
+
+class Primitive;
 
 #include <vector>
 
@@ -26,47 +27,22 @@ public:
 	virtual void onUpdate() override;
 	virtual void onDestroy() override;
 
-private:
-	void createObjects();
-	void update();
-	void updateQuadPosition();
 
 private:
 	SwapChain* m_swap_chain;
-	
-	std::vector<Primitive*> m_objects;
-	
+	Camera* m_Camera = nullptr;
+	std::vector<Primitive*> m_shapes = {};
 
-	//Quad* createParentAndChild(void* shader_byte_code, size_t size_shader, RECT rc);
-
-	void* v_shader_byte_code = nullptr;
-	size_t v_size_shader = 0;
-
-private:
-	long m_old_delta;
-	long m_new_delta;
-	float m_delta_time;
-
-	float m_delta_pos;
-	float m_delta_scale;
-	float m_delta_rot;
-
-	float ticks = 0;
-
-private:
 	// TESTING
-	VertexBuffer* m_vb;
-	IndexBuffer* m_ib;
-	ConstantBuffer* m_cb;
-	VertexShader* m_vs;
-	PixelShader* m_ps;
+	VertexBuffer* m_vb = nullptr;
+	IndexBuffer* m_ib = nullptr;
+	ConstantBuffer* m_cb = nullptr;
+	VertexShader* m_vs = nullptr;
+	PixelShader* m_ps = nullptr;
 
-	Primitive* testTriangle;
-	//Quad* testQuad;
 
-	Camera* m_Camera;
-
-	Cube* m_testCube;
+private:
+	void InstantiateShape();
 
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
@@ -80,8 +56,4 @@ private:
 
 	virtual void onFocus() override;
 	virtual void onKillFocus() override;
-
-	float scaleCube = 1;
-	float rotX = 0;
-	float rotY = 0;
 };

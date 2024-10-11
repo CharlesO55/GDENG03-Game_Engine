@@ -50,7 +50,14 @@ void Camera::update()
 
 	m_view = world_cam;
 
-	m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
+	m_proj.setOrthoLH
+	(
+		(*ref_windowWidth)/50,
+		(*ref_windowHeight)/50,
+		-4.0f,
+		4.0f
+	);
+	//m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
 }
 
 Matrix4 Camera::getProj()

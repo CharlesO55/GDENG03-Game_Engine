@@ -75,9 +75,6 @@
     <ClCompile Include="PixelShader.cpp">
       <Filter>GameEngine\GraphicsEngine\PixelShader</Filter>
     </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>GameEngine\GraphicsEngine\ConstantBuffer</Filter>
     </ClCompile>
@@ -99,6 +96,16 @@
     <ClCompile Include="Camera.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -127,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="VertexData.h">
       <Filter>GameEngine\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
       <Filter>GameEngine\GraphicsEngine\ConstantBuffer</Filter>
@@ -167,6 +171,16 @@
     <ClInclude Include="Camera.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>GameEngine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaTime.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
