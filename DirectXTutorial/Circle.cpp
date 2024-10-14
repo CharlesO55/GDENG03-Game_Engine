@@ -50,7 +50,7 @@ void Circle::update()
 	this->move(this->moveDir * EngineTime::getDeltaTime());
 
 	// THIS IS DONE AFTER THE updateMatrix()
-	Matrix4 screenCheck = this->m_cc.m_world;
+	Matrix4x4 screenCheck = this->m_cc.m_world;
 	screenCheck *= m_cc.m_view;
 	screenCheck *= m_cc.m_proj;
 

@@ -20,7 +20,7 @@ public:
 	void initialize();
 	virtual void update() {};
 
-	void updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* worldOverride = nullptr);
+	void updateMatrix(Matrix4x4 cameraView, Matrix4x4 cameraProj, Matrix4x4* worldOverride = nullptr);
 	void draw();
 	void release();
 
@@ -36,8 +36,11 @@ protected:
 	IndexBufferPtr m_ib = nullptr;
 	ConstantBufferPtr m_cb = nullptr;
 
-	std::vector<vertex> m_verts = {};
+	std::vector<vertexColor> m_verts = {};
 	std::vector<unsigned int> m_indices = {};
+
+	TexturePtr m_tex = nullptr;
+	
 
 	constant m_cc;
 

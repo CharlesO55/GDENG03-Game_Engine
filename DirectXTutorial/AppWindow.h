@@ -32,7 +32,14 @@ private:
 	Camera* m_Camera = nullptr;
 	std::vector<Primitive*> m_shapes = {};
 
+	
+
 	// TESTING
+	TexturePtr m_wood_tex = nullptr;
+	void testCreate();
+	void testUpdate();
+	void testDraw();
+
 	SwapChainPtr m_swap_chain;
 	VertexBufferPtr m_vb;
 	VertexShaderPtr m_vs;

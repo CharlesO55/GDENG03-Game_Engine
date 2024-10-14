@@ -2,15 +2,18 @@
 #include <d3d11.h>
 #include "Prerequisites.h"
 #include "RenderSystem.h"
+#include "TextureManager.h"
 
 class GraphicsEngine
 {
 private:
 	GraphicsEngine();
 	~GraphicsEngine();
+	static GraphicsEngine* m_engine;
 
 public:
 	RenderSystem* getRenderSystem();
+	TextureManager* getTextureManager();
 
 public:
 	static GraphicsEngine* get();
@@ -19,5 +22,5 @@ public:
 
 private:
 	RenderSystem* m_render_system = nullptr;
-	static GraphicsEngine* m_engine;
+	TextureManager* m_tex_manager = nullptr;
 };

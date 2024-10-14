@@ -100,7 +100,7 @@ bool Window::broadcast()
             DispatchMessage(&msg);
         }
 
-        std::cout << "d: " << EngineTime::getDeltaTime() << "\tTotal " << EngineTime::getTotalTime() << std::endl;
+        //std::cout << "d: " << EngineTime::getDeltaTime() << "\tTotal " << EngineTime::getTotalTime() << std::endl;
 
         // Updates the lastFrame to now        
         EngineTime::LogFrameStart();

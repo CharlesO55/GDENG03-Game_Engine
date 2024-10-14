@@ -22,5 +22,4 @@ Quad::Quad()
 Quad::~Quad()
 {
 	release();
-	std::cout << "Destroyed quad";
 }

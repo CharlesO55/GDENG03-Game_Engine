@@ -3,7 +3,7 @@
 #include "Vector3D.h"
 #include "Vector4D.h"
 
-class Matrix4
+class Matrix4x4
 {
 public:
 	void setIdentity()
@@ -72,7 +72,7 @@ public:
 	void inverse()
 	{
 		int a, i, j;
-		Matrix4 out;
+		Matrix4x4 out;
 		Vector4D v, vec[3];
 		float det = 0.0f;
 
@@ -104,9 +104,9 @@ public:
 	}
 
 
-	void operator *=(const Matrix4& matrix)
+	void operator *=(const Matrix4x4& matrix)
 	{
-		Matrix4 out;
+		Matrix4x4 out;
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 4; j++)
@@ -119,7 +119,7 @@ public:
 		setMatrix(out);
 	}
 
-	void setMatrix(const Matrix4& matrix)
+	void setMatrix(const Matrix4x4& matrix)
 	{
 		::memcpy(m_mat, matrix.m_mat, sizeof(float) * 16);
 	}

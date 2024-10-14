@@ -28,8 +28,8 @@ void Camera::setActive(bool active)
 
 void Camera::update()
 {
-	Matrix4 temp;
-	Matrix4 world_cam;
+	Matrix4x4 temp;
+	Matrix4x4 world_cam;
 	world_cam.setIdentity();
 
 	// MOUSE V ROTATION
@@ -50,24 +50,24 @@ void Camera::update()
 
 	m_view = world_cam;
 
-	m_proj.setOrthoLH
+	/*m_proj.setOrthoLH
 	(
 		(*ref_windowWidth)/50,
 		(*ref_windowHeight)/50,
 		-4.0f,
 		4.0f
-	);
-	//m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
+	);*/
+	m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
 }
 
-Matrix4 Camera::getProj()
+Matrix4x4 Camera::getProj()
 {
 	return m_proj;
 }
 
-Matrix4 Camera::getView()
+Matrix4x4 Camera::getView()
 {
-	Matrix4 inverse = m_view;
+	Matrix4x4 inverse = m_view;
 	inverse.inverse();
 	return inverse;
 }

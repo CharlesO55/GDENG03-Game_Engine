@@ -7,7 +7,6 @@ Primitive::Primitive(){}
 Primitive::~Primitive()
 {
 	release();
-	std::cout << "\nDestroyed Shape";
 }
 
 void Primitive::initialize()
@@ -16,16 +15,16 @@ void Primitive::initialize()
 	size_t size_shader = 0;
 
 	// VERTEX SHADER & BUFFER
-	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"VertexShaderColor.hlsl", "vsmain", &shader_byte_code, &size_shader);
 	m_vs = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shader_byte_code, size_shader);
-	m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(std::data(m_verts), sizeof(vertex), m_verts.size(), shader_byte_code, size_shader);
+	m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(std::data(m_verts), sizeof(vertexColor), m_verts.size(), shader_byte_code, size_shader);
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	// INDEX BUFFER
 	m_ib = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(std::data(m_indices), m_indices.size());
 
 	// PIXEL SHADER
-	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"PixelShaderColor.hlsl", "psmain", &shader_byte_code, &size_shader);
 	m_ps = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shader_byte_code, size_shader);
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
@@ -35,9 +34,9 @@ void Primitive::initialize()
 	m_cb = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&m_cc, sizeof(constant));
 }
 
-void Primitive::updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* worldOverride)
+void Primitive::updateMatrix(Matrix4x4 cameraView, Matrix4x4 cameraProj, Matrix4x4* worldOverride)
 {
-	Matrix4 temp;
+	Matrix4x4 temp;
 
 	m_cc.m_world.setIdentity();
 	m_cc.m_world.setScale(m_scale);

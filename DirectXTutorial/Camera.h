@@ -1,5 +1,5 @@
 #pragma once
-#include "Matrix4.h"
+#include "Matrix4x4.h"
 #include "InputListener.h"
 
 class Camera : public InputListener
@@ -11,13 +11,13 @@ public:
 	void setActive(bool active);
 	void update();
 
-	Matrix4 getView();
-	Matrix4 getProj();
+	Matrix4x4 getView();
+	Matrix4x4 getProj();
 
 
 private:
-	Matrix4 m_view;
-	Matrix4 m_proj;
+	Matrix4x4 m_view;
+	Matrix4x4 m_proj;
 
 
 	int* ref_windowWidth = nullptr;

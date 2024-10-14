@@ -2,6 +2,8 @@
 
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
+
+
 Cube::Cube()
 {
 	m_verts =
@@ -87,5 +89,4 @@ Cube::Cube(Vector3D color)
 Cube::~Cube()
 {
 	release();
-	std::cout << "\nDestroyed cube";
 }
