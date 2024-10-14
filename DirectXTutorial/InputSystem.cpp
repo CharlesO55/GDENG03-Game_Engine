@@ -1,9 +1,16 @@
 #include "InputSystem.h"
 #include <Windows.h>
+InputSystem* InputSystem::m_system = nullptr;
+
+InputSystem::InputSystem()
+{
+}
 
 
-InputSystem::InputSystem(){}
-InputSystem::~InputSystem(){}
+InputSystem::~InputSystem()
+{
+	InputSystem::m_system = nullptr;
+}
 
 void InputSystem::update()
 {
@@ -18,7 +25,6 @@ void InputSystem::update()
 
 	if (current_mouse_pos.x != m_old_mouse_pos.x || current_mouse_pos.y != m_old_mouse_pos.y)
 	{
-		//THERE IS MOUSE MOVE EVENT
 		std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
 
 		while (it != m_set_listeners.end())
@@ -35,7 +41,6 @@ void InputSystem::update()
 	{
 		for (unsigned int i = 0; i < 256; i++)
 		{
-			// KEY IS DOWN
 			if (m_keys_state[i] & 0x80)
 			{
 				std::unordered_set<InputListener*>::iterator it = m_set_listeners.begin();
@@ -58,7 +63,7 @@ void InputSystem::update()
 					++it;
 				}
 			}
-			else // KEY IS UP
+			else 
 			{
 				if (m_keys_state[i] != m_old_keys_state[i])
 				{
@@ -80,19 +85,18 @@ void InputSystem::update()
 			}
 
 		}
-		// store current keys state to old keys state buffer
 		::memcpy(m_old_keys_state, m_keys_state, sizeof(unsigned char) * 256);
 	}
 }
 
 void InputSystem::addListener(InputListener* listener)
 {
-	get()->m_set_listeners.insert(listener);
+	m_set_listeners.insert(listener);
 }
 
 void InputSystem::removeListener(InputListener* listener)
 {
-	get()->m_set_listeners.erase(listener);
+	m_set_listeners.erase(listener);
 }
 
 void InputSystem::setCursorPosition(const Point& pos)
@@ -107,6 +111,17 @@ void InputSystem::showCursor(bool show)
 
 InputSystem* InputSystem::get()
 {
-	static InputSystem system;
-	return &system;
+	return m_system;
+}
+
+void InputSystem::create()
+{
+	if (InputSystem::m_system) throw std::exception("InputSystem already created");
+	InputSystem::m_system = new InputSystem();
+}
+
+void InputSystem::release()
+{
+	if (!InputSystem::m_system) return;
+	delete InputSystem::m_system;
 }

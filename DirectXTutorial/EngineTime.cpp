@@ -1,9 +1,13 @@
 #include "EngineTime.h"
+#include <exception>
+
 
 EngineTime* EngineTime::sharedInstance = NULL;
 
-void EngineTime::initialize()
+void EngineTime::create()
 {
+	if (sharedInstance != nullptr)
+		throw new std::exception("[DUPLICATE ERROR] Engine Time");
 	sharedInstance = new EngineTime();
 
 	QueryPerformanceFrequency(&sharedInstance->frequency);

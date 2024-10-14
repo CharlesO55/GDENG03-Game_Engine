@@ -27,7 +27,6 @@ void AppWindow::onCreate()
 	InputSystem::get()->showCursor(false);
 
 	// GRAPHICS ENGINE
-	GraphicsEngine::get()->init();
 	m_swap_chain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(this->m_hwnd, m_windowWidth, m_windowHeight);
 
 	
@@ -86,7 +85,7 @@ void AppWindow::onDestroy()
 	m_ps->release();
 #endif 
 	//m_swap_chain->release();
-	GraphicsEngine::get()->release();
+	//GraphicsEngine::get()->release();
 }
 
 void AppWindow::onFocus()
@@ -114,7 +113,7 @@ void AppWindow::onKeyDown(int key)
 	switch (key) {
 		//ESCAPE
 	case 27:
-		release();
+		this->onDestroy();
 		break;
 		//SPACE
 	case 32:

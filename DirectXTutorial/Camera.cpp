@@ -21,9 +21,9 @@ Camera::~Camera()
 void Camera::setActive(bool active)
 {
 	if (active)
-		InputSystem::addListener(this);
+		InputSystem::get()->addListener(this);
 	else
-		InputSystem::removeListener(this);
+		InputSystem::get()->removeListener(this);
 }
 
 void Camera::update()

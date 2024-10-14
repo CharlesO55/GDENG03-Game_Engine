@@ -1,112 +1,95 @@
 #include "Window.h"
 
 #include "EngineTime.h"
-// Window* window = nullptr;
+#include <exception>
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
+	switch (msg)
+	{
+	case WM_CREATE:
+	{
+		break;
+	}
+	case WM_SETFOCUS:
+	{
+		Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		if (window) window->onFocus();
+		break;
+	}
+	case WM_KILLFOCUS:
+	{
+		Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		window->onKillFocus();
+		break;
+	}
+	case WM_DESTROY:
+	{
+		Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		window->onDestroy();
+		::PostQuitMessage(0);
+		break;
+	}
+
+	default:
+		return ::DefWindowProc(hwnd, msg, wparam, lparam);
+	}
+
+	return NULL;
+}
+
 
 
 
 Window::Window()
 {
+	WNDCLASSEX wc;
+	wc.cbClsExtra = NULL;
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.cbWndExtra = NULL;
+	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hInstance = NULL;
+	wc.lpszClassName = L"MyWindowClass";
+	wc.lpszMenuName = L"";
+	wc.style = NULL;
+	wc.lpfnWndProc = &WndProc;
+
+	if (!::RegisterClassEx(&wc)) 
+		throw std::exception("[CREATE ERROR] Window");
+
+	m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Tutorial",
+		WS_CAPTION | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
+		NULL, NULL, NULL, NULL);
+
+	if (!m_hwnd)
+		throw std::exception("[CREATE ERROR] Window");
+
+
+	::ShowWindow(m_hwnd, SW_SHOW);
+	::UpdateWindow(m_hwnd);
+
+
+	m_is_run = true;
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-    switch (msg) {
-    case WM_CREATE:
-    {
-        Window* window = (Window*)((LPCREATESTRUCT)lparam)->lpCreateParams;
-        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)window);
-        
-        window->setHWND(hwnd);
-        window->onCreate();
-        break;
-    }
-
-    case WM_DESTROY:
-    {
-        Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-
-        window->onDestroy();
-        ::PostQuitMessage(0);
-        break;
-    }
-
-    case WM_SETFOCUS:
-    {
-        Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-        window->onFocus();
-        break;
-    }
-
-    case WM_KILLFOCUS:
-    {
-        Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-        window->onKillFocus();
-        break;
-    }
-
-    default:
-        return ::DefWindowProc(hwnd, msg, wparam, lparam);
-    }
-
-    return NULL;
-}
-
-bool Window::init()
+Window::~Window()
 {
-    WNDCLASSEX wc;
-    wc.cbClsExtra = NULL;
-    wc.cbSize = sizeof(WNDCLASSEX);
-    wc.cbWndExtra = NULL;
-    wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION); 
-    wc.hInstance = NULL;
-
-    /*ADDED L to resolve LPCWSTR error*/
-    wc.lpszClassName = L"MyWindowClass";
-    wc.lpszMenuName = L"";
-    wc.style = NULL;
-
-    // Window proecedure events
-    wc.lpfnWndProc = &WndProc;
-
-    // Class registration
-    if (!::RegisterClassEx(&wc))
-        return false;
-
-    //if (!window)
-    //    window = this;
-
-
-    // Window creation
-    /*m_hwnd=::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Application", 
-        WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
-        NULL, NULL, NULL, NULL);*/
-    m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Application",
-        WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
-        NULL, NULL, NULL, this);
-
-
-
-    if (!m_hwnd)
-        return false;
-
-    ::ShowWindow(m_hwnd, SW_SHOW);
-    ::UpdateWindow(m_hwnd);
-
-    
-    m_is_run = true;
-    return true;
 }
-
-
-
 
 bool Window::broadcast()
 {
     MSG msg;
-    EngineTime::tick();
+
+	if (!this->m_is_init)
+	{
+		SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
+		this->onCreate();
+		this->m_is_init = true;
+	}
+	EngineTime::tick();
 
     // Update only occurs when the time matches the expecred ms per frame
     if (EngineTime::getDeltaTime() >= timePerFrame) {
@@ -125,56 +108,32 @@ bool Window::broadcast()
         EngineTime::ResetDeltaTime();
     }
     Sleep(1);
-    //EngineTime::LogFrameEnd();
 
     return true;
 }
 
-bool Window::release() {
-    std::cout << "\nReleased window";
-    if (!::DestroyWindow(m_hwnd))
-        return false;
-    
-    return true;
-}
-
-bool Window::isRun()
+bool Window::Run()
 {
-    return m_is_run;
-}
-
-Window::~Window()
-{
+	if (m_is_run) {
+		broadcast();
+	}
+	return m_is_run;
 }
 
 RECT Window::getClientWindowRect()
 {
-    RECT rc;
-    ::GetClientRect(this->m_hwnd, &rc);
-    return rc;
-}
-
-void Window::setHWND(HWND hwnd)
-{
-    this->m_hwnd = hwnd;
+	RECT rc;
+	::GetClientRect(this->m_hwnd, &rc);
+	return rc;
 }
 
 void Window::onCreate()
 {
-    EngineTime::initialize();
-
-    CalcWindowRect();
-}
-
-void Window::onUpdate()
-{
-    CalcWindowRect();
 }
 
 void Window::onDestroy()
 {
-    std::cout << "\nDestroyed window";
-    m_is_run = false;
+	m_is_run = false;
 }
 
 void Window::onFocus()
@@ -183,6 +142,13 @@ void Window::onFocus()
 
 void Window::onKillFocus()
 {
+}
+
+
+
+void Window::onUpdate()
+{
+    CalcWindowRect();
 }
 
 void Window::CalcWindowRect()

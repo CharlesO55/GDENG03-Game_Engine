@@ -4,12 +4,12 @@
 #include <ctime>
 #include <Windows.h>
 
-class Window;
+
 
 class EngineTime
 {
 public:
-	static void initialize();
+	static void create();
 	static double getDeltaTime();
 	static double getTotalTime();
 
@@ -37,7 +37,8 @@ private:
 	LARGE_INTEGER lastTime;
 	LARGE_INTEGER currentTime;
 
+public:
 	static void tick();
-private:
+
 	friend class Window;
 };

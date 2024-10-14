@@ -30,12 +30,11 @@ public:
 	void move(Vector3D deltaPos);
 
 protected:
-	PixelShader* m_ps = nullptr;
-	VertexShader* m_vs = nullptr;
-
-	VertexBuffer* m_vb = nullptr;
-	IndexBuffer* m_ib = nullptr;
-	ConstantBuffer* m_cb = nullptr;
+	PixelShaderPtr m_ps = nullptr;
+	VertexShaderPtr m_vs = nullptr;
+	VertexBufferPtr m_vb = nullptr;
+	IndexBufferPtr m_ib = nullptr;
+	ConstantBufferPtr m_cb = nullptr;
 
 	std::vector<vertex> m_verts = {};
 	std::vector<unsigned int> m_indices = {};

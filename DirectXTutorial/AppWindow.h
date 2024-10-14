@@ -29,16 +29,16 @@ public:
 
 
 private:
-	SwapChain* m_swap_chain;
 	Camera* m_Camera = nullptr;
 	std::vector<Primitive*> m_shapes = {};
 
 	// TESTING
-	VertexBuffer* m_vb = nullptr;
-	IndexBuffer* m_ib = nullptr;
-	ConstantBuffer* m_cb = nullptr;
-	VertexShader* m_vs = nullptr;
-	PixelShader* m_ps = nullptr;
+	SwapChainPtr m_swap_chain;
+	VertexBufferPtr m_vb;
+	VertexShaderPtr m_vs;
+	PixelShaderPtr m_ps;
+	ConstantBufferPtr m_cb;
+	IndexBufferPtr m_ib;
 
 
 private:

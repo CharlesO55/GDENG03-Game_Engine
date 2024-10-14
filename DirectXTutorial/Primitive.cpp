@@ -97,11 +97,11 @@ void Primitive::draw()
 
 void Primitive::release()
 {
-	delete m_vb;
+	/*delete m_vb;
 	delete m_ib;
 	delete m_cb;
 	delete m_vs;
-	delete m_ps;
+	delete m_ps;*/
 	m_verts.clear();
 }
 
