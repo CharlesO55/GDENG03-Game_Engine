@@ -9,6 +9,8 @@
 #include "Quad.h"
 #include "Circle.h"
 
+#include "Mesh.h"
+
 AppWindow::AppWindow()
 {
 }
@@ -106,7 +108,9 @@ void AppWindow::InstantiateShape()
 
 void AppWindow::testCreate()
 {
-	m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\wood.jpg");
+	//m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\wood.jpg");
+	m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\brick.png");
+	m_mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj");
 
 	Vector3D position_list[] =
 	{
@@ -250,10 +254,13 @@ void AppWindow::testDraw()
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setTexture(m_ps, m_wood_tex);
 
-	//SET THE VERTICES OF THE TRIANGLE TO DRAW
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
-	//SET THE INDICES OF THE TRIANGLE TO DRAW
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
+
+
+	/*GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_mesh->getVertexBuffer());
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_mesh->getIndexBuffer());*/
+
 
 	// FINALLY DRAW THE TRIANGLE
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);

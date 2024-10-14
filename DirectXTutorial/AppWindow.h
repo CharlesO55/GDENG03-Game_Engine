@@ -36,6 +36,7 @@ private:
 
 	// TESTING
 	TexturePtr m_wood_tex = nullptr;
+	MeshPtr m_mesh = nullptr;
 	void testCreate();
 	void testUpdate();
 	void testDraw();

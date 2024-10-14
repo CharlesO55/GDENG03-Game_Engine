@@ -55,6 +55,9 @@
     <Filter Include="GameEngine\ResourceManager\TextureManager">
       <UniqueIdentifier>{8e307fa5-c2bd-4038-9065-26d8344f813c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\ResourceManager\MeshManager">
+      <UniqueIdentifier>{7055950d-6bfc-4a2e-bd83-0ed9c9d2c343}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -128,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>GameEngine\ResourceManager\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +215,6 @@
     <ClInclude Include="RenderSystem.h">
       <Filter>GameEngine\GraphicsEngine\RenderSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Prerequisites.h">
-      <Filter>GameEngine\GraphicsEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>GameEngine\ResourceManager</Filter>
     </ClInclude>
@@ -224,6 +230,18 @@
     <ClInclude Include="Vector2D.h">
       <Filter>GameEngine\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Prerequisites.h">
+      <Filter>GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexMesh.h">
+      <Filter>GameEngine\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShaderColor.hlsl">
@@ -236,6 +254,9 @@
       <Filter>App</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
+      <Filter>App</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexMeshLayoutShader.hlsl">
       <Filter>App</Filter>
     </FxCompile>
   </ItemGroup>
