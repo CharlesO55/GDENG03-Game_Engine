@@ -12,33 +12,27 @@ Primitive::~Primitive()
 
 void Primitive::initialize()
 {
-	m_vb = GraphicsEngine::get()->createVertexBuffer();
-
-	// INDEX BUFFER
-	m_ib = GraphicsEngine::get()->createIndexBuffer();
-	m_ib->load(std::data(m_indices), m_indices.size());
-
-
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;
 
-
 	// VERTEX SHADER & BUFFER
-	GraphicsEngine::get()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-	m_vs = GraphicsEngine::get()->createVertexShader(shader_byte_code, size_shader);
-	m_vb->load(std::data(m_verts), sizeof(vertex), m_verts.size(), shader_byte_code, size_shader);
-	GraphicsEngine::get()->releaseCompiledShader();
+	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+	m_vs = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shader_byte_code, size_shader);
+	m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(std::data(m_verts), sizeof(vertex), m_verts.size(), shader_byte_code, size_shader);
+	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
+
+	// INDEX BUFFER
+	m_ib = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(std::data(m_indices), m_indices.size());
 
 	// PIXEL SHADER
-	GraphicsEngine::get()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	m_ps = GraphicsEngine::get()->createPixelShader(shader_byte_code, size_shader);
-	GraphicsEngine::get()->releaseCompiledShader();
+	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	m_ps = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shader_byte_code, size_shader);
+	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 
 	// CONSTANT & CONSTANT BUFFER
 	m_cc.m_time = 0;
 
-	m_cb = GraphicsEngine::get()->createConstantBuffer();
-	m_cb->load(&m_cc, sizeof(constant));
+	m_cb = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&m_cc, sizeof(constant));
 }
 
 void Primitive::updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* worldOverride)
@@ -74,7 +68,7 @@ void Primitive::updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* wo
 	m_cc.m_view = cameraView;
 	m_cc.m_proj = cameraProj;
 
-	m_cb->update(GraphicsEngine::get()->getImmediateDeviceContext(), &m_cc);
+	m_cb->update(GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext(), &m_cc);
 
 	// Recursive call for child to apply my transform as its parent.
 	if (this->m_child != nullptr)
@@ -83,16 +77,16 @@ void Primitive::updateMatrix(Matrix4 cameraView, Matrix4 cameraProj, Matrix4* wo
 
 void Primitive::draw()
 {
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexShader(m_vs);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setPixelShader(m_ps);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexShader(m_vs);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setPixelShader(m_ps);
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
-	GraphicsEngine::get()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
 
 	// Recursive call to draw children
 	if (m_child != nullptr) {
@@ -103,12 +97,11 @@ void Primitive::draw()
 
 void Primitive::release()
 {
-	m_vb->release();
-	m_ib->release();
-	m_cb->release();
-	m_vs->release();
-	m_ps->release();
-
+	delete m_vb;
+	delete m_ib;
+	delete m_cb;
+	delete m_vs;
+	delete m_ps;
 	m_verts.clear();
 }
 

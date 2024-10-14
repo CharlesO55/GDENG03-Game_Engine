@@ -5,8 +5,9 @@
 #include "ConstantBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include <exception>
 
-DeviceContext::DeviceContext(ID3D11DeviceContext* device_context) :m_device_context(device_context)
+DeviceContext::DeviceContext(ID3D11DeviceContext* device_context, RenderSystem* system) : m_system(system), m_device_context(device_context)
 {
 }
 
@@ -36,16 +37,16 @@ void DeviceContext::drawTriangleList(UINT vertex_count, UINT start_vertex_index)
 	m_device_context->Draw(vertex_count, start_vertex_index);
 }
 
-void DeviceContext::drawTriangleStrip(UINT vertex_count, UINT start_vertex_index)
-{
-	m_device_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	m_device_context->Draw(vertex_count, start_vertex_index);
-}
-
 void DeviceContext::drawIndexedTriangleList(UINT index_count, UINT start_vertex_index, UINT start_index_location)
 {
 	m_device_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_device_context->DrawIndexed(index_count, start_index_location, start_vertex_index);
+}
+
+void DeviceContext::drawTriangleStrip(UINT vertex_count, UINT start_vertex_index)
+{
+	m_device_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	m_device_context->Draw(vertex_count, start_vertex_index);
 }
 
 void DeviceContext::setViewportSize(UINT width, UINT height)
@@ -78,14 +79,7 @@ void DeviceContext::setConstantBuffer(PixelShader* pixel_shader, ConstantBuffer*
 	m_device_context->PSSetConstantBuffers(0, 1, &buffer->m_buffer);
 }
 
-
-bool DeviceContext::release()
-{
-	m_device_context->Release();
-	delete this;
-	return true;
-}
-
 DeviceContext::~DeviceContext()
 {
+	m_device_context->Release();
 }

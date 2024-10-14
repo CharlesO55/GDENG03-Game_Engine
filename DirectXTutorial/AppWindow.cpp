@@ -28,9 +28,7 @@ void AppWindow::onCreate()
 
 	// GRAPHICS ENGINE
 	GraphicsEngine::get()->init();
-	m_swap_chain = GraphicsEngine::get()->createSwapChain();
-
-	m_swap_chain->init(this->m_hwnd, m_windowWidth, m_windowHeight);
+	m_swap_chain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(this->m_hwnd, m_windowWidth, m_windowHeight);
 
 	
 	// SCENE CAMERA
@@ -41,8 +39,7 @@ void AppWindow::onCreate()
 	constant cc;
 	cc.m_time = 0;
 
-	m_cb = GraphicsEngine::get()->createConstantBuffer();
-	m_cb->load(&cc, sizeof(constant));
+	m_cb = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&cc, sizeof(constant));
 }
 
 
@@ -51,9 +48,9 @@ void AppWindow::onUpdate()
 	Window::onUpdate();
 	InputSystem::get()->update();
 
-	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
 		0, 0, 0, 1); //BLACK
-	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
 
 	// Update the camera
 	m_Camera->update();
@@ -88,7 +85,7 @@ void AppWindow::onDestroy()
 	m_vs->release();
 	m_ps->release();
 #endif 
-	m_swap_chain->release();
+	//m_swap_chain->release();
 	GraphicsEngine::get()->release();
 }
 

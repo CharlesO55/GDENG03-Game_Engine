@@ -1,8 +1,6 @@
 #pragma once
 #include <Windows.h>
 
-#include "DeltaTime.h"
-
 class Window
 {
 public:
