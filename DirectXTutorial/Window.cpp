@@ -129,6 +129,7 @@ RECT Window::getClientWindowRect()
 
 void Window::onCreate()
 {
+	CalcWindowRect();
 }
 
 void Window::onDestroy()

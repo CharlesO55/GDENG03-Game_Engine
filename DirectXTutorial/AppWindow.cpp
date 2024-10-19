@@ -8,6 +8,7 @@
 #include "Cube.h"
 #include "Quad.h"
 #include "Circle.h"
+#include "Plane.h"
 
 AppWindow::AppWindow()
 {
@@ -33,12 +34,23 @@ void AppWindow::onCreate()
 	// SCENE CAMERA
 	m_Camera = new Camera(&m_windowWidth, &m_windowHeight);
 
-	testCreate();
+	//testCreate();
+	
+	// CREATE A PLANE
+	Primitive* plane = new Plane();
+	plane->initialize();
+	plane->move(Vector3D(0));
+	plane->scale(Vector3D(5));
+
+	m_shapes.push_back(plane);
+
+	std::cout << "Number of shapes: " << m_shapes.size() << std::endl;
+
+
 
 	//CONSTANT BUFFER
 	constant cc;
 	cc.m_time = 0;
-	cc.m_world.setIdentity();
 	
 	m_cb = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&cc, sizeof(constant));
 }
@@ -65,8 +77,8 @@ void AppWindow::onUpdate()
 		m_shapes[i]->draw();
 	}
 
-	testUpdate();
-	testDraw();
+	//testUpdate();
+	//testDraw();
 
 	m_swap_chain->present(true);
 }
@@ -96,7 +108,12 @@ void AppWindow::InstantiateShape()
 {
 	Primitive* newShape = new Cube();
 	newShape->initialize();
-	newShape->move(Vector3D(m_shapes.size()));
+	newShape->move(Vector3D(
+		std::rand() % 10 + -5,
+		std::rand() % 10 + -5,
+		std::rand() % 10 + -5
+	));
+	//newShape->move(Vector3D(m_shapes.size()));
 
 	m_shapes.push_back(newShape);
 

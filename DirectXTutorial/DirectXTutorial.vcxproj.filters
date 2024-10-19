@@ -129,6 +129,7 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>GameEngine\ResourceManager\TextureManager</Filter>
     </ClCompile>
+    <ClCompile Include="Plane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -224,6 +225,7 @@
     <ClInclude Include="Vector2D.h">
       <Filter>GameEngine\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Plane.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShaderColor.hlsl">

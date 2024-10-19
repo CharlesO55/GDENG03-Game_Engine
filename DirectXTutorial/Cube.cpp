@@ -3,9 +3,12 @@
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
 
+#include "EngineTime.h"
 
 Cube::Cube()
 {
+	m_rotSpeed = Vector3D(std::rand() % 5, std::rand() % 5, std::rand() % 5);
+
 	m_verts =
 	{
 		//X - Y - Z
@@ -44,6 +47,8 @@ Cube::Cube()
 		1,0,7
 	};
 }
+
+
 
 Cube::Cube(Vector3D color)
 {
@@ -89,4 +94,9 @@ Cube::Cube(Vector3D color)
 Cube::~Cube()
 {
 	release();
+}
+
+void Cube::update()
+{
+	this->m_rot = m_rot + m_rotSpeed * EngineTime::getDeltaTime();
 }
