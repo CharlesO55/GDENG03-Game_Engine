@@ -70,6 +70,9 @@
     <Filter Include="GameEngine\Components\Physics">
       <UniqueIdentifier>{c186fdf2-7cb5-48aa-999c-95034c5e8cfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\CameraSystem">
+      <UniqueIdentifier>{7d601f7f-9dde-4277-9e8f-38da623dea73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>GameEngine\InputSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="SceneObject.cpp">
       <Filter>GameEngine\GameObjects</Filter>
@@ -155,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="RotatorScript.cpp">
       <Filter>GameEngine\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleScript.cpp">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameEngine\CameraSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,9 +218,6 @@
     <ClInclude Include="Vector4D.h">
       <Filter>GameEngine\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SceneObject.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
@@ -271,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="RotatorScript.h">
       <Filter>GameEngine\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleScript.h">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameEngine\CameraSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

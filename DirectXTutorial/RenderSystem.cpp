@@ -8,7 +8,8 @@
 #include "PixelShader.h"
 
 #include <d3dcompiler.h>
-#include <exception>
+
+#include "Debugger.h"
 
 RenderSystem::RenderSystem()
 {
@@ -38,7 +39,7 @@ RenderSystem::RenderSystem()
 	}
 	if (FAILED(res))
 	{
-		throw std::exception("[CREATE ERROR] RenderSystem");
+		Debugger::Error("[Render System] Failed to create");
 	}
 
 	m_imm_device_context = std::make_shared<DeviceContext>(m_imm_context, this);
@@ -46,11 +47,12 @@ RenderSystem::RenderSystem()
 	m_d3d_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgi_device);
 	m_dxgi_device->GetParent(__uuidof(IDXGIAdapter), (void**)&m_dxgi_adapter);
 	m_dxgi_adapter->GetParent(__uuidof(IDXGIFactory), (void**)&m_dxgi_factory);
+
+	Debugger::Success("[Render System] Created");
 }
 
 RenderSystem::~RenderSystem()
 {
-
 	if (m_vsblob)m_vsblob->Release();
 	if (m_psblob)m_psblob->Release();
 
@@ -59,6 +61,7 @@ RenderSystem::~RenderSystem()
 	m_dxgi_factory->Release();
 
 	m_d3d_device->Release();
+	Debugger::Warning("[Render System] Destroyed");
 }
 
 SwapChainPtr RenderSystem::createSwapChain(HWND hwnd, UINT width, UINT height)

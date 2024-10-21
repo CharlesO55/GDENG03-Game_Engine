@@ -27,7 +27,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	if (FAILED(hr))
 	{
-		Debugger::Error("[CREATE ERROR] SwapChain");
+		Debugger::Error("[Swap Chain] Failed to create");
 	}
 
 	ID3D11Texture2D* buffer = NULL;
@@ -35,7 +35,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	if (FAILED(hr))
 	{
-		Debugger::Error("[CREATE ERROR] SwapChain>TempBuffer");
+		Debugger::Error("[SwapChain/TempBuffer] Failed to create");
 	}
 
 	hr = device->CreateRenderTargetView(buffer, NULL, &m_rtv);
@@ -43,7 +43,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	if (FAILED(hr))
 	{
-		Debugger::Error("[CREATE ERROR] SwapChain>RenderTargetView");
+		Debugger::Error("[SwapChain/RenderTargetView] Failed to create");
 	}
 
 	D3D11_TEXTURE2D_DESC tex_desc = {};
@@ -61,44 +61,15 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	hr = device->CreateTexture2D(&tex_desc, nullptr, &buffer);
 	if (FAILED(hr))
-		Debugger::Error(std::string("[CREATE ERROR] SwapChain>DepthBuffer\n").
+		Debugger::Error(std::string("[SwapChain/DepthBuffer] Failed to create").
 			append(HResultToString(hr)).c_str());
 
 	hr = device->CreateDepthStencilView(buffer, NULL, &m_dsv);
 	buffer->Release();
 
 	if (FAILED(hr))
-		Debugger::Error(std::string("[CREATE ERROR] SwapChain>DepthStencilView\n").
+		Debugger::Error(std::string("[SwapChain/DepthStencilView] Failed to create").
 			append(HResultToString(hr)).c_str());
-
-
-	//D3D11_TEXTURE2D_DESC depthStencilDesc;
-	//ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-	//depthStencilDesc.Width = 1280; // Width of the buffer
-	//depthStencilDesc.Height = 720; // Height of the buffer
-	//depthStencilDesc.MipLevels = 1;
-	//depthStencilDesc.ArraySize = 1;
-	//depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // Format of the depth buffer
-	//depthStencilDesc.SampleDesc.Count = 1; // Number of multisample anti-aliasing samples
-	//depthStencilDesc.SampleDesc.Quality = 0;
-	//depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-	//depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL; // Bind flags for depth-stencil
-	//depthStencilDesc.CPUAccessFlags = 0; // No CPU access
-	////depthStencilDesc.Flag = 0;
-
-
-
-	//std::cout << "\nW: " << width;
-	//std::cout << "\nH: " << depthStencilDesc.Height;
-
-
-	//ID3D11Texture2D* depthStencilBuffer;
-	//hr = device->CreateTexture2D(&depthStencilDesc, nullptr, &depthStencilBuffer);
-	//
-	//std::cout << "\nCheck: " << HResultToString(hr);
-	//if (FAILED(hr)) {
-	//	// Handle error
-	//}
 	
 }
 

@@ -7,7 +7,7 @@ public:
 	Vector3D(float x, float y) : x(x), y(y), z(0) {};
 	Vector3D(float x, float y, float z) : x(x), y(y), z(z) {};
 	Vector3D(const Vector3D& vector) : x(vector.x), y(vector.y), z(vector.z) {};
-	
+
 	static Vector3D lerp(const Vector3D& start, const Vector3D& end, const float delta)
 	{
 		Vector3D v;

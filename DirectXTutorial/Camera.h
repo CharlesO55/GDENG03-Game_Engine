@@ -1,8 +1,11 @@
 #pragma once
 #include "Matrix4x4.h"
-#include "InputListener.h"
 
-class Camera : public InputListener
+
+#include "InputListener.h"
+#include "SceneObject.h"
+
+class Camera : public InputListener, public SceneObject
 {
 public:
 	Camera(int* refWindowWidth, int* refWindowHeight);
@@ -32,6 +35,7 @@ private:
 	float m_rotX = 0;
 	float m_rotY = 0;
 
+	bool m_IsOrthographic = false;
 
 // Inherited via InputListener
 private:

@@ -42,7 +42,6 @@ Circle::Circle() : Primitive()
 Circle::~Circle()
 {
 	release();
-	std::cout << "Destroyed circle";
 }
 
 void Circle::update()

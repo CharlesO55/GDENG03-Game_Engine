@@ -9,12 +9,18 @@ void EngineTime::create()
 {
 	if (sharedInstance != nullptr)
 		Debugger::Error("[DUPLICATE ERROR] Engine Time");
+
 	sharedInstance = new EngineTime();
 
 	QueryPerformanceFrequency(&sharedInstance->frequency);
 	QueryPerformanceCounter(&sharedInstance->lastTime);
 	
-	Debugger::Success("[SYSTEM] Created engine time");
+	Debugger::Success("[Engine Time] Created");
+}
+
+void EngineTime::release()
+{
+	delete EngineTime::sharedInstance;
 }
 
 double EngineTime::getDeltaTime()
@@ -33,6 +39,7 @@ EngineTime::EngineTime()
 
 EngineTime::~EngineTime()
 {
+	Debugger::Warning("[Engine Time] Destroyed");
 }
 
 void EngineTime::LogFrameStart()

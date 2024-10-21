@@ -34,6 +34,8 @@ GraphicsEngine::~GraphicsEngine()
 	GraphicsEngine::m_engine = nullptr;
 	delete m_tex_manager;
 	delete m_render_system;
+
+	Debugger::Warning("[Graphics Engine] Destroyed");
 }
 
 void GraphicsEngine::create()
@@ -42,12 +44,13 @@ void GraphicsEngine::create()
 		Debugger::Error("[DUPLICATE ERROR] Graphics Engine");
 	
 	GraphicsEngine::m_engine = new GraphicsEngine();
-	Debugger::Success("[SYSTEM] Created Graphics Engine");
+	Debugger::Success("[Graphics Engine] Created");
 }
 
 void GraphicsEngine::release()
 {
-	if (!GraphicsEngine::m_engine) return;
+	if (!GraphicsEngine::m_engine) 
+		return;
 	delete GraphicsEngine::m_engine;
 }
 

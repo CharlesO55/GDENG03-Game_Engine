@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <chrono>
 #include <ctime>
 #include <Windows.h>
@@ -10,6 +9,8 @@ class EngineTime
 {
 public:
 	static void create();
+	static void release();
+
 	static double getDeltaTime();
 	static double getTotalTime();
 

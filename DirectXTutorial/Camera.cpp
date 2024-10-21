@@ -5,10 +5,10 @@
 
 #include <iostream>
 
-Camera::Camera(int* refWindowWidth, int* refWindowHeight) : ref_windowWidth(refWindowWidth), ref_windowHeight(refWindowHeight)
+Camera::Camera(int* refWindowWidth, int* refWindowHeight) : ref_windowWidth(refWindowWidth), ref_windowHeight(refWindowHeight), SceneObject()
 {
 	m_view.setIdentity();
-	m_view.setTranslation(Vector3D(0, 0, -2));
+	m_view.setTranslation(Vector3D(0, 2, -2));
 
 	setActive(true);
 }
@@ -50,14 +50,15 @@ void Camera::update()
 
 	m_view = world_cam;
 
-	/*m_proj.setOrthoLH
-	(
-		(*ref_windowWidth)/50,
-		(*ref_windowHeight)/50,
-		-4.0f,
-		4.0f
-	);*/
-	m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
+	if (m_IsOrthographic)
+		m_proj.setOrthoLH(
+			(*ref_windowWidth)/100,
+			(*ref_windowHeight)/100,
+			-50,	//Near plane
+			100.0f	//Far plane
+		);
+	else
+		m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
 }
 
 Matrix4x4 Camera::getProj()
@@ -101,6 +102,11 @@ void Camera::onKeyUp(int key)
 	m_forward = 0;
 	m_rightward = 0;
 	m_upward = 0;
+
+	switch (key) {
+		case 'P':
+			m_IsOrthographic = !m_IsOrthographic;
+	}
 }
 
 void Camera::onMouseMove(const Point& mouse_pos)

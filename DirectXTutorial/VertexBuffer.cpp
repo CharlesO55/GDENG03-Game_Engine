@@ -22,7 +22,7 @@ VertexBuffer::VertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list
 
 	if (FAILED(m_system->m_d3d_device->CreateBuffer(&buff_desc, &init_data, &m_buffer)))
 	{
-		Debugger::Error("[VertexBuffer] Device failed to create.");
+		Debugger::Error("[Vertex Buffer] Failed to create.");
 	}
 
 
@@ -55,13 +55,13 @@ VertexBuffer::VertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list
 		}
 
 		default:
-			Debugger::Error("[VertexBuffer] Unhandled layout case.");
+			Debugger::Error("[Vertex Buffer] Unhandled layout case.");
 	}
 
 
 	if (FAILED(m_system->m_d3d_device->CreateInputLayout(layout, size_layout, shader_byte_code, size_byte_shader, &m_layout)))
 	{
-		Debugger::Error("[VertexBuffer] Invalid layout parameters.");
+		Debugger::Error("[Vertex Buffer] Invalid layout parameters.");
 	}
 
 }

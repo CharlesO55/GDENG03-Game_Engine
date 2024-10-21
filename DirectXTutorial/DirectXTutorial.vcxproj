@@ -151,6 +151,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RotatorScript.cpp" />
+    <ClCompile Include="ScaleScript.cpp" />
     <ClCompile Include="Transformation.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Primitive.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RotatorScript.h" />
+    <ClInclude Include="ScaleScript.h" />
     <ClInclude Include="Transformation.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Primitive.h" />

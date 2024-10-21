@@ -4,24 +4,28 @@
 #include "DeviceContext.h"
 
 #include "RotatorScript.h"
+#include "ScaleScript.h"
+
 
 Cube::Cube() : Primitive()
 {
-	m_Components.push_back(new RotatorScript(this));
+	//m_Components.push_back(new RotatorScript(this));
+	//m_Components.push_back(new ScaleScript(this));
+
 
 	m_verts =
 	{
 		//X - Y - Z
 		{Vector3D(-0.5f,-0.5f,-0.5f), Vector3D(-0.5f,-0.5f,-0.5f),   Vector3D(1,0,0),  Vector3D(0.2f,0,0) },
-		{Vector3D(-0.5f,0.5f,-0.5f), Vector3D(-0.5f,0.5f,-0.5f),   Vector3D(1,1,0), Vector3D(0.2f,0.2f,0) },
-		{ Vector3D(0.5f,0.5f,-0.5f), Vector3D(0.5f,0.5f,-0.5f),  Vector3D(1,1,0),  Vector3D(0.2f,0.2f,0) },
-		{ Vector3D(0.5f,-0.5f,-0.5f), Vector3D(0.5f,-0.5f,-0.5f),    Vector3D(1,0,0), Vector3D(0.2f,0,0) },
+		{Vector3D(-0.5f,0.5f,-0.5f), Vector3D(-0.5f,0.5f,-0.5f),   Vector3D(0,1,0), Vector3D(0.2f,0.2f,0) },
+		{ Vector3D(0.5f,0.5f,-0.5f), Vector3D(0.5f,0.5f,-0.5f),  Vector3D(0,0,1),  Vector3D(0.2f,0.2f,0) },
+		{ Vector3D(0.5f,-0.5f,-0.5f), Vector3D(0.5f,-0.5f,-0.5f),    Vector3D(1,0,1), Vector3D(0.2f,0,0) },
 
 		//BACK FACE
-		{ Vector3D(0.5f,-0.5f,0.5f), Vector3D(0.5f,-0.5f,0.5f),   Vector3D(0,1,0), Vector3D(0,0.2f,0) },
-		{ Vector3D(0.5f,0.5f,0.5f), Vector3D(0.5f,0.5f,0.5f),   Vector3D(0,1,1), Vector3D(0,0.2f,0.2f) },
-		{ Vector3D(-0.5f,0.5f,0.5f), Vector3D(-0.5f,0.5f,0.5f),  Vector3D(0,1,1),  Vector3D(0,0.2f,0.2f) },
-		{ Vector3D(-0.5f,-0.5f,0.5f), Vector3D(-0.5f,-0.5f,0.5f),    Vector3D(0,1,0), Vector3D(0,0.2f,0) }
+		{ Vector3D(0.5f,-0.5f,0.5f), Vector3D(0.5f,-0.5f,0.5f),   Vector3D(1,0,0), Vector3D(0,0.2f,0) },
+		{ Vector3D(0.5f,0.5f,0.5f), Vector3D(0.5f,0.5f,0.5f),   Vector3D(0,1,0), Vector3D(0,0.2f,0.2f) },
+		{ Vector3D(-0.5f,0.5f,0.5f), Vector3D(-0.5f,0.5f,0.5f),  Vector3D(0,0,1),  Vector3D(0,0.2f,0.2f) },
+		{ Vector3D(-0.5f,-0.5f,0.5f), Vector3D(-0.5f,-0.5f,0.5f),    Vector3D(0,1,1), Vector3D(0,0.2f,0) }
 
 	};
 
@@ -52,6 +56,8 @@ Cube::Cube() : Primitive()
 
 Cube::Cube(Vector3D color)
 {
+	m_Components.push_back(new RotatorScript(this));
+
 	m_verts =
 	{
 		//X - Y - Z

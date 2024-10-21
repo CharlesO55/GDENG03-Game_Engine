@@ -1,7 +1,8 @@
 #include "ConstantBuffer.h"
 #include "RenderSystem.h"
 #include "DeviceContext.h"
-#include <exception>
+
+#include "Debugger.h"
 
 ConstantBuffer::ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* system) : m_system(system)
 {
@@ -16,9 +17,7 @@ ConstantBuffer::ConstantBuffer(void* buffer, UINT size_buffer, RenderSystem* sys
 	init_data.pSysMem = buffer;
 
 	if (FAILED(m_system->m_d3d_device->CreateBuffer(&buff_desc, &init_data, &m_buffer)))
-	{
-		throw std::exception("[CREATE ERROR] ConstantBuffer");
-	}
+		Debugger::Error("[Constant Buffer] Failed to create");
 }
 
 

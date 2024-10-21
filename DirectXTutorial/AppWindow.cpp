@@ -10,6 +10,9 @@
 #include "Circle.h"
 #include "Plane.h"
 
+#include "Debugger.h"
+#include <iostream>
+
 
 AppWindow::AppWindow(){}
 AppWindow::~AppWindow(){}
@@ -29,15 +32,75 @@ void AppWindow::onCreate()
 	// SCENE CAMERA
 	m_Camera = new Camera(&m_windowWidth, &m_windowHeight);
 
-	testCreate();
+	//testCreate();
 	
 	// CREATE A PLANE
-	Primitive* plane = new Plane();
+	Primitive* plane = new Plane(Vector3D(96/256.f, 125 / 256.f, 141 / 256.f));
 	plane->initialize();
-	plane->getTransform()->scale(Vector3D(5));
+	plane->getTransform()->scale(Vector3D(20));
 
 	m_shapes.push_back(plane);
 
+
+	Vector3D spawnPositions[] = {
+		Vector3D(-1, 1, 0),
+		Vector3D(0, 1, 0),
+		Vector3D(1, 1, 0),
+		Vector3D(-0.5f, 3, 0),
+		Vector3D(0.5f, 3, 0),
+		Vector3D(0, 5, 0),
+	};
+
+
+	Vector3D offset = Vector3D(0.5f,0,0);
+	float angle = 76 * 0.0174533;
+
+	//TRIANGLES
+	for (int i = 0; i < sizeof(spawnPositions)/sizeof(Vector3D); i++) {
+		Primitive* leftplane = new Plane();
+		leftplane->initialize();
+
+		leftplane->getTransform()->move(spawnPositions[i]);
+		leftplane->getTransform()->scale(Vector3D(0,0, -0.5f));
+		leftplane->getTransform()->rotate(Vector3D(0,0, angle));
+
+		m_shapes.push_back(leftplane);
+
+		Primitive* rightPlane = new Plane();
+		rightPlane->initialize();
+
+		rightPlane->getTransform()->move(spawnPositions[i] + offset);
+		rightPlane->getTransform()->scale(Vector3D(0, 0,- 0.5f));
+		rightPlane->getTransform()->rotate(Vector3D(0, 0, -angle));
+
+		m_shapes.push_back(rightPlane);
+	}
+	
+	Vector3D basePositions[] = {
+		Vector3D(-0.5f, 2.01f, 0),
+		Vector3D(1, 2, 0),
+		Vector3D(0.25f, 4, 0)
+	};
+
+	for (int i = 0; i < sizeof(basePositions)/sizeof(Vector3D); i++)
+	{
+		Primitive* baseplane = new Plane();
+		baseplane->initialize();
+		baseplane->getTransform()->move(basePositions[i]);
+		baseplane->getTransform()->scale(Vector3D(0, 0, -0.5f));
+
+		m_shapes.push_back(baseplane);
+	}
+
+
+
+
+	for (int i = 1; i < m_shapes.size(); i++) {
+		std::cout << i << std::endl;
+		std::cout << "Pos  :"; Debugger::PrintVector(m_shapes[i]->getTransform()->m_pos);
+		std::cout << "Scale:"; Debugger::PrintVector(m_shapes[i]->getTransform()->m_scale);
+		std::cout << "Rot:"; Debugger::PrintVector(m_shapes[i]->getTransform()->m_rot);
+	}
 
 
 	//CONSTANT BUFFER
@@ -54,7 +117,7 @@ void AppWindow::onUpdate()
 	InputSystem::get()->update();
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
-		0, 0, 0, 1); //BLACK
+		0.2, 0.2, 0.2, 1); //BLACK
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
 
 	// Update the camera
@@ -69,8 +132,8 @@ void AppWindow::onUpdate()
 		m_shapes[i]->draw();
 	}
 
-	testUpdate();
-	testDraw();
+	//testUpdate();
+	//testDraw();
 
 	m_swap_chain->present(true);
 }
@@ -86,30 +149,19 @@ void AppWindow::onDestroy()
 }
 
 
-void AppWindow::onFocus()
-{
-	InputSystem::get()->addListener(this);
-}
 
-void AppWindow::onKillFocus()
-{
-	InputSystem::get()->removeListener(this);
-}
 
 void AppWindow::InstantiateShape()
 {
-	Primitive* newShape = new Circle();
+	Primitive* newShape = new Cube();
 	newShape->initialize();
 	newShape->getTransform()->move(Vector3D(
 		std::rand() % 10 + -5,
 		std::rand() % 10 + -5,
 		std::rand() % 10 + -5
 	));
-	//newShape->move(Vector3D(m_shapes.size()));
 
 	m_shapes.push_back(newShape);
-
-	std::cout << "Number of shapes: " << m_shapes.size() << std::endl;
 }
 
 
@@ -253,20 +305,28 @@ void AppWindow::testDraw()
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
 
-	//SET DEFAULT SHADER IN THE GRAPHICS PIPELINE TO BE ABLE TO DRAW
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexShader(m_vs);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setPixelShader(m_ps);
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setTexture(m_ps, m_wood_tex);
-
-	//SET THE VERTICES OF THE TRIANGLE TO DRAW
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
-	//SET THE INDICES OF THE TRIANGLE TO DRAW
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
 
-	// FINALLY DRAW THE TRIANGLE
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
 }
+
+
+
+void AppWindow::onFocus()
+{
+	InputSystem::get()->addListener(this);
+}
+
+void AppWindow::onKillFocus()
+{
+	InputSystem::get()->removeListener(this);
+}
+
 
 void AppWindow::onKeyDown(int key)
 {

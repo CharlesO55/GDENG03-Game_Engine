@@ -22,6 +22,7 @@ int main()
 		catch (...) {
 			InputSystem::release();
 			GraphicsEngine::release();
+			EngineTime::release();
 			return -1;
 		}
 	}
@@ -29,6 +30,7 @@ int main()
 
 	InputSystem::release();
 	GraphicsEngine::release();
+	EngineTime::release();
 
 	return 0;
 }

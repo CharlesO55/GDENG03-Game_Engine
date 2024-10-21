@@ -1,5 +1,8 @@
 #include "InputSystem.h"
 #include <Windows.h>
+
+#include "Debugger.h"
+
 InputSystem* InputSystem::m_system = nullptr;
 
 InputSystem::InputSystem()
@@ -116,12 +119,18 @@ InputSystem* InputSystem::get()
 
 void InputSystem::create()
 {
-	if (InputSystem::m_system) throw std::exception("InputSystem already created");
+	if (InputSystem::m_system) 
+		Debugger::Error("[Input System] Already created");
+	
 	InputSystem::m_system = new InputSystem();
+	Debugger::Success("[Input System] Created");
 }
 
 void InputSystem::release()
 {
-	if (!InputSystem::m_system) return;
+	if (!InputSystem::m_system) 
+		return;
+	
+	Debugger::Warning("[Input System] Destroyed");
 	delete InputSystem::m_system;
 }
