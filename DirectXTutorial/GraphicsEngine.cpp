@@ -1,6 +1,7 @@
 #include "GraphicsEngine.h"
 #include "RenderSystem.h"
-#include <exception>
+
+#include "Debugger.h"
 
 GraphicsEngine* GraphicsEngine::m_engine = nullptr;
 
@@ -10,12 +11,12 @@ GraphicsEngine::GraphicsEngine()
 	{
 		m_render_system = new RenderSystem();
 	}
-	catch (...) { throw std::exception("[CREATE ERROR] Graphics Engine>Render System"); }
+	catch (...) { Debugger::Error("[CREATE ERROR] Graphics Engine>Render System"); }
 	try
 	{
 		m_tex_manager = new TextureManager();
 	}
-	catch (...) { throw std::exception("[CREATE ERROR] Graphics Engine>Texture Manager"); }
+	catch (...) { Debugger::Error("[CREATE ERROR] Graphics Engine>Texture Manager"); }
 }
 
 RenderSystem* GraphicsEngine::getRenderSystem()
@@ -37,8 +38,11 @@ GraphicsEngine::~GraphicsEngine()
 
 void GraphicsEngine::create()
 {
-	if (GraphicsEngine::m_engine) throw std::exception("[DUPLICATE ERROR] Graphics Engine");
+	if (GraphicsEngine::m_engine) 
+		Debugger::Error("[DUPLICATE ERROR] Graphics Engine");
+	
 	GraphicsEngine::m_engine = new GraphicsEngine();
+	Debugger::Success("[SYSTEM] Created Graphics Engine");
 }
 
 void GraphicsEngine::release()

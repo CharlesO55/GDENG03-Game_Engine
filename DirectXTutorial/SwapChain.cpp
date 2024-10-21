@@ -2,7 +2,7 @@
 #include "RenderSystem.h"
 
 #include <iostream>
-#include <exception>
+#include "Debugger.h"
 
 SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) : m_system(system)
 {
@@ -27,7 +27,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	if (FAILED(hr))
 	{
-		throw std::exception("[CREATE ERROR] SwapChain");
+		Debugger::Error("[CREATE ERROR] SwapChain");
 	}
 
 	ID3D11Texture2D* buffer = NULL;
@@ -35,7 +35,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	if (FAILED(hr))
 	{
-		throw std::exception("[CREATE ERROR] SwapChain>TempBuffer");
+		Debugger::Error("[CREATE ERROR] SwapChain>TempBuffer");
 	}
 
 	hr = device->CreateRenderTargetView(buffer, NULL, &m_rtv);
@@ -43,7 +43,7 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	if (FAILED(hr))
 	{
-		throw std::exception("[CREATE ERROR] SwapChain>RenderTargetView");
+		Debugger::Error("[CREATE ERROR] SwapChain>RenderTargetView");
 	}
 
 	D3D11_TEXTURE2D_DESC tex_desc = {};
@@ -61,19 +61,15 @@ SwapChain::SwapChain(HWND hwnd, UINT width, UINT height, RenderSystem* system) :
 
 	hr = device->CreateTexture2D(&tex_desc, nullptr, &buffer);
 	if (FAILED(hr))
-	{
-		throw std::exception("[CREATE ERROR] SwapChain>DepthBuffer");
-		std::cout << HResultToString(hr);
-	}
+		Debugger::Error(std::string("[CREATE ERROR] SwapChain>DepthBuffer\n").
+			append(HResultToString(hr)).c_str());
 
 	hr = device->CreateDepthStencilView(buffer, NULL, &m_dsv);
 	buffer->Release();
 
 	if (FAILED(hr))
-	{
-		throw std::exception("[CREATE ERROR] SwapChain>DepthStencilView");
-		std::cout << HResultToString(hr);
-	}
+		Debugger::Error(std::string("[CREATE ERROR] SwapChain>DepthStencilView\n").
+			append(HResultToString(hr)).c_str());
 
 
 	//D3D11_TEXTURE2D_DESC depthStencilDesc;
@@ -127,14 +123,14 @@ std::string SwapChain::HResultToString(HRESULT hr)
 		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER,
 		nullptr,
 		hr,
-		0, // Default language
+		0, 
 		(LPSTR)&errorMsg,
 		0,
 		nullptr
 	);
 
 	std::string result = errorMsg ? errorMsg : "Unknown error";
-	LocalFree(errorMsg); // Free the allocated buffer
+	LocalFree(errorMsg); 
 	return result;
 }
 

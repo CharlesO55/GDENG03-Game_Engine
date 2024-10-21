@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include "Prerequisites.h"
 
+#include "ShaderType.h"
 
 class RenderSystem
 {
@@ -11,7 +12,7 @@ public:
 public:
 	SwapChainPtr createSwapChain(HWND hwnd, UINT width, UINT height);
 	DeviceContextPtr getImmediateDeviceContext();
-	VertexBufferPtr createVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, UINT size_byte_shader);
+	VertexBufferPtr createVertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list, void* shader_byte_code, UINT size_byte_shader, ShaderType SHADER_TYPE);
 	IndexBufferPtr createIndexBuffer(void* list_indices, UINT size_list);
 	ConstantBufferPtr createConstantBuffer(void* buffer, UINT size_buffer);
 	VertexShaderPtr createVertexShader(const void* shader_byte_code, size_t byte_code_size);

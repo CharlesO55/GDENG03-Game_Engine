@@ -7,12 +7,12 @@ public:
 	Vector2D(float x, float y) : x(x),  y(y) {}
 	Vector2D(const Vector2D& vector) : x(vector.x),  y(vector.y) {}
 
-	Vector2D operator *(float num)
+	Vector2D operator *(const float num)
 	{
 		return Vector2D(x * num, y * num);
 	}
 
-	Vector2D operator +(Vector2D vec)
+	Vector2D operator +(const Vector2D& vec)
 	{
 		return Vector2D(x + vec.x, y + vec.y);
 	}

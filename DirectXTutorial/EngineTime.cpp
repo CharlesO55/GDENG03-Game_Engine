@@ -1,5 +1,6 @@
 #include "EngineTime.h"
-#include <exception>
+
+#include "Debugger.h"
 
 
 EngineTime* EngineTime::sharedInstance = NULL;
@@ -7,13 +8,13 @@ EngineTime* EngineTime::sharedInstance = NULL;
 void EngineTime::create()
 {
 	if (sharedInstance != nullptr)
-		throw new std::exception("[DUPLICATE ERROR] Engine Time");
+		Debugger::Error("[DUPLICATE ERROR] Engine Time");
 	sharedInstance = new EngineTime();
 
 	QueryPerformanceFrequency(&sharedInstance->frequency);
 	QueryPerformanceCounter(&sharedInstance->lastTime);
 	
-	std::cout << "[SYSTEM] Created engine time";
+	Debugger::Success("[SYSTEM] Created engine time");
 }
 
 double EngineTime::getDeltaTime()

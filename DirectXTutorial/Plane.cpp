@@ -9,6 +9,7 @@ Plane::Plane()
 		{ Vector3D(1, 0, -1), Vector3D(1, 0, -1),    Vector3D(1), Vector3D(1) }  //BR
 	};
 
+	// Draw on both sides
 	m_indices = {
 		0, 1, 2,
 		2, 3, 0,

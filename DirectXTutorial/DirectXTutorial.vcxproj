@@ -135,6 +135,7 @@
     <ClCompile Include="AppWindow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DeviceContext.cpp" />
@@ -149,6 +150,8 @@
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="RotatorScript.cpp" />
+    <ClCompile Include="Transformation.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="SwapChain.cpp" />
@@ -162,8 +165,11 @@
     <ClInclude Include="AppWindow.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentID.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Debugger.h" />
     <ClInclude Include="DeviceContext.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GraphicsEngine.h" />
@@ -179,8 +185,11 @@
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="RotatorScript.h" />
+    <ClInclude Include="Transformation.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="ShaderType.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />

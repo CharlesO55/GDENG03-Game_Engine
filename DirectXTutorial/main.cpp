@@ -1,7 +1,7 @@
 #include "AppWindow.h"
 #include "InputSystem.h"
 #include "EngineTime.h"
-
+#include "Debugger.h"
 
 int main()
 {
@@ -12,12 +12,12 @@ int main()
 		EngineTime::create();
 	}
 	catch (...) { return -1; }
-
 	{
 		try
 		{
 			AppWindow app;
-			while (app.Run());
+			while (app.Run()) {
+			}
 		}
 		catch (...) {
 			InputSystem::release();

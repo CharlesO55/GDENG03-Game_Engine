@@ -3,7 +3,7 @@
 #include "EngineTime.h"
 #include <cmath>
 
-Circle::Circle()
+Circle::Circle() : Primitive()
 {
 	Vector3D origin = Vector3D(0);
 
@@ -47,7 +47,9 @@ Circle::~Circle()
 
 void Circle::update()
 {
-	this->move(this->moveDir * EngineTime::getDeltaTime());
+	Primitive::update();
+
+	this->getTransform()->move(this->moveDir * EngineTime::getDeltaTime());
 
 	// THIS IS DONE AFTER THE updateMatrix()
 	Matrix4x4 screenCheck = this->m_cc.m_world;

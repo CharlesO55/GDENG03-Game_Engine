@@ -4,14 +4,13 @@
 #include "Matrix4x4.h"
 
 
-struct vec3 {
-	float x, y, z;
-};
+
 
 struct vertexTex {
 	Vector3D position;
 	Vector2D texcoord;
 };
+
 
 struct vertexColor {
 	Vector3D position;
@@ -19,6 +18,7 @@ struct vertexColor {
 	Vector3D color;
 	Vector3D color1;
 };
+
 
 __declspec(align(16))
 struct constant

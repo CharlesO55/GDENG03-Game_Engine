@@ -3,6 +3,7 @@
 #include "Prerequisites.h"
 
 #include <string>
+
 class SwapChain
 {
 public:

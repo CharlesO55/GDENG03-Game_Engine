@@ -1,7 +1,7 @@
 #include "Window.h"
 
 #include "EngineTime.h"
-#include <exception>
+#include "Debugger.h"
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -57,15 +57,15 @@ Window::Window()
 	wc.style = NULL;
 	wc.lpfnWndProc = &WndProc;
 
-	if (!::RegisterClassEx(&wc)) 
-		throw std::exception("[CREATE ERROR] Window");
+	if (!::RegisterClassEx(&wc))
+		Debugger::Error("[CREATE ERROR] Window");
 
 	m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"MyWindowClass", L"DirectX Tutorial",
 		WS_CAPTION | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
 		NULL, NULL, NULL, NULL);
 
 	if (!m_hwnd)
-		throw std::exception("[CREATE ERROR] Window");
+		Debugger::Error("[CREATE ERROR] Window");
 
 
 	::ShowWindow(m_hwnd, SW_SHOW);
@@ -99,9 +99,6 @@ bool Window::broadcast()
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-
-        //std::cout << "d: " << EngineTime::getDeltaTime() << "\tTotal " << EngineTime::getTotalTime() << std::endl;
-
         // Updates the lastFrame to now        
         EngineTime::LogFrameStart();
         // Refreshes the deltaTime
@@ -149,6 +146,7 @@ void Window::onKillFocus()
 
 void Window::onUpdate()
 {
+	// VALUE USED BY CAMERA FOR SCREEN SIZE
     CalcWindowRect();
 }
 

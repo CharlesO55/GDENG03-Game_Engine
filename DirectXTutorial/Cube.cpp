@@ -3,11 +3,11 @@
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
 
-#include "EngineTime.h"
+#include "RotatorScript.h"
 
-Cube::Cube()
+Cube::Cube() : Primitive()
 {
-	m_rotSpeed = Vector3D(std::rand() % 5, std::rand() % 5, std::rand() % 5);
+	m_Components.push_back(new RotatorScript(this));
 
 	m_verts =
 	{
@@ -94,9 +94,4 @@ Cube::Cube(Vector3D color)
 Cube::~Cube()
 {
 	release();
-}
-
-void Cube::update()
-{
-	this->m_rot = m_rot + m_rotSpeed * EngineTime::getDeltaTime();
 }

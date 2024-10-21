@@ -10,14 +10,9 @@
 #include "Circle.h"
 #include "Plane.h"
 
-AppWindow::AppWindow()
-{
-}
 
-
-AppWindow::~AppWindow()
-{
-}
+AppWindow::AppWindow(){}
+AppWindow::~AppWindow(){}
 
 void AppWindow::onCreate()
 {
@@ -34,17 +29,14 @@ void AppWindow::onCreate()
 	// SCENE CAMERA
 	m_Camera = new Camera(&m_windowWidth, &m_windowHeight);
 
-	//testCreate();
+	testCreate();
 	
 	// CREATE A PLANE
 	Primitive* plane = new Plane();
 	plane->initialize();
-	plane->move(Vector3D(0));
-	plane->scale(Vector3D(5));
+	plane->getTransform()->scale(Vector3D(5));
 
 	m_shapes.push_back(plane);
-
-	std::cout << "Number of shapes: " << m_shapes.size() << std::endl;
 
 
 
@@ -77,8 +69,8 @@ void AppWindow::onUpdate()
 		m_shapes[i]->draw();
 	}
 
-	//testUpdate();
-	//testDraw();
+	testUpdate();
+	testDraw();
 
 	m_swap_chain->present(true);
 }
@@ -106,9 +98,9 @@ void AppWindow::onKillFocus()
 
 void AppWindow::InstantiateShape()
 {
-	Primitive* newShape = new Cube();
+	Primitive* newShape = new Circle();
 	newShape->initialize();
-	newShape->move(Vector3D(
+	newShape->getTransform()->move(Vector3D(
 		std::rand() % 10 + -5,
 		std::rand() % 10 + -5,
 		std::rand() % 10 + -5
@@ -224,7 +216,7 @@ void AppWindow::testCreate()
 
 	m_vs = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shader_byte_code, size_shader);
 	//CHANGE.........................
-	m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(vertex_list, sizeof(vertexTex), size_list, shader_byte_code, (UINT)size_shader);
+	m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(vertex_list, sizeof(vertexTex), size_list, shader_byte_code, (UINT)size_shader, ShaderType::BASIC_TEXTURE);
 
 	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 

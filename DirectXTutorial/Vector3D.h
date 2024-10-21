@@ -8,7 +8,7 @@ public:
 	Vector3D(float x, float y, float z) : x(x), y(y), z(z) {};
 	Vector3D(const Vector3D& vector) : x(vector.x), y(vector.y), z(vector.z) {};
 	
-	static Vector3D lerp(const Vector3D& start, const Vector3D& end, float delta)
+	static Vector3D lerp(const Vector3D& start, const Vector3D& end, const float delta)
 	{
 		Vector3D v;
 		v.x = start.x * (1.0f - delta) + end.x * (delta);
@@ -17,13 +17,13 @@ public:
 		return v;
 	}
 
-	Vector3D operator *(float num)
+	Vector3D operator *(const float num)
 	{
 		return Vector3D(x * num, y * num, z * num);
 	}
 
 
-	Vector3D operator +(Vector3D vec)
+	Vector3D operator +(const Vector3D& vec)
 	{
 		return Vector3D(x + vec.x, y + vec.y, z + vec.z);
 	}

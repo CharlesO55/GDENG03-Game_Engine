@@ -55,6 +55,21 @@
     <Filter Include="GameEngine\ResourceManager\TextureManager">
       <UniqueIdentifier>{8e307fa5-c2bd-4038-9065-26d8344f813c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Shaders">
+      <UniqueIdentifier>{7d1cd907-bfe2-402f-8377-064079b10020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debugger">
+      <UniqueIdentifier>{24d139d2-cdf7-4f8c-a7b9-a43af668bda6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Components">
+      <UniqueIdentifier>{470bddf4-8441-4b95-a2f1-157167fcac59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObjects\Shapes">
+      <UniqueIdentifier>{55352145-239e-4b77-abd9-c0c0be06aabc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Components\Physics">
+      <UniqueIdentifier>{c186fdf2-7cb5-48aa-999c-95034c5e8cfb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -87,28 +102,16 @@
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>GameEngine\GraphicsEngine\RenderSystem\ConstantBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="EngineTime.cpp">
       <Filter>GameEngine\EngineTime</Filter>
     </ClCompile>
     <ClCompile Include="IndexBuffer.cpp">
       <Filter>GameEngine\GraphicsEngine\RenderSystem\IndexBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>GameEngine\InputSystem</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Primitive.cpp">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Circle.cpp">
       <Filter>GameEngine\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="SceneObject.cpp">
@@ -129,7 +132,30 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>GameEngine\ResourceManager\TextureManager</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Circle.cpp">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>GameEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Transformation.cpp">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatorScript.cpp">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -162,9 +188,6 @@
     <ClInclude Include="ConstantBuffer.h">
       <Filter>GameEngine\GraphicsEngine\RenderSystem\ConstantBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Vector3D.h">
       <Filter>GameEngine\Data</Filter>
     </ClInclude>
@@ -176,9 +199,6 @@
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
       <Filter>GameEngine\GraphicsEngine\RenderSystem\IndexBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
       <Filter>GameEngine\InputSystem</Filter>
@@ -193,12 +213,6 @@
       <Filter>GameEngine\Data</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Primitive.h">
-      <Filter>GameEngine\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
       <Filter>GameEngine\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="SceneObject.h">
@@ -225,20 +239,52 @@
     <ClInclude Include="Vector2D.h">
       <Filter>GameEngine\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Debugger.h">
+      <Filter>Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderType.h">
+      <Filter>GameEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentID.h">
+      <Filter>GameEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Transformation.h">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="RotatorScript.h">
+      <Filter>GameEngine\Components\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShaderColor.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShaderColor.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>App</Filter>
+      <Filter>App\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>App</Filter>
+      <Filter>App\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShaderColor.hlsl">
+      <Filter>App\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>App\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

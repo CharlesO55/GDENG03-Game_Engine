@@ -29,7 +29,7 @@ public:
 		m_mat[2][2] = scale.z;
 	}
 
-	void setRotationX(float x)
+	void setRotationX(const float x)
 	{
 		m_mat[1][1] = cos(x);
 		m_mat[1][2] = sin(x);
@@ -37,7 +37,7 @@ public:
 		m_mat[2][2] = cos(x);
 	}
 
-	void setRotationY(float y)
+	void setRotationY(const float y)
 	{
 		m_mat[0][0] = cos(y);
 		m_mat[0][2] = -sin(y);
@@ -45,7 +45,7 @@ public:
 		m_mat[2][2] = cos(y);
 	}
 
-	void setRotationZ(float z)
+	void setRotationZ(const float z)
 	{
 		m_mat[0][0] = cos(z);
 		m_mat[0][1] = sin(z);
@@ -124,7 +124,7 @@ public:
 		::memcpy(m_mat, matrix.m_mat, sizeof(float) * 16);
 	}
 
-	void setOrthoLH(float width, float height, float near_plane, float far_plane)
+	void setOrthoLH(const float width, const float height, const float near_plane, const float far_plane)
 	{
 		setIdentity();
 		m_mat[0][0] = 2.0f / width;
@@ -133,7 +133,7 @@ public:
 		m_mat[3][2] = -(near_plane / (far_plane - near_plane));
 	}
 
-	void setPerspectiveFovLH(float fov, float aspect, float znear, float zfar)
+	void setPerspectiveFovLH(const float fov, const float aspect, const float znear, const float zfar)
 	{
 		float yscale = 1.0f / tan(fov / 2.0f);
 		float xscale = yscale / aspect;
