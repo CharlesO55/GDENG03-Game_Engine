@@ -3,19 +3,21 @@
 #include "InputSystem.h"
 #include "EngineTime.h"
 
-#include <iostream>
+#include "Debugger.h"
 
-Camera::Camera(int* refWindowWidth, int* refWindowHeight) : ref_windowWidth(refWindowWidth), ref_windowHeight(refWindowHeight), SceneObject()
+Camera::Camera(const int& refWindowWidth, const int& refWindowHeight) : SceneObject(), 
+	ref_windowWidth(refWindowWidth), ref_windowHeight(refWindowHeight)
 {
-	m_view.setIdentity();
-	m_view.setTranslation(Vector3D(0, 2, -2));
+	getTransform()->setPosition(Vector3D(0, 2, -2));
 
 	setActive(true);
+	Debugger::Success("[Camera] Instantiated");
 }
 
 Camera::~Camera()
 {
-	delete ref_windowHeight, ref_windowWidth;
+	setActive(false);
+	Debugger::Warning("[Camera] Destroyed");
 }
 
 void Camera::setActive(bool active)
@@ -28,37 +30,47 @@ void Camera::setActive(bool active)
 
 void Camera::update()
 {
+	/* IMPORTANT THIS DOESN'T OVERIDE SCENE OBJECT COMPONENT UPDATES AS OF NOW. SINCE UPDATE IS STILL ON PRIMITIVES AS OF NOW...
+	*/
+
+	// [1] VIEW MATRIX
 	Matrix4x4 temp;
 	Matrix4x4 world_cam;
 	world_cam.setIdentity();
 
-	// MOUSE V ROTATION
+
+	//// MOUSE V ROTATION
 	temp.setIdentity();
 	temp.setRotationX(m_rotX);
 	world_cam *= temp;
 
-	// MOUSE H ROTATION
+	//// MOUSE H ROTATION
 	temp.setIdentity();
 	temp.setRotationY(m_rotY);
 	world_cam *= temp;
 
 	// WASD MOVE CAMERA
-	Vector3D new_pos = m_view.getTranslation() + world_cam.getZDirection() * (m_forward * 0.1f);
-	new_pos = new_pos + world_cam.getXDirection() * (m_rightward * 0.1f);
-	new_pos.y += (m_upward * 0.1f);
-	world_cam.setTranslation(new_pos);
+	Vector3D dir = world_cam.getZDirection() * m_forward + world_cam.getXDirection() * m_rightward + Vector3D(0, m_upward, 0);
+	dir.normalize();
+	
+	world_cam.setTranslation(getTransform()->getPosition() + (dir * EngineTime::getDeltaTime() * 2));
 
-	m_view = world_cam;
+	
+	getTransform()->setWorldMatrix(world_cam);
+	m_inversedView = world_cam;
+	m_inversedView.inverse();
 
+
+	// [2] PROJECTION MATRIX
 	if (m_IsOrthographic)
 		m_proj.setOrthoLH(
-			(*ref_windowWidth)/100,
-			(*ref_windowHeight)/100,
+			(ref_windowWidth)/100.f,
+			(ref_windowHeight)/100.f,
 			-50,	//Near plane
-			100.0f	//Far plane
+			100.f	//Far plane
 		);
 	else
-		m_proj.setPerspectiveFovLH(1.57f, ((float)*ref_windowWidth / (float)*ref_windowHeight), 0.1f, 100.0f);
+		m_proj.setPerspectiveFovLH(1.57f, ((float)ref_windowWidth / ref_windowHeight), 0.1f, 100.0f);
 }
 
 Matrix4x4 Camera::getProj()
@@ -68,9 +80,7 @@ Matrix4x4 Camera::getProj()
 
 Matrix4x4 Camera::getView()
 {
-	Matrix4x4 inverse = m_view;
-	inverse.inverse();
-	return inverse;
+	return m_inversedView;
 }
 
 void Camera::onKeyDown(int key)
@@ -95,6 +105,8 @@ void Camera::onKeyDown(int key)
 		m_upward = -1;
 		break;
 	}
+
+	this->update();
 }
 
 void Camera::onKeyUp(int key)
@@ -107,27 +119,35 @@ void Camera::onKeyUp(int key)
 		case 'P':
 			m_IsOrthographic = !m_IsOrthographic;
 	}
+
+	this->update();
 }
 
 void Camera::onMouseMove(const Point& mouse_pos)
 {
+	if (!m_IsFreeLookMode)
+		return;
+
 	double deltaTime = EngineTime::getDeltaTime();
-	m_rotX += (mouse_pos.y - (*ref_windowHeight/ 2.0f)) * deltaTime * 0.1f;
-	m_rotY += (mouse_pos.x - (*ref_windowWidth / 2.0f)) * deltaTime * 0.1f;
+	
+	float halfHeight = ref_windowHeight / 2.0f;
+	float halfWidth = ref_windowWidth / 2.0f;
+
+	//Rotations
+	m_rotX += (mouse_pos.y - halfHeight) * deltaTime * 0.1f;
+	m_rotY += (mouse_pos.x - halfWidth) * deltaTime * 0.1f;
+
+	//Update matrix
+	this->update();
+
+	//Center mouse
+	InputSystem::get()->setCursorPosition(Point(halfWidth, halfHeight));
 }
 
-void Camera::onLeftMouseDown(const Point& mouse_pos)
-{
+void Camera::onLeftMouseDown(const Point& mouse_pos){}
+void Camera::onLeftMouseUp(const Point& mouse_pos) {}
+void Camera::onRightMouseDown(const Point& mouse_pos) {
+	m_IsFreeLookMode = !m_IsFreeLookMode;
+	InputSystem::get()->showCursor(!m_IsFreeLookMode);
 }
-
-void Camera::onLeftMouseUp(const Point& mouse_pos)
-{
-}
-
-void Camera::onRightMouseDown(const Point& mouse_pos)
-{
-}
-
-void Camera::onRightMouseUp(const Point& mouse_pos)
-{
-}
+void Camera::onRightMouseUp(const Point& mouse_pos) {}

@@ -4,11 +4,15 @@
 #include "Matrix4x4.h"
 #include "InputSystem.h"
 #include "EngineTime.h"
+#include "CameraSystem.h"
 
 #include "Cube.h"
 #include "Quad.h"
 #include "Circle.h"
 #include "Plane.h"
+#include "Line.h"
+
+#include "RaycastComponent.h"
 
 #include "Debugger.h"
 #include <iostream>
@@ -23,14 +27,14 @@ void AppWindow::onCreate()
 
 	// INPUT SYSTEM
 	InputSystem::get()->addListener(this);
-	InputSystem::get()->showCursor(false);
 
 	// GRAPHICS ENGINE
 	m_swap_chain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(this->m_hwnd, m_windowWidth, m_windowHeight);
 
 	
 	// SCENE CAMERA
-	m_Camera = new Camera(&m_windowWidth, &m_windowHeight);
+	CameraSystem::init();
+	CameraSystem::createCamera(m_windowWidth, m_windowHeight);
 
 	//testCreate();
 	
@@ -41,66 +45,20 @@ void AppWindow::onCreate()
 
 	m_shapes.push_back(plane);
 
+	Primitive* cube = new Cube();
+	cube->initialize();
+	cube->getTransform()->setPosition(Vector3D(0, 5, 0));
 
-	Vector3D spawnPositions[] = {
-		Vector3D(-1, 1, 0),
-		Vector3D(0, 1, 0),
-		Vector3D(1, 1, 0),
-		Vector3D(-0.5f, 3, 0),
-		Vector3D(0.5f, 3, 0),
-		Vector3D(0, 5, 0),
-	};
-
-
-	Vector3D offset = Vector3D(0.5f,0,0);
-	float angle = 76 * 0.0174533;
-
-	//TRIANGLES
-	for (int i = 0; i < sizeof(spawnPositions)/sizeof(Vector3D); i++) {
-		Primitive* leftplane = new Plane();
-		leftplane->initialize();
-
-		leftplane->getTransform()->move(spawnPositions[i]);
-		leftplane->getTransform()->scale(Vector3D(0,0, -0.5f));
-		leftplane->getTransform()->rotate(Vector3D(0,0, angle));
-
-		m_shapes.push_back(leftplane);
-
-		Primitive* rightPlane = new Plane();
-		rightPlane->initialize();
-
-		rightPlane->getTransform()->move(spawnPositions[i] + offset);
-		rightPlane->getTransform()->scale(Vector3D(0, 0,- 0.5f));
-		rightPlane->getTransform()->rotate(Vector3D(0, 0, -angle));
-
-		m_shapes.push_back(rightPlane);
-	}
+	m_shapes.push_back(cube);
 	
-	Vector3D basePositions[] = {
-		Vector3D(-0.5f, 2.01f, 0),
-		Vector3D(1, 2, 0),
-		Vector3D(0.25f, 4, 0)
-	};
 
-	for (int i = 0; i < sizeof(basePositions)/sizeof(Vector3D); i++)
-	{
-		Primitive* baseplane = new Plane();
-		baseplane->initialize();
-		baseplane->getTransform()->move(basePositions[i]);
-		baseplane->getTransform()->scale(Vector3D(0, 0, -0.5f));
+	Primitive* biggerCube = new Cube();
+	biggerCube->initialize();
+	biggerCube->getTransform()->setPosition(Vector3D(-3, 5, 0));
+	biggerCube->getTransform()->setScale(Vector3D(2));
 
-		m_shapes.push_back(baseplane);
-	}
+	m_shapes.push_back(biggerCube);
 
-
-
-
-	for (int i = 1; i < m_shapes.size(); i++) {
-		std::cout << i << std::endl;
-		std::cout << "Pos  :"; Debugger::PrintVector(m_shapes[i]->getTransform()->m_pos);
-		std::cout << "Scale:"; Debugger::PrintVector(m_shapes[i]->getTransform()->m_scale);
-		std::cout << "Rot:"; Debugger::PrintVector(m_shapes[i]->getTransform()->m_rot);
-	}
 
 
 	//CONSTANT BUFFER
@@ -114,22 +72,23 @@ void AppWindow::onCreate()
 void AppWindow::onUpdate()
 {
 	Window::onUpdate();
+
 	InputSystem::get()->update();
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
 		0.2, 0.2, 0.2, 1); //BLACK
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
 
-	// Update the camera
-	m_Camera->update();
 
 	for (int i = 0; i < m_shapes.size(); i++) {
-		// Calc the circle's matrices
-		m_shapes[i]->updateMatrix(m_Camera->getView(), m_Camera->getProj());
-
-		// Move the cube based on its position on screen space
 		m_shapes[i]->update();
+		m_shapes[i]->updateMVP();
 		m_shapes[i]->draw();
+	}
+	for (int i = 0; i < m_rays.size(); i++) {
+		m_rays[i]->update();
+		m_rays[i]->updateMVP();
+		m_rays[i]->draw();
 	}
 
 	//testUpdate();
@@ -141,28 +100,134 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	
+
 	while (m_shapes.size() > 0) {
 		delete m_shapes.back();
 		m_shapes.pop_back();
 	}
+	while (m_rays.size() > 0) {
+		delete m_rays.back();
+		m_rays.pop_back();
+	}
+
+
+	CameraSystem::release();
 }
 
 
-
-
-void AppWindow::InstantiateShape()
+void AppWindow::InstantiateShape(const Vector3D& spawnPos)
 {
-	Primitive* newShape = new Cube();
+	Primitive* newShape = new Cube(Vector3D(1, 0, 0));
 	newShape->initialize();
-	newShape->getTransform()->move(Vector3D(
-		std::rand() % 10 + -5,
-		std::rand() % 10 + -5,
-		std::rand() % 10 + -5
-	));
+	newShape->getTransform()->setPosition(spawnPos);
+	//newShape->getTransform()->setScale(Vector3D(0.1f));
 
 	m_shapes.push_back(newShape);
 }
+
+
+bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
+{
+	Point cursorPos = InputSystem::get()->getCursorPos();
+
+	Vector3D origin = CameraSystem::getCamera()->getTransform()->getPosition();
+	Vector3D dir = this->GetRayDirection(cursorPos.x, cursorPos.y);
+
+	//	SHOULD BE OVERRIDEN IF HIT
+	float closest_t = 99999;
+	int hitObjIndex = -1;
+
+	//	CHECK RAY INTERSECTIONS
+	for (int i = 0; i < m_shapes.size(); i++) {
+		Component* raycastComponent = nullptr;
+		if (m_shapes[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
+			float t = -1;
+			
+			int hits = ((RaycastComponent*)raycastComponent)->
+				checkRaycastHits(
+					origin, dir, 
+					m_shapes[i]->getTransform()->getPosition(), 
+					m_shapes[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
+					&t
+				);
+
+
+			if (hits > 0 && t >= 0) {
+				closest_t = min(closest_t, t);
+				hitObjIndex = i;
+			}
+		}
+	}
+
+	if (hitObjIndex >= 0) {
+		*hitPos = origin + (dir * closest_t);
+		hitObj = m_shapes[hitObjIndex];
+		return true;
+	}
+	else return false;
+}
+
+void AppWindow::DoRaycast()
+{
+	Vector3D hitPos;
+	Primitive* hitObj = nullptr;
+
+	if (TryRacyastObjects(&hitPos, hitObj)) {
+		//InstantiateShape(hitPos);
+
+		Primitive* line = new Line(CameraSystem::getCamera()->getTransform()->getPosition(), hitPos);
+		line->initialize();
+		m_rays.push_back(line);
+
+		Component* raycastComponent = nullptr;
+		if (hitObj->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
+			((RaycastComponent*)raycastComponent)->onHit();
+		}
+
+		m_is_selected = true;
+		m_selected_prim = hitObj;
+	}
+
+	else {
+		m_is_selected = false;
+		m_selected_prim = nullptr;
+	}
+}
+
+
+Vector3D AppWindow::GetRayDirection(int mouseX, int mouseY)
+{
+	Matrix4x4 view = CameraSystem::getCamera()->getView();
+	Matrix4x4 projection = CameraSystem::getCamera()->getProj();
+
+	// Convert to normalized device coordinates
+	float x = ((2.0f * mouseX) / m_windowWidth) - 1.0f;
+	float y = 1.0f - ((2.0f * mouseY) / m_windowHeight);
+
+	Vector4D rayClip = Vector4D(x, y, -1.0f, 1.0f);
+
+	// Convert to view space
+	Matrix4x4 invProjection = projection;
+	invProjection.inverse();
+	Vector4D rayEye = invProjection * rayClip;
+	rayEye.z = 1.0f;
+	rayEye.w = 0.0f;
+
+	// Convert to world space
+	Matrix4x4 invView = view;
+	view.inverse();
+	Vector4D rayWorld = invView * rayEye;
+	Vector3D rayWorldDir = Vector3D(rayWorld.x, rayWorld.y, rayWorld.z);
+	rayWorldDir.normalize();
+
+	return rayWorldDir;
+}
+
+
+
+#pragma region PARDCODE17_Test_Textures
+
+
 
 
 void AppWindow::testCreate()
@@ -295,8 +360,8 @@ void AppWindow::testUpdate()
 	temp.setRotationY(0);
 	world_cam *= temp;
 
-	cc.m_view = m_Camera->getView();
-	cc.m_proj = m_Camera->getProj();
+	cc.m_view = CameraSystem::getCamera()->getView();
+	cc.m_proj = CameraSystem::getCamera()->getProj();
 	m_cb->update(GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext(), &cc);
 }
 
@@ -314,16 +379,19 @@ void AppWindow::testDraw()
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
 }
+#pragma endregion
 
 
 
 void AppWindow::onFocus()
 {
+	Window::onFocus();
 	InputSystem::get()->addListener(this);
 }
 
 void AppWindow::onKillFocus()
 {
+	Window::onKillFocus();
 	InputSystem::get()->removeListener(this);
 }
 
@@ -337,33 +405,92 @@ void AppWindow::onKeyDown(int key)
 		break;
 		//SPACE
 	case 32:
-		InstantiateShape();
+		//InstantiateShape();
 		break;
 		//BACKSPACE
 	case 8:
-		if (m_shapes.size() > 0) {
-			delete m_shapes.back();
-			m_shapes.pop_back();
+		if (m_rays.size() > 0) {
+			delete m_rays.back();
+			m_rays.pop_back();
 		}
 		break;
 		//DELETE
 	case 46:
-		while (m_shapes.size() > 0) {
-			delete m_shapes.back();
-			m_shapes.pop_back();
+		while (m_rays.size() > 0) {
+			delete m_rays.back();
+			m_rays.pop_back();
+		}
+		break;
+
+		// I
+	case 73:
+		if (this->m_is_selected)
+		{
+			Component* transformComponent = nullptr;
+			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
+				((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.1f, 0.0f));
+		}
+
+		break;
+
+		// J
+	case 74:
+		if (this->m_is_selected)
+		{
+			Component* transformComponent = nullptr;
+			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
+				((Transformation*)transformComponent)->move(Vector3D(-0.1f, 0.0f, 0.0f));
+		}
+		break;
+
+		// K
+	case 75:
+		if (this->m_is_selected)
+		{
+			Component* transformComponent = nullptr;
+			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
+				((Transformation*)transformComponent)->move(Vector3D(0.0f, -0.1f, 0.0f));
+		}
+		break;
+
+		// L
+	case 76:
+		if (this->m_is_selected)
+		{
+			Component* transformComponent = nullptr;
+			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
+				((Transformation*)transformComponent)->move(Vector3D(0.1f, 0.0f, 0.0f));
+		}
+		break;
+
+		// U
+	case 79:
+		if (this->m_is_selected)
+		{
+			Component* transformComponent = nullptr;
+			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
+				((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.0f, -0.1f));
+		}
+		break;
+
+
+		// O
+	case 85:
+		if (this->m_is_selected)
+		{
+			Component* transformComponent = nullptr;
+			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
+				((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.0f, 0.1f));
 		}
 		break;
 	}
+
 }
 
-void AppWindow::onKeyUp(int key){}
+void AppWindow::onKeyUp(int key) {}
 
-void AppWindow::onMouseMove(const Point& mouse_pos)
-{
-	InputSystem::get()->setCursorPosition(Point((m_windowWidth / 2), (m_windowHeight / 2)));
-}
-
-void AppWindow::onLeftMouseDown(const Point& mouse_pos){}
+void AppWindow::onMouseMove(const Point& mouse_pos) {}
+void AppWindow::onLeftMouseDown(const Point& mouse_pos) { DoRaycast(); }
 void AppWindow::onLeftMouseUp(const Point& mouse_pos){}
 void AppWindow::onRightMouseDown(const Point& mouse_pos){}
 void AppWindow::onRightMouseUp(const Point& mouse_pos){}

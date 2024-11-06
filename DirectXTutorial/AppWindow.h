@@ -29,10 +29,18 @@ public:
 
 
 private:
-	Camera* m_Camera = nullptr;
 	std::vector<Primitive*> m_shapes = {};
+	std::vector<Primitive*> m_rays = {};
 
-	
+	bool m_is_selected = false;
+	Primitive* m_selected_prim = nullptr;
+
+	bool TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj);
+	void DoRaycast();
+
+
+	Vector3D GetRayDirection(int mouseX, int mouseY);
+
 
 	// TESTING
 	TexturePtr m_wood_tex = nullptr;
@@ -49,7 +57,7 @@ private:
 
 
 private:
-	void InstantiateShape();
+	void InstantiateShape(const Vector3D& spawnPos);
 
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;

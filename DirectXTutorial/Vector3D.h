@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 class Vector3D {
 public:
@@ -17,15 +18,55 @@ public:
 		return v;
 	}
 
-	Vector3D operator *(const float num)
-	{
-		return Vector3D(x * num, y * num, z * num);
+	static float dot(const Vector3D& a, const Vector3D& b) {
+		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
 
+	static Vector3D inverse(const Vector3D& vec) {
+		return Vector3D(1 / vec.x, 1 / vec.y, 1 / vec.z);
+	}
 
-	Vector3D operator +(const Vector3D& vec)
+	Vector3D operator *(const float num) const { return Vector3D(x * num, y * num, z * num); }
+	Vector3D operator /(const float num) const { return Vector3D(x / num, y / num, z / num); }
+
+	Vector3D operator +(const Vector3D& vec) const { return Vector3D(x + vec.x, y + vec.y, z + vec.z); }
+	Vector3D operator -(const Vector3D& vec) const { return Vector3D(x - vec.x, y - vec.y, z - vec.z); }
+
+	float magnitude() const 
 	{
-		return Vector3D(x + vec.x, y + vec.y, z + vec.z);
+		return std::sqrt(x * x + y * y + z * z);
+	}
+
+	void normalize() 
+	{
+		float len = magnitude();
+		if (len > 0.00001f) {
+			x /= len;
+			y /= len;
+			z /= len;
+		}
+	}
+
+	static float distance(const Vector3D& a, const Vector3D& b) {
+		float x = a.x - b.x;
+		float y = a.y - b.y;
+		float z = a.z - b.z;
+
+		return sqrt(x*x + y*y + z*z);
+	}
+
+	static float maxComponent(const Vector3D& vec) {
+		float output = vec.x;
+		if (vec.y > output)	output = vec.y;
+		if (vec.z > output)	output = vec.z;
+		return output;
+	}
+
+	static float minComponent(const Vector3D& vec) {
+		float output = vec.x;
+		if (vec.y < output)	output = vec.y;
+		if (vec.z < output)	output = vec.z;
+		return output;
 	}
 
 	static Vector3D RIGHT() { return Vector3D(1, 0, 0); }

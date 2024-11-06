@@ -6,11 +6,12 @@
 #include "RotatorScript.h"
 #include "ScaleScript.h"
 
+#include "RaycastComponent.h"
 
 Cube::Cube() : Primitive()
 {
-	//m_Components.push_back(new RotatorScript(this));
-	//m_Components.push_back(new ScaleScript(this));
+	m_Components.push_back(new RotatorScript(this));
+	m_Components.push_back(new RaycastComponent(this, RaycastComponent::INTERSECTION_TYPE::SPHERE_CAST));
 
 
 	m_verts =
@@ -56,8 +57,6 @@ Cube::Cube() : Primitive()
 
 Cube::Cube(Vector3D color)
 {
-	m_Components.push_back(new RotatorScript(this));
-
 	m_verts =
 	{
 		//X - Y - Z
@@ -95,9 +94,4 @@ Cube::Cube(Vector3D color)
 		7,6,1,
 		1,0,7
 	};
-}
-
-Cube::~Cube()
-{
-	release();
 }
