@@ -12,6 +12,11 @@ private:
 	ID3D11Resource* m_texture = nullptr;
 	ID3D11ShaderResourceView* m_shader_res_view = nullptr;
 
+public:
+	const ID3D11ShaderResourceView* getShaderResourceView() {
+		return m_shader_res_view;
+	}
+
 private:
 	friend class DeviceContext;
 };

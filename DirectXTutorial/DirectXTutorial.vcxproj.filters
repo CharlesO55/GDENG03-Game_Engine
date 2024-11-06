@@ -76,6 +76,15 @@
     <Filter Include="GameEngine\RaycastSystem">
       <UniqueIdentifier>{c184e149-c2cd-466f-8a15-54fa657ab37c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\UIManager">
+      <UniqueIdentifier>{3bf016df-b341-4268-b225-a0adbc43d149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\IMGUI">
+      <UniqueIdentifier>{1b0b482d-6199-4ed0-b260-cd81f9b6ead7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\Screens">
+      <UniqueIdentifier>{76e791b0-e2ac-4129-b2b6-d207284a8d62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -173,6 +182,27 @@
     </ClCompile>
     <ClCompile Include="RaycastComponent.cpp">
       <Filter>GameEngine\RaycastSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>GameEngine\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>GameEngine\IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +331,45 @@
     </ClInclude>
     <ClInclude Include="RaycastComponent.h">
       <Filter>GameEngine\RaycastSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>GameEngine\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>GameEngine\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_BaseScreen.h">
+      <Filter>GameEngine\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Credits.h">
+      <Filter>GameEngine\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_RenderOptions.h">
+      <Filter>GameEngine\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

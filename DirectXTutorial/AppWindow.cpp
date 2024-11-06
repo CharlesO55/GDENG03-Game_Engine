@@ -14,6 +14,8 @@
 
 #include "RaycastComponent.h"
 
+#include "UIManager.h"
+
 #include "Debugger.h"
 #include <iostream>
 
@@ -71,12 +73,20 @@ void AppWindow::onCreate()
 
 void AppWindow::onUpdate()
 {
+	if (!m_is_run)
+		return;
+
 	Window::onUpdate();
 
 	InputSystem::get()->update();
 
+	const float* colors = UIManager::get()->getRenderOptions()->WorldColor;
+
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
-		0.2, 0.2, 0.2, 1); //BLACK
+		colors[0],
+		colors[1],
+		colors[2],
+		colors[3]);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
 
 
@@ -94,6 +104,8 @@ void AppWindow::onUpdate()
 	//testUpdate();
 	//testDraw();
 
+	UIManager::get()->drawAllUI();
+
 	m_swap_chain->present(true);
 }
 
@@ -110,7 +122,6 @@ void AppWindow::onDestroy()
 		m_rays.pop_back();
 	}
 
-
 	CameraSystem::release();
 }
 
@@ -124,6 +135,10 @@ void AppWindow::InstantiateShape(const Vector3D& spawnPos)
 
 	m_shapes.push_back(newShape);
 }
+
+
+
+#pragma region RAYCAST
 
 
 bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
@@ -222,6 +237,7 @@ Vector3D AppWindow::GetRayDirection(int mouseX, int mouseY)
 
 	return rayWorldDir;
 }
+#pragma endregion
 
 
 

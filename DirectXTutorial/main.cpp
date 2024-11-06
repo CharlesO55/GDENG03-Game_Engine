@@ -3,6 +3,8 @@
 #include "EngineTime.h"
 #include "Debugger.h"
 
+#include "UIManager.h"
+
 int main()
 {
 	try
@@ -20,6 +22,7 @@ int main()
 			}
 		}
 		catch (...) {
+			UIManager::release();
 			InputSystem::release();
 			GraphicsEngine::release();
 			EngineTime::release();
@@ -28,6 +31,7 @@ int main()
 	}
 
 
+	UIManager::release();
 	InputSystem::release();
 	GraphicsEngine::release();
 	EngineTime::release();
