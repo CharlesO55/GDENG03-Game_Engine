@@ -48,6 +48,8 @@ private:
 	void testUpdate();
 	void testDraw();
 
+	MeshPtr m_mesh = nullptr;
+
 	SwapChainPtr m_swap_chain;
 	VertexBufferPtr m_vb;
 	VertexShaderPtr m_vs;

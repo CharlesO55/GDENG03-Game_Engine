@@ -25,7 +25,7 @@ VertexBuffer::VertexBuffer(void* list_vertices, UINT size_vertex, UINT size_list
 		Debugger::Error("[Vertex Buffer] Failed to create.");
 	}
 
-
+	 
 	D3D11_INPUT_ELEMENT_DESC* layout = nullptr;
 	UINT size_layout;
 

@@ -85,6 +85,9 @@
     <Filter Include="GameEngine\Screens">
       <UniqueIdentifier>{76e791b0-e2ac-4129-b2b6-d207284a8d62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\ResourceManager\MeshManager">
+      <UniqueIdentifier>{24470348-6f65-43f4-951d-4bf6388bac49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,6 +206,12 @@
     </ClCompile>
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>GameEngine\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,6 +380,15 @@
     <ClInclude Include="UI_RenderOptions.h">
       <Filter>GameEngine\Screens</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>GameEngine\ResourceManager\MeshManager</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexMesh.h">
+      <Filter>GameEngine\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShaderColor.hlsl">
@@ -383,6 +401,9 @@
       <Filter>App\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
+      <Filter>App\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexMeshLayoutShader.hlsl">
       <Filter>App\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

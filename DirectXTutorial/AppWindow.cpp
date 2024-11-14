@@ -11,6 +11,7 @@
 #include "Circle.h"
 #include "Plane.h"
 #include "Line.h"
+#include "Mesh.h"
 
 #include "RaycastComponent.h"
 
@@ -38,7 +39,7 @@ void AppWindow::onCreate()
 	CameraSystem::init();
 	CameraSystem::createCamera(m_windowWidth, m_windowHeight);
 
-	//testCreate();
+	testCreate();
 	
 	// CREATE A PLANE
 	Primitive* plane = new Plane(Vector3D(96/256.f, 125 / 256.f, 141 / 256.f));
@@ -101,8 +102,8 @@ void AppWindow::onUpdate()
 		m_rays[i]->draw();
 	}
 
-	//testUpdate();
-	//testDraw();
+	testUpdate();
+	testDraw();
 
 	UIManager::get()->drawAllUI();
 
@@ -248,7 +249,10 @@ Vector3D AppWindow::GetRayDirection(int mouseX, int mouseY)
 
 void AppWindow::testCreate()
 {
-	m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\wood.jpg");
+	m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\brick.png");
+	m_mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj");
+
+
 
 	Vector3D position_list[] =
 	{
@@ -390,10 +394,14 @@ void AppWindow::testDraw()
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setPixelShader(m_ps);
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setTexture(m_ps, m_wood_tex);
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
+	/*GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
 
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);*/
+
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_mesh->getVertexBuffer());
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_mesh->getIndexBuffer());
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_mesh->getIndexBuffer()->getSizeIndexList(), 0, 0);
 }
 #pragma endregion
 
