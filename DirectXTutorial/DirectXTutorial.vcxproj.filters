@@ -213,6 +213,9 @@
     <ClCompile Include="MeshManager.cpp">
       <Filter>GameEngine\ResourceManager\MeshManager</Filter>
     </ClCompile>
+    <ClCompile Include="ObjImport.cpp">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppWindow.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="VertexMesh.h">
       <Filter>GameEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjImport.h">
+      <Filter>GameEngine\GameObjects\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

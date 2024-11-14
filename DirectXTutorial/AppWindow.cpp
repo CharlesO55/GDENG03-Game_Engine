@@ -12,10 +12,13 @@
 #include "Plane.h"
 #include "Line.h"
 #include "Mesh.h"
+#include "ObjImport.h"
+
 
 #include "RaycastComponent.h"
 
 #include "UIManager.h"
+
 
 #include "Debugger.h"
 #include <iostream>
@@ -39,11 +42,12 @@ void AppWindow::onCreate()
 	CameraSystem::init();
 	CameraSystem::createCamera(m_windowWidth, m_windowHeight);
 
-	testCreate();
+	//testCreate();
 	
 	// CREATE A PLANE
 	Primitive* plane = new Plane(Vector3D(96/256.f, 125 / 256.f, 141 / 256.f));
 	plane->initialize();
+	plane->getTransform()->move(Vector3D(0, -5, 0));
 	plane->getTransform()->scale(Vector3D(20));
 
 	m_shapes.push_back(plane);
@@ -62,6 +66,23 @@ void AppWindow::onCreate()
 
 	m_shapes.push_back(biggerCube);
 
+
+	ObjImport* test_Teapot = new ObjImport(L"..\\Assets\\Textures\\brick.png", L"..\\Assets\\Meshes\\teapot.obj");
+	test_Teapot->initialize();
+	test_Teapot->getTransform()->setScale(Vector3D(3));
+	m_shapes.push_back(test_Teapot);
+
+
+	ObjImport* test_Bunny = new ObjImport(L"..\\Assets\\Textures\\wood.jpg", L"..\\Assets\\Meshes\\bunny.obj");
+	test_Bunny->initialize();
+	test_Bunny->getTransform()->move(Vector3D(5,0,0));
+	m_shapes.push_back(test_Bunny);
+
+
+	ObjImport* test_Armadillo = new ObjImport(L"..\\Assets\\Textures\\wood.jpg", L"..\\Assets\\Meshes\\armadillo.obj");
+	test_Armadillo->initialize();
+	test_Armadillo->getTransform()->move(Vector3D(-5, 0, 0));
+	m_shapes.push_back(test_Armadillo);
 
 
 	//CONSTANT BUFFER
@@ -102,9 +123,10 @@ void AppWindow::onUpdate()
 		m_rays[i]->draw();
 	}
 
-	testUpdate();
-	testDraw();
 
+
+	
+	
 	UIManager::get()->drawAllUI();
 
 	m_swap_chain->present(true);
@@ -127,14 +149,32 @@ void AppWindow::onDestroy()
 }
 
 
-void AppWindow::InstantiateShape(const Vector3D& spawnPos)
+void AppWindow::InstantiateShape()
 {
-	Primitive* newShape = new Cube(Vector3D(1, 0, 0));
-	newShape->initialize();
-	newShape->getTransform()->setPosition(spawnPos);
-	//newShape->getTransform()->setScale(Vector3D(0.1f));
+	const Vector3D& spawnPos = Vector3D(m_shapes.size());
 
-	m_shapes.push_back(newShape);
+	const wchar_t* texFile = L"..\\Assets\\Textures\\brick.png";
+	const wchar_t* objFile;
+	switch (m_shapes.size() % 3)
+	{
+	case 0:
+		objFile = L"..\\Assets\\Meshes\\teapot.obj";
+		break;
+	case 1:
+		objFile = L"..\\Assets\\Meshes\\bunny.obj";
+		break;
+	default:
+		objFile = L"..\\Assets\\Meshes\\armadillo.obj";
+		break;
+	}
+	
+
+
+	Primitive* newObj = new ObjImport(texFile, objFile);
+	newObj->initialize();
+	newObj->getTransform()->setPosition(spawnPos);
+	
+	m_shapes.push_back(newObj);
 }
 
 
@@ -249,11 +289,16 @@ Vector3D AppWindow::GetRayDirection(int mouseX, int mouseY)
 
 void AppWindow::testCreate()
 {
-	m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\brick.png");
-	m_mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj");
+	/*m_wood_tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"..\\Assets\\Textures\\brick.png");
+	m_mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile(L"..\\Assets\\Meshes\\teapot.obj");*/
 
+	
 
+	/*m_Tex = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(");
+	m_Mesh = GraphicsEngine::get()->getMeshManager()->createMeshFromFile();*/
 
+	
+	/*
 	Vector3D position_list[] =
 	{
 		{ Vector3D(-0.5f,-0.5f,-0.5f)},
@@ -342,25 +387,25 @@ void AppWindow::testCreate()
 		20,21,22,
 		22,23,20
 	};
-
+	
 	UINT size_index_list = ARRAYSIZE(index_list);
 	m_ib = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(index_list, size_index_list);
 
-
-	void* shader_byte_code = nullptr;
-	size_t size_shader = 0;
-	GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
-
-	m_vs = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shader_byte_code, size_shader);
-	//CHANGE.........................
-	m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(vertex_list, sizeof(vertexTex), size_list, shader_byte_code, (UINT)size_shader, ShaderType::BASIC_TEXTURE);
-
-	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
+	*/
 
 
-	GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
-	m_ps = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shader_byte_code, size_shader);
-	GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
+	//void* shader_byte_code = nullptr;
+	//size_t size_shader = 0;
+	//GraphicsEngine::get()->getRenderSystem()->compileVertexShader(L"VertexShader.hlsl", "vsmain", &shader_byte_code, &size_shader);
+
+	//m_vs = GraphicsEngine::get()->getRenderSystem()->createVertexShader(shader_byte_code, size_shader);
+	////CHANGE.........................
+	////m_vb = GraphicsEngine::get()->getRenderSystem()->createVertexBuffer(vertex_list, sizeof(vertexTex), size_list, shader_byte_code, (UINT)size_shader, ShaderType::BASIC_TEXTURE);
+	//GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
+	//
+	//GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
+	//m_ps = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shader_byte_code, size_shader);
+	//GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
 }
 
 void AppWindow::testUpdate()
@@ -386,7 +431,7 @@ void AppWindow::testUpdate()
 }
 
 void AppWindow::testDraw()
-{
+{/*
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
 
@@ -394,14 +439,16 @@ void AppWindow::testDraw()
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setPixelShader(m_ps);
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setTexture(m_ps, m_wood_tex);
+*/
+
 	/*GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_ib);
 
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_ib->getSizeIndexList(), 0, 0);*/
 
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_mesh->getVertexBuffer());
+	/*GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_mesh->getVertexBuffer());
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_mesh->getIndexBuffer());
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_mesh->getIndexBuffer()->getSizeIndexList(), 0, 0);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->drawIndexedTriangleList(m_mesh->getIndexBuffer()->getSizeIndexList(), 0, 0);*/
 }
 #pragma endregion
 
@@ -429,7 +476,7 @@ void AppWindow::onKeyDown(int key)
 		break;
 		//SPACE
 	case 32:
-		//InstantiateShape();
+		InstantiateShape();
 		break;
 		//BACKSPACE
 	case 8:
@@ -493,7 +540,8 @@ void AppWindow::onKeyDown(int key)
 		{
 			Component* transformComponent = nullptr;
 			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
-				((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.0f, -0.1f));
+				//((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.0f, -0.1f));
+				((Transformation*)transformComponent)->scale(Vector3D(-0.1f));
 		}
 		break;
 
@@ -504,7 +552,8 @@ void AppWindow::onKeyDown(int key)
 		{
 			Component* transformComponent = nullptr;
 			if (this->m_selected_prim->tryGetComponent(ComponentID::TRANSFORMATION, transformComponent))
-				((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.0f, 0.1f));
+				((Transformation*)transformComponent)->scale(Vector3D(0.1f));
+				//((Transformation*)transformComponent)->move(Vector3D(0.0f, 0.0f, 0.1f));
 		}
 		break;
 	}

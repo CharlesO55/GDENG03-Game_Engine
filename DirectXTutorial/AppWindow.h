@@ -14,6 +14,7 @@
 #include "Camera.h"
 
 class Primitive;
+class ObjImport;
 
 #include <vector>
 
@@ -43,12 +44,12 @@ private:
 
 
 	// TESTING
-	TexturePtr m_wood_tex = nullptr;
 	void testCreate();
 	void testUpdate();
 	void testDraw();
 
-	MeshPtr m_mesh = nullptr;
+
+
 
 	SwapChainPtr m_swap_chain;
 	VertexBufferPtr m_vb;
@@ -59,7 +60,7 @@ private:
 
 
 private:
-	void InstantiateShape(const Vector3D& spawnPos);
+	void InstantiateShape();
 
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;

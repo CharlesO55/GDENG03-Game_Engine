@@ -13,7 +13,7 @@ ScaleScript::ScaleScript(SceneObject* owner) : Component(ComponentID::ROTATOR, o
 void ScaleScript::update()
 {
 	m_Owner->getTransform()->setScale(
-		Vector3D::lerp(Vector3D(1), Vector3D(3 * 5, 5, 0.1f), (sin(EngineTime::getTotalTime()) + 1) / 2)
+		Vector3D::lerp(Vector3D(1), Vector3D(2), (sin(EngineTime::getTotalTime()) + 1) / 2)
 	);
 
 	

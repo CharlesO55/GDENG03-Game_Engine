@@ -19,7 +19,7 @@ public:
 	Primitive();
 	~Primitive();
 
-	void initialize();
+	virtual void initialize();
 	virtual void update();
 
 	void updateMVP(Matrix4x4* worldOverride = nullptr);
@@ -38,7 +38,7 @@ protected:
 	std::vector<vertexColor> m_verts = {};
 	std::vector<unsigned int> m_indices = {};
 
-	TexturePtr m_tex = nullptr;
+	TexturePtr m_Tex = nullptr;
 	
 
 	constant m_cc;
