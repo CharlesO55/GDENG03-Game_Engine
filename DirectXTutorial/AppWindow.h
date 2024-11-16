@@ -60,8 +60,6 @@ private:
 
 
 private:
-	void InstantiateShape();
-
 	// Inherited via InputListener
 	virtual void onKeyDown(int key) override;
 	virtual void onKeyUp(int key) override;

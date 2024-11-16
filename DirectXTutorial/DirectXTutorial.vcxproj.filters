@@ -88,6 +88,12 @@
     <Filter Include="GameEngine\ResourceManager\MeshManager">
       <UniqueIdentifier>{24470348-6f65-43f4-951d-4bf6388bac49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\ShaderLibrary">
+      <UniqueIdentifier>{8d0b741a-fd3a-4e57-a466-57ad5544bd0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\GameObjectManager">
+      <UniqueIdentifier>{51dfa320-972f-407c-af08-084a0c72a375}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -215,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="ObjImport.cpp">
       <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameEngine\GameObjectManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +403,12 @@
     </ClInclude>
     <ClInclude Include="ObjImport.h">
       <Filter>GameEngine\GameObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>GameEngine\GameObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_GameObjectMenu.h">
+      <Filter>GameEngine\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

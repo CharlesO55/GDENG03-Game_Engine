@@ -54,6 +54,9 @@ void UIManager::drawAllUI()
 				ImGui::EndMenu();
 			}
 
+			m_UI_GameObjectMenu->TryShow();
+			
+
 			ImGui::EndMainMenuBar();
 		}
 
@@ -70,6 +73,7 @@ UIManager::UIManager()
 {
 	m_UI_Credits = new UI_Credits();
 	m_UI_RenderOptions = new UI_RenderOptions();
+	m_UI_GameObjectMenu = new UI_GameObjectMenu();
 }
 
 UIManager::~UIManager()

@@ -3,7 +3,7 @@
 
 #include "UI_Credits.h"
 #include "UI_RenderOptions.h"
-
+#include "UI_GameObjectMenu.h"
 
 class UIManager
 {
@@ -28,8 +28,9 @@ public:
 
 private:
 	bool is_Show_Window = true;
+
+
 	UI_Credits* m_UI_Credits = nullptr;
 	UI_RenderOptions* m_UI_RenderOptions = nullptr;
-
-
+	UI_GameObjectMenu* m_UI_GameObjectMenu = nullptr;
 };

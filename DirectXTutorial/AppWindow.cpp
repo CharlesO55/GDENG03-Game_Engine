@@ -6,6 +6,8 @@
 #include "EngineTime.h"
 #include "CameraSystem.h"
 
+#include "GameObjectManager.h"
+
 #include "Cube.h"
 #include "Quad.h"
 #include "Circle.h"
@@ -44,52 +46,9 @@ void AppWindow::onCreate()
 
 	//testCreate();
 	
-	// CREATE A PLANE
-	Primitive* plane = new Plane(Vector3D(96/256.f, 125 / 256.f, 141 / 256.f));
-	plane->initialize();
-	plane->getTransform()->move(Vector3D(0, -5, 0));
-	plane->getTransform()->scale(Vector3D(20));
 
-	m_shapes.push_back(plane);
-
-	Primitive* cube = new Cube();
-	cube->initialize();
-	cube->getTransform()->setPosition(Vector3D(0, 5, 0));
-
-	m_shapes.push_back(cube);
-	
-
-	Primitive* biggerCube = new Cube();
-	biggerCube->initialize();
-	biggerCube->getTransform()->setPosition(Vector3D(-3, 5, 0));
-	biggerCube->getTransform()->setScale(Vector3D(2));
-
-	m_shapes.push_back(biggerCube);
-
-
-	ObjImport* test_Teapot = new ObjImport(L"..\\Assets\\Textures\\brick.png", L"..\\Assets\\Meshes\\teapot.obj");
-	test_Teapot->initialize();
-	test_Teapot->getTransform()->setScale(Vector3D(3));
-	m_shapes.push_back(test_Teapot);
-
-
-	ObjImport* test_Bunny = new ObjImport(L"..\\Assets\\Textures\\wood.jpg", L"..\\Assets\\Meshes\\bunny.obj");
-	test_Bunny->initialize();
-	test_Bunny->getTransform()->move(Vector3D(5,0,0));
-	m_shapes.push_back(test_Bunny);
-
-
-	ObjImport* test_Armadillo = new ObjImport(L"..\\Assets\\Textures\\wood.jpg", L"..\\Assets\\Meshes\\armadillo.obj");
-	test_Armadillo->initialize();
-	test_Armadillo->getTransform()->move(Vector3D(-5, 0, 0));
-	m_shapes.push_back(test_Armadillo);
-
-
-	//CONSTANT BUFFER
-	constant cc;
-	cc.m_time = 0;
-	
-	m_cb = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&cc, sizeof(constant));
+	GameObjectManager::Get()->Init();
+	GameObjectManager::Get()->CreateWorld();
 }
 
 
@@ -126,7 +85,7 @@ void AppWindow::onUpdate()
 
 
 	
-	
+	GameObjectManager::Get()->Update();
 	UIManager::get()->drawAllUI();
 
 	m_swap_chain->present(true);
@@ -135,6 +94,8 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
+
+	GameObjectManager::Get()->Release();
 
 	while (m_shapes.size() > 0) {
 		delete m_shapes.back();
@@ -149,33 +110,7 @@ void AppWindow::onDestroy()
 }
 
 
-void AppWindow::InstantiateShape()
-{
-	const Vector3D& spawnPos = Vector3D(m_shapes.size());
 
-	const wchar_t* texFile = L"..\\Assets\\Textures\\brick.png";
-	const wchar_t* objFile;
-	switch (m_shapes.size() % 3)
-	{
-	case 0:
-		objFile = L"..\\Assets\\Meshes\\teapot.obj";
-		break;
-	case 1:
-		objFile = L"..\\Assets\\Meshes\\bunny.obj";
-		break;
-	default:
-		objFile = L"..\\Assets\\Meshes\\armadillo.obj";
-		break;
-	}
-	
-
-
-	Primitive* newObj = new ObjImport(texFile, objFile);
-	newObj->initialize();
-	newObj->getTransform()->setPosition(spawnPos);
-	
-	m_shapes.push_back(newObj);
-}
 
 
 
@@ -193,17 +128,25 @@ bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
 	float closest_t = 99999;
 	int hitObjIndex = -1;
 
+	
+
 	//	CHECK RAY INTERSECTIONS
-	for (int i = 0; i < m_shapes.size(); i++) {
+	for (int i = 0; i < GameObjectManager::Get()->m_Objects.size(); i++) {
+	//for (int i = 0; i < m_shapes.size(); i++) {
 		Component* raycastComponent = nullptr;
-		if (m_shapes[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
+		if (GameObjectManager::Get()->m_Objects[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
+		//if (m_shapes[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
 			float t = -1;
 			
 			int hits = ((RaycastComponent*)raycastComponent)->
 				checkRaycastHits(
 					origin, dir, 
-					m_shapes[i]->getTransform()->getPosition(), 
-					m_shapes[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
+					//m_shapes[i]->getTransform()->getPosition(), 
+					//m_shapes[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
+					
+					GameObjectManager::Get()->m_Objects[i]->getTransform()->getPosition(),
+					GameObjectManager::Get()->m_Objects[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
+
 					&t
 				);
 
@@ -217,7 +160,8 @@ bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
 
 	if (hitObjIndex >= 0) {
 		*hitPos = origin + (dir * closest_t);
-		hitObj = m_shapes[hitObjIndex];
+		//hitObj = m_shapes[hitObjIndex];
+		hitObj = GameObjectManager::Get()->m_Objects[hitObjIndex];
 		return true;
 	}
 	else return false;
@@ -406,6 +350,12 @@ void AppWindow::testCreate()
 	//GraphicsEngine::get()->getRenderSystem()->compilePixelShader(L"PixelShader.hlsl", "psmain", &shader_byte_code, &size_shader);
 	//m_ps = GraphicsEngine::get()->getRenderSystem()->createPixelShader(shader_byte_code, size_shader);
 	//GraphicsEngine::get()->getRenderSystem()->releaseCompiledShader();
+
+	//CONSTANT BUFFER
+	constant cc;
+	cc.m_time = 0;
+
+	m_cb = GraphicsEngine::get()->getRenderSystem()->createConstantBuffer(&cc, sizeof(constant));
 }
 
 void AppWindow::testUpdate()
@@ -476,7 +426,7 @@ void AppWindow::onKeyDown(int key)
 		break;
 		//SPACE
 	case 32:
-		InstantiateShape();
+		//GameObjectManager::Get()->InsantiateShape();
 		break;
 		//BACKSPACE
 	case 8:
