@@ -5,7 +5,7 @@
 
 #include <exception>
 
-RaycastComponent::RaycastComponent(SceneObject* owner, INTERSECTION_TYPE type) : Component(ComponentID::RAYCAST, owner), m_IntersectionType(type)
+RaycastComponent::RaycastComponent(SceneObject* owner, INTERSECTION_TYPE type) : Component("Raycast Receiver", ComponentID::RAYCAST, owner), m_IntersectionType(type)
 {
 }
 

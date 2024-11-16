@@ -4,7 +4,7 @@
 
 #include "EngineTime.h"
 
-RotatorScript::RotatorScript(SceneObject* owner) : Component(ComponentID::ROTATOR, owner)
+RotatorScript::RotatorScript(SceneObject* owner) : Component("Rotator", ComponentID::ROTATOR, owner)
 {
 	m_rotSpeed = Vector3D(20 * 0.0174533f, 5 * 0.0174533f, 30 * 0.0174533f);
 }

@@ -20,7 +20,7 @@ void SceneObject::setChild(SceneObject* child)
 bool SceneObject::tryGetComponent(ComponentID ID, Component*& result)
 {
 	for (int i = 0; i < m_Components.size(); i++) {
-		if (m_Components[i]->id == ID) {
+		if (m_Components[i]->GetID() == ID) {
 			result = m_Components[i];
 			return true;
 		}

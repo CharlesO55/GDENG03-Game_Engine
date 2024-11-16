@@ -8,10 +8,13 @@
 
 #include "RaycastComponent.h"
 
+#include "PhysicsComponent.h"
+
 Cube::Cube() : Primitive()
 {
-	m_Components.push_back(new RotatorScript(this));
+	//m_Components.push_back(new RotatorScript(this));
 	m_Components.push_back(new RaycastComponent(this, RaycastComponent::INTERSECTION_TYPE::SPHERE_CAST));
+	m_Components.push_back(new PhysicsComponent(this));
 
 
 	m_verts =

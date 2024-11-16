@@ -6,6 +6,7 @@
 #include "EngineTime.h"
 #include "CameraSystem.h"
 
+#include "PhysicsSystem.h"
 #include "GameObjectManager.h"
 
 #include "Cube.h"
@@ -47,6 +48,9 @@ void AppWindow::onCreate()
 	//testCreate();
 	
 
+	PhysicsSystem::Init();
+
+
 	GameObjectManager::Get()->Init();
 	GameObjectManager::Get()->CreateWorld();
 }
@@ -83,7 +87,6 @@ void AppWindow::onUpdate()
 	}
 
 
-
 	
 	GameObjectManager::Get()->Update();
 	UIManager::get()->drawAllUI();
@@ -95,6 +98,7 @@ void AppWindow::onDestroy()
 {
 	Window::onDestroy();
 
+	PhysicsSystem::Release();
 	GameObjectManager::Get()->Release();
 
 	while (m_shapes.size() > 0) {
@@ -152,7 +156,7 @@ bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
 
 
 			if (hits > 0 && t >= 0) {
-				closest_t = min(closest_t, t);
+				closest_t = std::min(closest_t, t);
 				hitObjIndex = i;
 			}
 		}

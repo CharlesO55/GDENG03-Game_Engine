@@ -6,7 +6,7 @@
 
 #include <cmath>
 
-ScaleScript::ScaleScript(SceneObject* owner) : Component(ComponentID::ROTATOR, owner)
+ScaleScript::ScaleScript(SceneObject* owner) : Component("Scaler", ComponentID::ROTATOR, owner)
 {
 }
 

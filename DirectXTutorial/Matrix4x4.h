@@ -6,6 +6,14 @@
 class Matrix4x4
 {
 public:
+	void setValues(float* values16) {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				m_mat[i][j] = values16[i*4 + j];
+			}
+		}
+	}
+
 	void setIdentity()
 	{
 		::memset(m_mat, 0, sizeof(float) * 16);

@@ -6,5 +6,6 @@ enum class ComponentID
 	NONE,
 	TRANSFORMATION,
 	ROTATOR,
-	RAYCAST
+	RAYCAST,
+	PHYSICS
 };

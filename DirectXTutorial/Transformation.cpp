@@ -1,7 +1,7 @@
 #include "Transformation.h"
 
 
-Transformation::Transformation(SceneObject* owner) : Component(ComponentID::TRANSFORMATION, owner)
+Transformation::Transformation(SceneObject* owner) : Component("Transformation", ComponentID::TRANSFORMATION, owner)
 {
 	m_WorldMatrix.setIdentity();
 }

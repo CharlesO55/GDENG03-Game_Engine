@@ -94,6 +94,9 @@
     <Filter Include="GameEngine\GameObjectManager">
       <UniqueIdentifier>{51dfa320-972f-407c-af08-084a0c72a375}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\PhysicsEngine">
+      <UniqueIdentifier>{c653d9ce-e2fa-488a-b31f-ea9be7713c70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -224,6 +227,12 @@
     </ClCompile>
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>GameEngine\GameObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>GameEngine\PhysicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>GameEngine\PhysicsEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,6 +418,12 @@
     </ClInclude>
     <ClInclude Include="UI_GameObjectMenu.h">
       <Filter>GameEngine\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>GameEngine\PhysicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>GameEngine\PhysicsEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

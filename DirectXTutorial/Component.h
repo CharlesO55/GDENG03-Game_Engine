@@ -1,17 +1,26 @@
 #pragma once
 #include "ComponentID.h"
+#include <string>
+
 class SceneObject;
+
 
 class Component
 {
 public:
-	Component(ComponentID ID, SceneObject* owner);
+	Component(std::string name, ComponentID ID, SceneObject* owner);
 	~Component();
 
-	ComponentID id;
+	std::string GetName();
+	const ComponentID GetID();
+
 
 	virtual void update() = 0;
 
 protected:
+	std::string m_Name;
+	ComponentID m_ID;
+
+
 	SceneObject* m_Owner = nullptr;
 };
