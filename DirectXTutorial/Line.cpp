@@ -3,7 +3,7 @@
 #include "GraphicsEngine.h"
 #include "DeviceContext.h"
 
-Line::Line(const Vector3D startPos, const Vector3D endPos) : Primitive()
+Line::Line(const Vector3D startPos, const Vector3D endPos) : Primitive("Line")
 {
 	m_verts =
 	{

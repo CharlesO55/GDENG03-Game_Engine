@@ -209,6 +209,23 @@ public:
 		return euler;
 	}
 
+	const void PrintMatrix() const {
+		std::cout << "[" << m_mat[0][0] << ", " << m_mat[0][1] << ", " << m_mat[0][2] << ", " << m_mat[0][3] << ",\n";
+		std::cout << " " << m_mat[1][0] << ", " << m_mat[1][1] << ", " << m_mat[1][2] << ", " << m_mat[1][3] << ",\n";
+		std::cout << " " << m_mat[2][0] << ", " << m_mat[2][1] << ", " << m_mat[2][2] << ", " << m_mat[2][3] << ",\n";
+		std::cout << " " << m_mat[3][0] << ", " << m_mat[3][1] << ", " << m_mat[3][2] << ", " << m_mat[3][3] << "]\n";
+	}
+
+	float* Flatten() const {
+		float output[16];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				output[i * 4 + j] = m_mat[i][j];
+			}
+		}
+		return output;
+	}
+
 public:
 	float m_mat[4][4] = {};
 };

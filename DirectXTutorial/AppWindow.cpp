@@ -86,7 +86,7 @@ void AppWindow::onUpdate()
 		m_rays[i]->draw();
 	}
 
-
+	PhysicsSystem::Update();
 	
 	GameObjectManager::Get()->Update();
 	UIManager::get()->drawAllUI();
@@ -430,7 +430,7 @@ void AppWindow::onKeyDown(int key)
 		break;
 		//SPACE
 	case 32:
-		//GameObjectManager::Get()->InsantiateShape();
+		GameObjectManager::Get()->SpawnCubes();
 		break;
 		//BACKSPACE
 	case 8:

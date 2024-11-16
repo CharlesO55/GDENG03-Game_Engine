@@ -3,7 +3,7 @@
 #include "EngineTime.h"
 #include <cmath>
 
-Circle::Circle() : Primitive()
+Circle::Circle() : Primitive("Circle")
 {
 	Vector3D origin = Vector3D(0);
 

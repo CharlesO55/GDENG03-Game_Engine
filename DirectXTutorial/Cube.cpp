@@ -10,11 +10,10 @@
 
 #include "PhysicsComponent.h"
 
-Cube::Cube() : Primitive()
+Cube::Cube() : Primitive("Cube")
 {
 	//m_Components.push_back(new RotatorScript(this));
-	m_Components.push_back(new RaycastComponent(this, RaycastComponent::INTERSECTION_TYPE::SPHERE_CAST));
-	m_Components.push_back(new PhysicsComponent(this));
+	AddComponent(new RaycastComponent(this, RaycastComponent::INTERSECTION_TYPE::SPHERE_CAST));
 
 
 	m_verts =
@@ -58,7 +57,7 @@ Cube::Cube() : Primitive()
 
 
 
-Cube::Cube(Vector3D color)
+Cube::Cube(Vector3D color) : Primitive("Cube")
 {
 	m_verts =
 	{

@@ -11,8 +11,7 @@ class PhysicsSystem
 public:
 	typedef std::string String;
 	typedef std::unordered_map<String, PhysicsComponent*> ComponentTable;
-	typedef std::vector<PhysicsComponent*> ComponentList;
-
+	
 
 private:
 	static PhysicsSystem* instance;
@@ -24,7 +23,7 @@ private:
 	~PhysicsSystem();
 
 private:
-	ComponentList m_Components;
+	std::vector<PhysicsComponent*> m_Components;
 	reactphysics3d::PhysicsCommon* m_PhysicsCommon;
 	reactphysics3d::PhysicsWorld* m_PhysicsWorld;
 
@@ -32,11 +31,13 @@ public:
 	static PhysicsSystem* Get();
 
 	static void Init();
+	static void Update();
 	static void Release();
+
 
 	void RegisterComponent(PhysicsComponent* comp);
 	void UnregisterComponent(PhysicsComponent* comp);
-	ComponentList GetAllComponents();
+	std::vector<PhysicsComponent*> GetAllComponents();
 	reactphysics3d::PhysicsCommon* GetPhysicsCommon();
 	reactphysics3d::PhysicsWorld* GetPhysicsWorld();
 };

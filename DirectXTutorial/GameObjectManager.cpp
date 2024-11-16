@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "PhysicsComponent.h"
+
 #include "Debugger.h"
 
 GameObjectManager* GameObjectManager::instance = nullptr;
@@ -71,25 +73,35 @@ void GameObjectManager::Destroy(Primitive* obj)
 void GameObjectManager::CreateWorld()
 {
 	// CREATE A PLANE
-	Primitive* plane = new Plane(Vector3D(96 / 256.f, 125 / 256.f, 141 / 256.f));
+	/*Primitive* plane = new Plane(Vector3D(96 / 256.f, 125 / 256.f, 141 / 256.f));
 	plane->initialize();
 	plane->getTransform()->move(Vector3D(0, -5, 0));
-	plane->getTransform()->scale(Vector3D(20));
+	plane->getTransform()->scale(Vector3D(20, 0.1, 20));
+	Register(plane);*/
+
+	//plane->getTransform()->update();
+	//new PhysicsComponent(plane, reactphysics3d::BodyType::STATIC);
+
+	Primitive* plane = new Cube(Vector3D(96 / 256.f, 125 / 256.f, 141 / 256.f));
+	plane->initialize();
+	//plane->getTransform()->setScale(Vector3D(20));
+	plane->getTransform()->setPosition(Vector3D(0, -5, 0));
+	plane->getTransform()->scale(Vector3D(20, 0.01f, 20));
+	plane->getTransform()->update();
 	Register(plane);
 
-
-	Primitive* cube = new Cube();
+	plane->getTransform()->update();
+	//new PhysicsComponent(plane, reactphysics3d::BodyType::STATIC);
+	
+	/*Primitive* cube = new Cube(Vector3D(1));
 	cube->initialize();
-	cube->getTransform()->setPosition(Vector3D(0, 5, 0));
-	Register(cube);
+	cube->getTransform()->setPosition(Vector3D(0, 0, 0));
+	cube->getTransform()->update();
+	Register(cube);*/
 
+	//new PhysicsComponent(cube, reactphysics3d::BodyType::STATIC);
 
-	Primitive* biggerCube = new Cube();
-	biggerCube->initialize();
-	biggerCube->getTransform()->setPosition(Vector3D(-3, 5, 0));
-	biggerCube->getTransform()->setScale(Vector3D(2));
-	Register(biggerCube);
-
+	SpawnCubes(1);
 }
 
 void GameObjectManager::InstantiateObj(const std::wstring objName)
@@ -104,4 +116,17 @@ void GameObjectManager::InstantiateObj(const std::wstring objName)
 	newObj->getTransform()->setPosition(spawnPos);
 
 	m_Objects.push_back(newObj);
+}
+
+void GameObjectManager::SpawnCubes(int nCubes)
+{
+	for (int i = 0; i < nCubes; i++) {
+		Primitive* cube = new Cube();
+		cube->initialize();
+		cube->getTransform()->setPosition(Vector3D(0, 20, 0));
+		cube->getTransform()->update();
+		Register(cube);
+
+		new PhysicsComponent(cube);
+	}
 }

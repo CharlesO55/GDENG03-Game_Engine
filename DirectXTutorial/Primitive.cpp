@@ -5,7 +5,7 @@
 
 #include "CameraSystem.h"
 
-Primitive::Primitive() : SceneObject() {}
+Primitive::Primitive(std::string name) : SceneObject(name) {}
 
 Primitive::~Primitive()
 {

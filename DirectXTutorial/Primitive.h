@@ -16,7 +16,7 @@
 class Primitive : public SceneObject
 {
 public:
-	Primitive();
+	Primitive(std::string name);
 	~Primitive();
 
 	virtual void initialize();
@@ -26,7 +26,7 @@ public:
 	virtual void draw();
 	void release();
 
-
+	
 
 protected:
 	PixelShaderPtr m_ps = nullptr;

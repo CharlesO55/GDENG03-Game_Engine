@@ -5,10 +5,10 @@
 
 #include "Debugger.h"
 
-Camera::Camera(const int& refWindowWidth, const int& refWindowHeight) : SceneObject(), 
+Camera::Camera(const int& refWindowWidth, const int& refWindowHeight) : SceneObject("Camera"),
 	ref_windowWidth(refWindowWidth), ref_windowHeight(refWindowHeight)
 {
-	getTransform()->setPosition(Vector3D(0, 2, -2));
+	getTransform()->setPosition(Vector3D(0, 3, -15));
 
 	setActive(true);
 	Debugger::Success("[Camera] Instantiated");

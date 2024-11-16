@@ -7,7 +7,7 @@
 #include "ScaleScript.h"
 #include "RaycastComponent.h"
 
-ObjImport::ObjImport(const wchar_t* textureFile, const wchar_t* objFile)
+ObjImport::ObjImport(const wchar_t* textureFile, const wchar_t* objFile) : Primitive("ObjImport")
 {
 	m_Components.push_back(new RotatorScript(this));
 	//m_Components.push_back(new ScaleScript(this));

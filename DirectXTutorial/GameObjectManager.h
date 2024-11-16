@@ -28,4 +28,6 @@ public:
 
 	void CreateWorld();
 	void InstantiateObj(const std::wstring objName);
+
+	void SpawnCubes(int nCubes = 10);
 };

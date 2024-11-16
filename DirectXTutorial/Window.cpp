@@ -69,7 +69,7 @@ Window::Window()
 		Debugger::Error("[Window] Create");
 
 	m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, L"WindowClass", L"GDENG03_Raycast",
-		WS_CAPTION | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, 1920, 1080,
+		WS_CAPTION | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, 840, 600,
 		NULL, NULL, NULL, NULL);
 
 	if (!m_hwnd)

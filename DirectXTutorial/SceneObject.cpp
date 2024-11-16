@@ -1,6 +1,6 @@
 #include "SceneObject.h"
 
-SceneObject::SceneObject(){
+SceneObject::SceneObject(std::string name) : m_Name(name) {
 	m_Components = {new Transformation(this)};
 }
 
@@ -29,7 +29,18 @@ bool SceneObject::tryGetComponent(ComponentID ID, Component*& result)
 	return false;
 }
 
+void SceneObject::AddComponent(Component* component)
+{
+	std::cout << '[' << m_Name << "] Added " << component->GetName() << std::endl;
+	this->m_Components.push_back(component);
+}
+
 Transformation* SceneObject::getTransform()
 {
 	return (Transformation*)this->m_Components[0];
+}
+
+std::string SceneObject::getName()
+{
+	return m_Name;
 }

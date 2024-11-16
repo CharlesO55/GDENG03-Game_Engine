@@ -2,6 +2,8 @@
 
 #include "Debugger.h"
 
+#include "EngineTime.h"
+#include "PhysicsComponent.h"
 
 PhysicsSystem* PhysicsSystem::instance = nullptr;
 
@@ -11,7 +13,8 @@ PhysicsSystem::PhysicsSystem()
 
     reactphysics3d::PhysicsWorld::WorldSettings settings;
     settings.defaultVelocitySolverNbIterations = 50;
-    settings.gravity = reactphysics3d::Vector3(0, -9.81, 0);
+    //settings.gravity = reactphysics3d::Vector3(0, -9.81, 0);
+    settings.gravity = reactphysics3d::Vector3(0, -4, 0);
     m_PhysicsWorld = m_PhysicsCommon->createPhysicsWorld(settings);
 
 
@@ -38,7 +41,30 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::Release()
 {
+    /*while (Get()->m_Components.size() > 0) {
+        delete Get()->m_Components.back();
+        Get()->m_Components.pop_back();
+    }*/
+
+    /*for (int i = 0; i < Get()->m_Components.size(); i++) {
+        delete Get()->m_Components[i];
+    }
+    Get()->m_Components.clear();*/
+
     delete PhysicsSystem::instance;
+    PhysicsSystem::instance = nullptr;
+}
+
+void PhysicsSystem::Update()
+{
+    if (!Get())
+        return;
+
+    Get()->m_PhysicsWorld->update(EngineTime::getDeltaTime());
+
+    for (PhysicsComponent* comp : Get()->m_Components) {
+        comp->update();
+    }
 }
 
 void PhysicsSystem::RegisterComponent(PhysicsComponent* comp)
@@ -46,7 +72,7 @@ void PhysicsSystem::RegisterComponent(PhysicsComponent* comp)
     m_Components.push_back(comp);
 }
 
-PhysicsSystem::ComponentList PhysicsSystem::GetAllComponents()
+std::vector<PhysicsComponent*> PhysicsSystem::GetAllComponents()
 {
     return m_Components;
 }
