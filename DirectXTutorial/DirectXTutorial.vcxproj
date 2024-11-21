@@ -234,6 +234,8 @@
     <ClInclude Include="UI_BaseScreen.h" />
     <ClInclude Include="UI_Credits.h" />
     <ClInclude Include="UI_GameObjectMenu.h" />
+    <ClInclude Include="UI_Hierarchy.h" />
+    <ClInclude Include="UI_Inspector.h" />
     <ClInclude Include="UI_RenderOptions.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector3D.h" />

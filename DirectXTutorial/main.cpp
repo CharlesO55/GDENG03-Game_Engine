@@ -22,7 +22,7 @@ int main()
 			}
 		}
 		catch (...) {
-			UIManager::release();
+			UIManager::Release();
 			InputSystem::release();
 			GraphicsEngine::release();
 			EngineTime::release();
@@ -31,7 +31,7 @@ int main()
 	}
 
 
-	UIManager::release();
+	UIManager::Release();
 	InputSystem::release();
 	GraphicsEngine::release();
 	EngineTime::release();

@@ -21,7 +21,7 @@
 #include "RaycastComponent.h"
 
 #include "UIManager.h"
-
+#include "UI_RenderOptions.h"
 
 #include "Debugger.h"
 #include <iostream>
@@ -63,15 +63,18 @@ void AppWindow::onUpdate()
 
 	Window::onUpdate();
 
-	InputSystem::get()->update();
+	if (InputSystem::get())
+		InputSystem::get()->update();
 
-	const float* colors = UIManager::get()->getRenderOptions()->WorldColor;
 
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
-		colors[0],
-		colors[1],
-		colors[2],
-		colors[3]);
+	if (UIManager::Get()) {
+		const float* colors = static_cast<UI_RenderOptions*>(UIManager::GetScreen(UIManager::SCREEN_ID::RENDER_OPTIONS))->WorldColor;
+		GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain,
+			colors[0],
+			colors[1],
+			colors[2],
+			colors[3]);
+	}
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(m_windowWidth, m_windowHeight);
 
 
@@ -86,10 +89,14 @@ void AppWindow::onUpdate()
 		m_rays[i]->draw();
 	}
 
-	PhysicsSystem::Update();
+	if (PhysicsSystem::Get())
+		PhysicsSystem::Update();
 	
-	GameObjectManager::Get()->Update();
-	UIManager::get()->drawAllUI();
+	if (GameObjectManager::Get())
+		GameObjectManager::Get()->Update();
+	
+	if (UIManager::Get())
+		UIManager::Get()->DrawAllUI();
 
 	m_swap_chain->present(true);
 }
@@ -135,10 +142,10 @@ bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
 	
 
 	//	CHECK RAY INTERSECTIONS
-	for (int i = 0; i < GameObjectManager::Get()->m_Objects.size(); i++) {
+	for (int i = 0; i < GameObjectManager::Get()->GetAllObjects().size(); i++) {
 	//for (int i = 0; i < m_shapes.size(); i++) {
 		Component* raycastComponent = nullptr;
-		if (GameObjectManager::Get()->m_Objects[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
+		if (GameObjectManager::Get()->GetAllObjects()[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
 		//if (m_shapes[i]->tryGetComponent(ComponentID::RAYCAST, raycastComponent)) {
 			float t = -1;
 			
@@ -148,8 +155,8 @@ bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
 					//m_shapes[i]->getTransform()->getPosition(), 
 					//m_shapes[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
 					
-					GameObjectManager::Get()->m_Objects[i]->getTransform()->getPosition(),
-					GameObjectManager::Get()->m_Objects[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
+					GameObjectManager::Get()->GetAllObjects()[i]->getTransform()->getPosition(),
+					GameObjectManager::Get()->GetAllObjects()[i]->getTransform()->getWorldMatrix().getYDirection(),	//NOTE: NORMAL DIR MAY DIFFER, BUT MOST OF THE SHAPES START FLAT
 
 					&t
 				);
@@ -165,7 +172,7 @@ bool AppWindow::TryRacyastObjects(Vector3D* hitPos, Primitive*& hitObj)
 	if (hitObjIndex >= 0) {
 		*hitPos = origin + (dir * closest_t);
 		//hitObj = m_shapes[hitObjIndex];
-		hitObj = GameObjectManager::Get()->m_Objects[hitObjIndex];
+		hitObj = GameObjectManager::Get()->GetAllObjects()[hitObjIndex];
 		return true;
 	}
 	else return false;

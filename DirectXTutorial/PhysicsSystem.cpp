@@ -41,6 +41,8 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::Release()
 {
+
+    // TO DO: FIX CLEAN UP
     /*while (Get()->m_Components.size() > 0) {
         delete Get()->m_Components.back();
         Get()->m_Components.pop_back();
@@ -48,8 +50,8 @@ void PhysicsSystem::Release()
 
     /*for (int i = 0; i < Get()->m_Components.size(); i++) {
         delete Get()->m_Components[i];
-    }
-    Get()->m_Components.clear();*/
+    }*/
+    Get()->m_Components.clear();
 
     delete PhysicsSystem::instance;
     PhysicsSystem::instance = nullptr;

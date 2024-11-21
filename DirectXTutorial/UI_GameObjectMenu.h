@@ -9,6 +9,7 @@ public:
 
 	void TryShow() {
 		if (ImGui::BeginMenu("Game Object")) {
+			if (ImGui::MenuItem("Cube", "")) { GameObjectManager::Get()->SpawnCubes(1); }
 			if (ImGui::MenuItem("Teapot", "")) { GameObjectManager::Get()->InstantiateObj(L"teapot"); }
 			if (ImGui::MenuItem("Bunny", "")) { GameObjectManager::Get()->InstantiateObj(L"bunny"); }
 			if (ImGui::MenuItem("Armadillo", "")) { GameObjectManager::Get()->InstantiateObj(L"armadillo"); }

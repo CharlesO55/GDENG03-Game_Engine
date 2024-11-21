@@ -16,8 +16,11 @@ PhysicsComponent::PhysicsComponent(SceneObject* owner, reactphysics3d::BodyType 
 	//	READ THE CURRENT TRANSFORM
 	Vector3D scale = m_Owner->getTransform()->getScale();
 	reactphysics3d::Transform transform;	
-	transform.setFromOpenGL(m_Owner->getTransform()->getWorldMatrix().Flatten());
 	
+	// BUGGY.
+	//transform.setFromOpenGL(m_Owner->getTransform()->getWorldMatrix().Flatten());
+	// TEMP
+	transform.setToIdentity();
 
 
 	reactphysics3d::BoxShape* boxShape = physicsCommon->createBoxShape(reactphysics3d::Vector3(scale.x/2, scale.y/2, scale.z/2));

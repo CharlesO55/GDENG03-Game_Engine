@@ -136,7 +136,7 @@ void Window::onCreate()
 {
 	CalcWindowRect();
 
-	UIManager::initialize(this->m_hwnd);
+	UIManager::Init(this->m_hwnd);
 }
 
 void Window::onDestroy()

@@ -23,8 +23,8 @@ public:
 		if (ImGui::Begin("Credits")) {
 			ImGui::Image(m_Icon, ImVec2(128, 128));
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "About");
-			ImGui::Text("Dev: Charles Ong");
-			ImGui::Text("Ver: Pardcode 17 + IMGUI");
+			ImGui::Text("Dev: Galura, Ong");
+			ImGui::Text("Ver: Pardcode 18 + IMGUI");
 
 			ImGui::Text("References:");
 			ImGui::Indent();

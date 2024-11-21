@@ -82,9 +82,6 @@
     <Filter Include="GameEngine\IMGUI">
       <UniqueIdentifier>{1b0b482d-6199-4ed0-b260-cd81f9b6ead7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameEngine\Screens">
-      <UniqueIdentifier>{76e791b0-e2ac-4129-b2b6-d207284a8d62}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameEngine\ResourceManager\MeshManager">
       <UniqueIdentifier>{24470348-6f65-43f4-951d-4bf6388bac49}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="GameEngine\PhysicsEngine">
       <UniqueIdentifier>{c653d9ce-e2fa-488a-b31f-ea9be7713c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEngine\UIManager\Screens">
+      <UniqueIdentifier>{76e791b0-e2ac-4129-b2b6-d207284a8d62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -393,13 +393,13 @@
       <Filter>GameEngine\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="UI_BaseScreen.h">
-      <Filter>GameEngine\Screens</Filter>
+      <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
     <ClInclude Include="UI_Credits.h">
-      <Filter>GameEngine\Screens</Filter>
+      <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
     <ClInclude Include="UI_RenderOptions.h">
-      <Filter>GameEngine\Screens</Filter>
+      <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>GameEngine\ResourceManager\MeshManager</Filter>
@@ -417,13 +417,19 @@
       <Filter>GameEngine\GameObjectManager</Filter>
     </ClInclude>
     <ClInclude Include="UI_GameObjectMenu.h">
-      <Filter>GameEngine\Screens</Filter>
+      <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsSystem.h">
       <Filter>GameEngine\PhysicsEngine</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
       <Filter>GameEngine\PhysicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Hierarchy.h">
+      <Filter>GameEngine\UIManager\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Inspector.h">
+      <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

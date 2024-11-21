@@ -1,36 +1,46 @@
 #pragma once
 #include "GraphicsEngine.h"
+#include <map>
 
-#include "UI_Credits.h"
-#include "UI_RenderOptions.h"
-#include "UI_GameObjectMenu.h"
+class UI_BaseScreen;
+
 
 class UIManager
 {
+public:
+	enum class SCREEN_ID {
+		CREDITS,
+		RENDER_OPTIONS,
+
+		MENU_GAMEOBJECT,
+		HIERARCHY,
+		INSPECTOR
+	};
+
+	typedef std::unordered_map<SCREEN_ID, UI_BaseScreen*> UI_SCREEN_MAP;
+
+private:
+	UI_SCREEN_MAP m_ScreensMap;
+
+
 private:
 	UIManager();
 	~UIManager();
 	UIManager(UIManager const&) {};
 	UIManager& operator=(UIManager const&) {};
 
-	static UIManager* sharedInstance;
+	static UIManager* i;
 
 public:
-	static UIManager* get();
+	static UIManager* Get();
 	
-	static void initialize(HWND windowHandle);
-	static void release();
+	static void Init(HWND windowHandle);
+	static void Release();
 
-	void drawAllUI();
+	void DrawAllUI();
 
-	const UI_RenderOptions* getRenderOptions() { return m_UI_RenderOptions; }
-
+	static UI_BaseScreen* GetScreen(SCREEN_ID id);
 
 private:
 	bool is_Show_Window = true;
-
-
-	UI_Credits* m_UI_Credits = nullptr;
-	UI_RenderOptions* m_UI_RenderOptions = nullptr;
-	UI_GameObjectMenu* m_UI_GameObjectMenu = nullptr;
 };

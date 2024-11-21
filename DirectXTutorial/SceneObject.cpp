@@ -16,7 +16,6 @@ void SceneObject::setChild(SceneObject* child)
 	this->m_child = child;
 }
 
-
 bool SceneObject::tryGetComponent(ComponentID ID, Component*& result)
 {
 	for (int i = 0; i < m_Components.size(); i++) {
@@ -40,7 +39,12 @@ Transformation* SceneObject::getTransform()
 	return (Transformation*)this->m_Components[0];
 }
 
-std::string SceneObject::getName()
+std::string SceneObject::GetName()
 {
 	return m_Name;
+}
+
+void SceneObject::SetName(const std::string name)
+{
+	m_Name = name;
 }

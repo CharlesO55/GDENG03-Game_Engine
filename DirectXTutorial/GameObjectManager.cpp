@@ -12,7 +12,7 @@
 
 #include "Debugger.h"
 
-GameObjectManager* GameObjectManager::instance = nullptr;
+GameObjectManager* GameObjectManager::i = nullptr;
 
 GameObjectManager::GameObjectManager()
 {
@@ -26,13 +26,28 @@ GameObjectManager::~GameObjectManager()
 
 GameObjectManager* GameObjectManager::Get()
 {
-	return instance;
+	return i;
+}
+
+void GameObjectManager::SelectObject(SceneObject* obj)
+{
+	m_SelectedObject = obj;
+}
+
+SceneObject* GameObjectManager::GetSelectedObject()
+{
+	return m_SelectedObject;
+}
+
+std::vector<Primitive*> GameObjectManager::GetAllObjects()
+{
+	return m_Objects;
 }
 
 void GameObjectManager::Init()
 {
-	if (!GameObjectManager::instance) {
-		GameObjectManager::instance = new GameObjectManager();
+	if (!GameObjectManager::i) {
+		GameObjectManager::i = new GameObjectManager();
 	}
 	else
 		Debugger::Error("[GameObject Manager] Init twice");
@@ -53,11 +68,29 @@ void GameObjectManager::Release()
 		delete m_Objects.back();
 		m_Objects.pop_back();
 	}
-	delete GameObjectManager::instance;
+	m_SelectedObject = nullptr;
+
+	delete GameObjectManager::i;
+	GameObjectManager::i = nullptr;
+}
+
+bool GameObjectManager::TryFind(std::string name, SceneObject* output)
+{
+	for (int i = 0; i < m_Objects.size(); i++) {
+		if (m_Objects[i]->GetName() == name)
+			output = m_Objects[i];
+			return true;
+	}
+
+	return false;
 }
 
 void GameObjectManager::Register(Primitive* obj)
 {
+	if (TryFind(obj->GetName(), nullptr)) {
+		obj->SetName(obj->GetName() + " (" + std::to_string(m_Objects.size()) + ")");
+	}
+	
 	m_Objects.push_back(obj);
 }
 
@@ -127,6 +160,6 @@ void GameObjectManager::SpawnCubes(int nCubes)
 		cube->getTransform()->update();
 		Register(cube);
 
-		new PhysicsComponent(cube);
+		//new PhysicsComponent(cube);
 	}
 }
