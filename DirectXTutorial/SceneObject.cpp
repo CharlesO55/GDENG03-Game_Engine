@@ -1,7 +1,14 @@
 #include "SceneObject.h"
 
+
+int SceneObject::InstanceCounter = 0;
+
+
 SceneObject::SceneObject(std::string name) : m_Name(name) {
-	m_Components = {new Transformation(this)};
+	m_InstanceID = SceneObject::InstanceCounter;
+	InstanceCounter += 1;
+
+	m_Components = { new Transformation(this) };
 }
 
 SceneObject::~SceneObject(){
@@ -47,4 +54,9 @@ std::string SceneObject::GetName()
 void SceneObject::SetName(const std::string name)
 {
 	m_Name = name;
+}
+
+const int SceneObject::GetInstanceID() const
+{
+	return m_InstanceID;
 }

@@ -5,6 +5,8 @@
 #include "EngineTime.h"
 #include "PhysicsComponent.h"
 
+#include "SceneObject.h"
+
 PhysicsSystem* PhysicsSystem::instance = nullptr;
 
 PhysicsSystem::PhysicsSystem()
@@ -71,7 +73,17 @@ void PhysicsSystem::Update()
 
 void PhysicsSystem::RegisterComponent(PhysicsComponent* comp)
 {
+    m_Map[comp->GetOwner()->GetInstanceID()] = comp;
     m_Components.push_back(comp);
+}
+
+bool PhysicsSystem::TryFindComponent(int obj_ID, PhysicsComponent* out)
+{
+    if (m_Map.find(obj_ID) != m_Map.end()) {
+        out = m_Map[obj_ID];
+        return true;
+    }
+    return false;
 }
 
 std::vector<PhysicsComponent*> PhysicsSystem::GetAllComponents()

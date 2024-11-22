@@ -15,3 +15,8 @@ const ComponentID Component::GetID()
 {
     return m_ID;
 }
+
+const SceneObject* Component::GetOwner()
+{
+    return m_Owner;
+}

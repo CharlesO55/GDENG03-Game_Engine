@@ -1,8 +1,9 @@
 #pragma once
 #include <memory>
+#include <array>
+
 #include "Vector3D.h"
 #include "Vector4D.h"
-
 class Matrix4x4
 {
 public:
@@ -192,6 +193,11 @@ public:
 	{
 		return Vector3D(m_mat[3][0], m_mat[3][1], m_mat[3][2]);
 	}
+	const Vector3D getScale() const
+	{
+		return Vector3D(m_mat[0][0], m_mat[1][1], m_mat[2][2]);
+	}
+
 
 	const Vector3D getEulerAngles() const
 	{
@@ -216,7 +222,7 @@ public:
 		std::cout << " " << m_mat[3][0] << ", " << m_mat[3][1] << ", " << m_mat[3][2] << ", " << m_mat[3][3] << "]\n";
 	}
 
-	float* Flatten() const {
+	/*float* Flatten() const {
 		float output[16];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -224,7 +230,32 @@ public:
 			}
 		}
 		return output;
+	}*/
+
+	/*std::vector<float> TryFlatten() const {
+		std::vector<float> res;
+		res.reserve(16);
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				//res[i * 4 + j] = m_mat[i][j];
+				res.push_back(m_mat[i][j]);
+			}
+		}
+		return res;
+	}*/
+
+	const std::array<float, 16> Flatten() const {
+		std::array<float, 16> output;
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				output[i * 4 + j] = m_mat[i][j];
+			}
+		}
+		return output;
 	}
+
 
 public:
 	float m_mat[4][4] = {};

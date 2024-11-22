@@ -156,7 +156,7 @@ void GameObjectManager::SpawnCubes(int nCubes)
 	for (int i = 0; i < nCubes; i++) {
 		Primitive* cube = new Cube();
 		cube->initialize();
-		cube->getTransform()->setPosition(Vector3D(0, 20, 0));
+		cube->getTransform()->setPosition(Vector3D(0, 10, 0));
 		cube->getTransform()->update();
 		Register(cube);
 

@@ -13,7 +13,7 @@ public:
 
 	std::string GetName();
 	const ComponentID GetID();
-
+	const SceneObject* GetOwner();
 
 	virtual void update() = 0;
 

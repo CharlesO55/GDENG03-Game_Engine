@@ -21,10 +21,14 @@ public:
 	Transformation* getTransform();
 	std::string GetName();
 	void SetName(const std::string name);
+	const int GetInstanceID() const;
 
 protected:
 	SceneObject* m_child = nullptr;
 	std::vector<Component*> m_Components = {};
 
 	std::string m_Name;
+	
+	int m_InstanceID;
+	static int InstanceCounter;
 };
