@@ -98,6 +98,10 @@ public:
 		if (ImGui::CollapsingHeader("Rigidbody")) {
 			if (PhysicsSystem::Get()->TryFindComponent(obj->GetInstanceID(), rb)) {
 				if (rb) {
+					if (ImGui::Button("Remove Rigidbody")) {
+						PhysicsSystem::Get()->UnregisterComponent(rb);
+					}
+					
 					bool gravity = rb->GetRB()->isGravityEnabled();
 					float mass = rb->GetRB()->getMass();
 
@@ -111,6 +115,7 @@ public:
 						}
 					}
 					if (ImGui::DragFloat("Mass", &mass, 0.01f, 0.0f)) { rb->GetRB()->setMass(mass); }
+
 				}
 			}
 

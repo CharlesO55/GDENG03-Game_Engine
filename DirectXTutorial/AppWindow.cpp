@@ -18,6 +18,8 @@
 #include "ObjImport.h"
 
 
+#include "EngineState.h"
+
 #include "RaycastComponent.h"
 
 #include "UIManager.h"
@@ -89,8 +91,17 @@ void AppWindow::onUpdate()
 		m_rays[i]->draw();
 	}
 
-	if (PhysicsSystem::Get())
-		PhysicsSystem::Update();
+	switch (EngineState::GetState()) {
+		case EngineState::STATE::PLAY:
+			if (PhysicsSystem::Get())
+				PhysicsSystem::Update();
+			break;
+
+		case EngineState::STATE::EDIT:
+		case EngineState::STATE::PAUSE:
+			break;
+	}
+
 	
 	if (GameObjectManager::Get())
 		GameObjectManager::Get()->Update();

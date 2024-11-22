@@ -23,6 +23,9 @@ public:
 	void SetName(const std::string name);
 	const int GetInstanceID() const;
 
+	void RevertState();
+	void SaveState(Matrix4x4 toSave);
+
 protected:
 	SceneObject* m_child = nullptr;
 	std::vector<Component*> m_Components = {};
@@ -31,4 +34,7 @@ protected:
 	
 	int m_InstanceID;
 	static int InstanceCounter;
+
+
+	Matrix4x4 saveState;
 };

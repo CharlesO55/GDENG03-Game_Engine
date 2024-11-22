@@ -4,8 +4,13 @@
 
 #include "Vector3D.h"
 #include "Vector4D.h"
+#include <DirectXMath.h>
+
 class Matrix4x4
 {
+public:
+	float m_mat[4][4] = {};
+
 public:
 	void setValues(float* values16) {
 		for (int i = 0; i < 4; i++) {
@@ -245,7 +250,7 @@ public:
 		return res;
 	}*/
 
-	const std::array<float, 16> Flatten() const {
+	std::array<float, 16> Flatten() const {
 		std::array<float, 16> output;
 
 		for (int i = 0; i < 4; i++) {
@@ -257,6 +262,18 @@ public:
 	}
 
 
-public:
-	float m_mat[4][4] = {};
+	static std::array<float, 16> FlattenDXMatrix(DirectX::XMMATRIX matrix) {
+
+		DirectX::XMFLOAT4X4 fView;
+		XMStoreFloat4x4(&fView, matrix);
+
+		std::array<float, 16> output = {
+			fView._11, fView._12, fView._13, fView._14,
+			fView._21, fView._22, fView._23, fView._24,
+			fView._31, fView._32, fView._33, fView._34,
+			fView._41, fView._42, fView._43, fView._44
+		};
+
+		return output;
+	}
 };

@@ -1,9 +1,12 @@
 #include "Transformation.h"
 
+#include "EngineState.h"
+#include "SceneObject.h"
 
 Transformation::Transformation(SceneObject* owner) : Component("Transformation", ComponentID::TRANSFORMATION, owner)
 {
 	m_WorldMatrix.setIdentity();
+	DX_Matrix = DirectX::XMMatrixIdentity();
 }
 
 Transformation::~Transformation()
@@ -45,6 +48,7 @@ void Transformation::setWorldMatrix(const Matrix4x4 matrix)
 
 	m_pos = m_WorldMatrix.getTranslation();
 	m_rot = m_WorldMatrix.getEulerAngles();
+	m_scale = m_WorldMatrix.getScale();
 }
 
 const Vector3D Transformation::getPosition()
@@ -91,6 +95,20 @@ void Transformation::update()
 	temp.setIdentity();
 	temp.setTranslation(m_pos);
 	m_WorldMatrix *= temp;
+
+
+	DirectX::XMMATRIX DX_Matrix = DirectX::XMMatrixIdentity();
+	// SRT
+	DX_Matrix = DX_Matrix *
+		DirectX::XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z) *
+		DirectX::XMMatrixRotationZ(m_rot.z) *
+		DirectX::XMMatrixRotationY(m_rot.y) *
+		DirectX::XMMatrixRotationX(m_rot.x) *
+		DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z);
+
+
+	if (EngineState::GetState() == EngineState::STATE::EDIT)
+		m_Owner->SaveState(m_WorldMatrix);
 }
 
 

@@ -97,6 +97,9 @@
     <Filter Include="GameEngine\UIManager\Screens">
       <UniqueIdentifier>{76e791b0-e2ac-4129-b2b6-d207284a8d62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\EngineState">
+      <UniqueIdentifier>{f1d9f9a6-0268-4903-8d63-260d523a77e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -233,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
       <Filter>GameEngine\PhysicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineState.cpp">
+      <Filter>GameEngine\EngineState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +435,12 @@
       <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
     <ClInclude Include="UI_Inspector.h">
+      <Filter>GameEngine\UIManager\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineState.h">
+      <Filter>GameEngine\EngineState</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_EngineState.h">
       <Filter>GameEngine\UIManager\Screens</Filter>
     </ClInclude>
   </ItemGroup>

@@ -103,6 +103,13 @@ void GameObjectManager::Destroy(Primitive* obj)
 	}
 }
 
+void GameObjectManager::RevertObjectStates()
+{
+	for (int i = 0; i < m_Objects.size(); i++) {
+		m_Objects[i]->RevertState();
+	}
+}
+
 void GameObjectManager::CreateWorld()
 {
 	// CREATE A PLANE
@@ -156,7 +163,7 @@ void GameObjectManager::SpawnCubes(int nCubes)
 	for (int i = 0; i < nCubes; i++) {
 		Primitive* cube = new Cube();
 		cube->initialize();
-		cube->getTransform()->setPosition(Vector3D(0, 10, 0));
+		cube->getTransform()->setPosition(Vector3D(m_Objects.size(), 10, 0));
 		cube->getTransform()->update();
 		Register(cube);
 

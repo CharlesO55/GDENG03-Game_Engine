@@ -14,6 +14,7 @@ private:
 	std::vector<Primitive*> m_Objects;
 	SceneObject* m_SelectedObject;
 
+
 public:
 	static GameObjectManager* Get();
 	
@@ -25,6 +26,7 @@ public:
 	void Register(Primitive* obj);
 	void Destroy(Primitive* obj);
 
+	void RevertObjectStates();
 
 public:
 	void SelectObject(SceneObject* obj);

@@ -3,6 +3,9 @@
 
 #include "Matrix4x4.h"
 
+
+#include <DirectXMath.h>
+
 class Transformation : public Component
 {
 public:
@@ -25,9 +28,14 @@ public:
 	const Vector3D getRotation();
 	const Matrix4x4 getWorldMatrix();
 
+	DirectX::XMMATRIX DX_Matrix;
+
+
 private:
 	Matrix4x4 m_WorldMatrix;
 	Vector3D m_pos = Vector3D(0);
 	Vector3D m_rot = Vector3D(0);
 	Vector3D m_scale = Vector3D(1);
+
+
 };

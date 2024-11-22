@@ -14,7 +14,8 @@ public:
 
 		MENU_GAMEOBJECT,
 		HIERARCHY,
-		INSPECTOR
+		INSPECTOR,
+		ENGINE_STATE
 	};
 
 	typedef std::unordered_map<SCREEN_ID, UI_BaseScreen*> UI_SCREEN_MAP;

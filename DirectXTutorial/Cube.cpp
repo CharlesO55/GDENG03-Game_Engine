@@ -13,7 +13,7 @@
 Cube::Cube() : Primitive("Cube")
 {
 	//m_Components.push_back(new RotatorScript(this));
-	AddComponent(new RaycastComponent(this, RaycastComponent::INTERSECTION_TYPE::SPHERE_CAST));
+	//AddComponent(new RaycastComponent(this, RaycastComponent::INTERSECTION_TYPE::SPHERE_CAST));
 
 
 	m_verts =

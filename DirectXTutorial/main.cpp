@@ -4,6 +4,7 @@
 #include "Debugger.h"
 
 #include "UIManager.h"
+#include "EngineState.h"
 
 int main()
 {
@@ -12,6 +13,7 @@ int main()
 		GraphicsEngine::create();
 		InputSystem::create();
 		EngineTime::create();
+		EngineState::Init();
 	}
 	catch (...) { return -1; }
 	{
@@ -35,6 +37,7 @@ int main()
 	InputSystem::release();
 	GraphicsEngine::release();
 	EngineTime::release();
+	EngineState::Release();
 
 	return 0;
 }

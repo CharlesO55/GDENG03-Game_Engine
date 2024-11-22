@@ -5,6 +5,7 @@
 #include "UI_GameObjectMenu.h"
 #include "UI_Hierarchy.h"
 #include "UI_Inspector.h"
+#include "UI_EngineState.h"
 
 #include "Debugger.h"
 
@@ -73,8 +74,10 @@ void UIManager::DrawAllUI()
 		m_ScreensMap[SCREEN_ID::RENDER_OPTIONS]->TryShow();
 		m_ScreensMap[SCREEN_ID::HIERARCHY]->TryShow();
 		m_ScreensMap[SCREEN_ID::INSPECTOR]->TryShow();
+		m_ScreensMap[SCREEN_ID::ENGINE_STATE]->TryShow();
 
 		
+
 	}
 
 	ImGui::Render();
@@ -93,6 +96,7 @@ UIManager::UIManager()
 	m_ScreensMap[SCREEN_ID::MENU_GAMEOBJECT] = new UI_GameObjectMenu();
 	m_ScreensMap[SCREEN_ID::HIERARCHY] = new UI_Hierarchy();
 	m_ScreensMap[SCREEN_ID::INSPECTOR] = new UI_Inspector();
+	m_ScreensMap[SCREEN_ID::ENGINE_STATE] = new UI_EngineState();
 }
 
 UIManager::~UIManager()

@@ -77,10 +77,17 @@ void PhysicsSystem::RegisterComponent(PhysicsComponent* comp)
     m_Components.push_back(comp);
 }
 
+void PhysicsSystem::UnregisterComponent(PhysicsComponent* comp) {
+    m_Components.erase(std::remove(m_Components.begin(), m_Components.end(), comp), m_Components.end());
+    m_Map[comp->GetOwner()->GetInstanceID()] = nullptr;
+    m_Map.erase(comp->GetOwner()->GetInstanceID());
+}
+
 bool PhysicsSystem::TryFindComponent(int obj_ID, PhysicsComponent*& out)
 {
     if (m_Map.find(obj_ID) != m_Map.end()) {
         out = m_Map[obj_ID];
+
         return true;
     }
     return false;

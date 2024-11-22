@@ -60,3 +60,13 @@ const int SceneObject::GetInstanceID() const
 {
 	return m_InstanceID;
 }
+
+void SceneObject::RevertState()
+{
+	getTransform()->setWorldMatrix(saveState);
+}
+
+void SceneObject::SaveState(Matrix4x4 toSave)
+{
+	saveState = toSave;
+}

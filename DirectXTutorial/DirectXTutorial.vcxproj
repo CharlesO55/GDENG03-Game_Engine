@@ -141,6 +141,7 @@
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DeviceContext.cpp" />
+    <ClCompile Include="EngineState.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GraphicsEngine.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Debugger.h" />
     <ClInclude Include="DeviceContext.h" />
+    <ClInclude Include="EngineState.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GraphicsEngine.h" />
@@ -233,6 +235,7 @@
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UI_BaseScreen.h" />
     <ClInclude Include="UI_Credits.h" />
+    <ClInclude Include="UI_EngineState.h" />
     <ClInclude Include="UI_GameObjectMenu.h" />
     <ClInclude Include="UI_Hierarchy.h" />
     <ClInclude Include="UI_Inspector.h" />
