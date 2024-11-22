@@ -97,14 +97,21 @@ public:
 
 		if (ImGui::CollapsingHeader("Rigidbody")) {
 			if (PhysicsSystem::Get()->TryFindComponent(obj->GetInstanceID(), rb)) {
-				ImGui::Text("Add rigidbody settings here to toggle");
+				if (rb) {
+					bool gravity = rb->GetRB()->isGravityEnabled();
+					float mass = rb->GetRB()->getMass();
 
+					ImGui::Text("Properties");
+					if (ImGui::Checkbox("Gravity", &gravity)) {	
+						rb->GetRB()->enableGravity(gravity); 
 
-
-
-
-
-
+						if (!gravity) {
+							rb->GetRB()->resetForce();
+							rb->GetRB()->setLinearVelocity(reactphysics3d::Vector3(0, 0, 0));
+						}
+					}
+					if (ImGui::DragFloat("Mass", &mass, 0.01f, 0.0f)) { rb->GetRB()->setMass(mass); }
+				}
 			}
 
 			else {

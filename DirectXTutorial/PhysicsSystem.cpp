@@ -77,7 +77,7 @@ void PhysicsSystem::RegisterComponent(PhysicsComponent* comp)
     m_Components.push_back(comp);
 }
 
-bool PhysicsSystem::TryFindComponent(int obj_ID, PhysicsComponent* out)
+bool PhysicsSystem::TryFindComponent(int obj_ID, PhysicsComponent*& out)
 {
     if (m_Map.find(obj_ID) != m_Map.end()) {
         out = m_Map[obj_ID];

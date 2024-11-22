@@ -41,7 +41,7 @@ public:
 	void RegisterComponent(PhysicsComponent* comp);
 	void UnregisterComponent(PhysicsComponent* comp);
 
-	bool TryFindComponent(int obj_ID, PhysicsComponent* out);
+	bool TryFindComponent(int obj_ID, PhysicsComponent*& out);
 
 	std::vector<PhysicsComponent*> GetAllComponents();
 	reactphysics3d::PhysicsCommon* GetPhysicsCommon();
